@@ -1,3 +1,5 @@
+PFont font;
+
 cloud cloud1;
 cloud cloud2;
 cloud cloud3;
@@ -13,16 +15,18 @@ void setup() {
   smooth();
   noStroke();
   noFill();
-  
+
+  font = loadFont("font.vlw");
+
   cloud1 = new cloud(400, 100, 150, 1);
   cloud2 = new cloud(259, 75, 80, 1);
   cloud3 = new cloud(25, 400, 40, 1);
-  rocket = new rocket(width/2, height-(height/5), 50, 100);
+  rocket = new rocket(width/2-25, height-(height/3), 50, 100);
   myFire = new fire(width/2, height/2, 50, #F25911);
-  test = new satellite(-50, 50, 50, 100, 3);
-  
+  test = new satellite(0, 225, 50, 100, 5);
+
   for (int i=0; i<numSatellites; i++) {
-    mySatellites[i] = new satellite(-50, random(width), 50, 100, random(-4,4));
+    mySatellites[i] = new satellite(-50, random(width), 50, 100, random(-4, 4));
   }
 }
 
@@ -36,23 +40,37 @@ void draw() {
   cloud1.updateCloud();
   cloud2.updateCloud();
   cloud3.updateCloud();
-  
-  test.displaySatellite();
-  test.updateSatellite();
-  
-  for (int i=0; i<numSatellites; i++) {
-  mySatellites[i].displaySatellite();
+
+  if (test.delayEntrance <= 0) {
+    test.displaySatellite();
+    test.updateSatellite();
   }
-  for (int i=0; i<numSatellites; i++) {
-  mySatellites[i].updateSatellite();
+
+  if (test.delayArrayEntrance <= 0) {
+    for (int i=0; i<numSatellites; i++) {
+      mySatellites[i].displaySatellite();
+    }
+    for (int i=0; i<numSatellites; i++) {
+      mySatellites[i].updateSatellite();
+    }
   }
 
   for (int i=0; i<numSatellites; i++) {
-  rocket.displayRocket(test.xPos, test.yPos, test.xVel, mySatellites[i].xPos, mySatellites[i].yPos, mySatellites[i].xVel);
+    rocket.displayRocket(test.xPos, test.yPos, test.xVel, mySatellites[i].xPos, mySatellites[i].yPos, mySatellites[i].xVel);
   }
   rocket.updateRocket();
-  
+
   myFire.displayFire(rocket.xPos, rocket.yPos);
+
+  if (test.delayEntrance > 0) {
+    test.delayEntrance--;
+  }
+
+  if (test.delayEntrance <= 0) {
+    if (test.delayArrayEntrance > 0) {
+      test.delayArrayEntrance--;
+    }
+  }
 }
 
 void keyPressed() {
@@ -63,7 +81,7 @@ void keyPressed() {
   case RIGHT:
     rocket.right = true;
     break;
-    case UP:
+  case UP:
     rocket.up = true;
     break;
   case DOWN:
@@ -82,7 +100,7 @@ void keyReleased() {
     rocket.right = false;
     rocket.fireRight = false;
     break;
-    case UP:
+  case UP:
     rocket.up = false;
     rocket.fireUp = false;
     break;

@@ -6,6 +6,7 @@ class satellite {
   float xVel;
   int yVel;
   int delayEntrance=240;
+  int delayArrayEntrance = 460;
   int xPosOffset = 240;
   boolean warpPosition;
   float die;
@@ -24,20 +25,16 @@ class satellite {
   }
 
   void updateSatellite() {
-    if (delayEntrance > 0) {
-      delayEntrance--;
-    }
-
     yVel = cloud1.speed;
     yPos += yVel;
     xPos += xVel;
-    
+
     if (xPos<width && xPos>0) {
       if (warpPosition == true) {
         warpPosition = false;
       }
     }
-    
+
     if (xPos>width || xPos<0) {
       if (warpPosition == false) {
         yPos = random(height);

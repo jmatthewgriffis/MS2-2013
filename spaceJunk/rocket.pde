@@ -10,7 +10,9 @@ class rocket {
   float knockbackSpeed = 20;
   int rotateTimer;
   int rotateTimerLimit = 30;
+  int textTimer = 240;
 
+  boolean allowMove;
   boolean right;
   boolean left;
   boolean up;
@@ -139,6 +141,19 @@ class rocket {
 
   void updateRocket() {
 
+    if (test.delayArrayEntrance <= 0) {
+      allowMove = true;
+      if (textTimer > 0) {
+        textTimer--;
+        fill(255);
+        rect(width/2-75, height/2-45, 150, 60);
+        textAlign(CENTER);
+        fill(0);
+        textFont(font);
+        text("Dodge!", width/2, height/2);
+      }
+    }
+
     xPos += xVel;
     yPos += yVel;
 
@@ -154,7 +169,7 @@ class rocket {
     if (yVel != 0 ) {
       yVel *= slow;
     }
-    
+
     if (xVel != 0) {
       xVel *= slow;
     }
@@ -167,28 +182,30 @@ class rocket {
       xVel = 0;
     }
 
-    if (right == true) {
-      if (xPos+wide<=width) {
-        xPos+=speed;
-        fireRight=true;
+    if (allowMove == true) {
+      if (right == true) {
+        if (xPos+wide<=width) {
+          xPos+=speed;
+          fireRight=true;
+        }
       }
-    }
-    if (left == true) {
-      if (xPos>=0) {
-        xPos-=speed;
-        fireLeft=true;
+      if (left == true) {
+        if (xPos>=0) {
+          xPos-=speed;
+          fireLeft=true;
+        }
       }
-    }
-    if (up == true) {
-      if (yPos>=0) {
-        yPos-=speed;
-        fireUp=true;
+      if (up == true) {
+        if (yPos>=0) {
+          yPos-=speed;
+          fireUp=true;
+        }
       }
-    }
-    if (down == true) {
-      if (yPos+length<=height) {
-        yPos+=speed;
-        fireDown=true;
+      if (down == true) {
+        if (yPos+length<=height) {
+          yPos+=speed;
+          fireDown=true;
+        }
       }
     }
   }
