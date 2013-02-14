@@ -67,7 +67,9 @@ class rocket {
       // For some reason, the collision with the test satellite does 10 times normal damage.
       // I don't know why and don't have the time to figure it out right now (maybe it's
       // compounding the effect somehow?) but dividing by 10 achieves the desired effect:
+      if (allowMove == true) {
       health -= (thatHurts/10);
+      }
       if (yPos > y+(test.length-(test.length/3))) {
         yVel = knockbackSpeed/4;
         if (v>0) {

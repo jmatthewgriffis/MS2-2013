@@ -4,14 +4,15 @@ color textBox = #FFFF00;
 color textColor = #000000;
 
 int fontSize = 24;
-
-int firstMsgDelay = 180;
-int firstMsgTimer = 180;
-int secondMsgDelay = 180;
-int secondMsgTimer = 180;
-int thirdMsgDelay = 180;
-int thirdMsgTimer = 180;
-int dodgeMsgTimer = 180;
+int firstMsgDelay;
+int firstMsgTimer;
+int secondMsgDelay;
+int secondMsgTimer;
+int thirdMsgDelay;
+int thirdMsgTimer;
+int dodgeMsgTimer;
+int timeTillOrbit;
+int secondCounter;
 
 cloud cloud1;
 cloud cloud2;
@@ -33,6 +34,16 @@ void setup() {
 
   font = loadFont("font.vlw");
 
+  firstMsgDelay = 180;
+  firstMsgTimer = 180;
+  secondMsgDelay = 180;
+  secondMsgTimer = 180;
+  thirdMsgDelay = 180;
+  thirdMsgTimer = 180;
+  dodgeMsgTimer = 180;
+  timeTillOrbit = 90;
+  secondCounter = 60;
+
   cloud1 = new cloud(400, 100, 150, 1);
   cloud2 = new cloud(259, 75, 80, 1);
   cloud3 = new cloud(25, 400, 40, 1);
@@ -46,7 +57,6 @@ void setup() {
 }
 
 void draw() {
-  println(rocket.health + "; ouch = " + rocket.ouch);
   background(0, 0, 255);
 
   cloud1.displayCloud();
@@ -70,11 +80,21 @@ void draw() {
       mySatellites[i].updateSatellite();
     }
   }
-  
-  myFire.displayFire(rocket.xPos, rocket.yPos);
 
-  for (int i=0; i<numSatellites; i++) {
-    rocket.displayRocket(test.xPos, test.yPos, test.xVel, mySatellites[i].xPos, mySatellites[i].yPos, mySatellites[i].xVel);
+  if (rocket.health > 0) {
+    myFire.displayFire(rocket.xPos, rocket.yPos);
+
+    for (int i=0; i<numSatellites; i++) {
+      rocket.displayRocket(test.xPos, test.yPos, test.xVel, mySatellites[i].xPos, mySatellites[i].yPos, mySatellites[i].xVel);
+    }
+  }
+  else {
+    fill(255, 0, 0);
+    rect(width/2-300, height/2-50, 600, 80);
+    textAlign(CENTER);
+    fill(textColor);
+    textFont(font, fontSize*2);
+    text("KABOOM! Press 'r' to restart.", width/2, height/2);
   }
   rocket.updateRocket();
 
@@ -142,19 +162,33 @@ void draw() {
     text("Clear skies for\na safe launch.", width/2, height/2-15);
   }
   if (test.delayArrayEntrance <= 0) {
-      rocket.allowMove = true;
-      if (dodgeMsgTimer > 0) {
-        dodgeMsgTimer--;
-        fill(textBox);
-        rect(width/2-100-(25/2), height/2-45, 225, 80);
-        textAlign(CENTER);
-        fill(textColor);
-        textFont(font, fontSize);
-        text("Autopilot disabled.", width/2, height/2-20);
-        textFont(font, fontSize*2);
-        text("Dodge!", width/2, height/2+20);
-      }
+    rocket.allowMove = true;
+    if (dodgeMsgTimer > 0) {
+      dodgeMsgTimer--;
+      fill(textBox);
+      rect(width/2-100-(25/2), height/2-60, 225, 115);
+      textAlign(CENTER);
+      fill(textColor);
+      textFont(font, fontSize);
+      text("Autopilot disabled.\nShields down.", width/2, height/2-40);
+      textFont(font, fontSize*2);
+      text("Dodge!", width/2, height/2+40);
     }
+  }
+  textAlign(CENTER);
+  fill(255);
+  rect(width-230, 5, 220, 30);
+  fill(textColor);
+  textFont(font, fontSize);
+  text("Time Till Orbit: " + timeTillOrbit, width-120, 25);
+
+  if (timeTillOrbit > 0) {
+    secondCounter--;
+    if (secondCounter <= 0) {
+      timeTillOrbit--;
+      secondCounter = 60;
+    }
+  }
 }
 
 void keyPressed() {
@@ -171,6 +205,10 @@ void keyPressed() {
   case DOWN:
     rocket.down = true;
     break;
+  }
+  if (key == 'r' || key == 'R') {
+    delay(1000);
+    setup();
   }
 }
 
