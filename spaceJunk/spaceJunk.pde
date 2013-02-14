@@ -1,5 +1,12 @@
 PFont font;
 
+int firstMsgDelay = 180;
+int firstMsgTimer = 180;
+int secondMsgDelay = 180;
+int secondMsgTimer = 180;
+int thirdMsgDelay = 180;
+int thirdMsgTimer = 180;
+
 cloud cloud1;
 cloud cloud2;
 cloud cloud3;
@@ -54,13 +61,13 @@ void draw() {
       mySatellites[i].updateSatellite();
     }
   }
+  
+  myFire.displayFire(rocket.xPos, rocket.yPos);
 
   for (int i=0; i<numSatellites; i++) {
     rocket.displayRocket(test.xPos, test.yPos, test.xVel, mySatellites[i].xPos, mySatellites[i].yPos, mySatellites[i].xVel);
   }
   rocket.updateRocket();
-
-  myFire.displayFire(rocket.xPos, rocket.yPos);
 
   if (test.delayEntrance > 0) {
     test.delayEntrance--;
@@ -70,6 +77,60 @@ void draw() {
     if (test.delayArrayEntrance > 0) {
       test.delayArrayEntrance--;
     }
+  }
+
+  if (firstMsgDelay > 0) {
+    firstMsgDelay--;
+  }
+  if (firstMsgDelay <= 0) {
+    if (firstMsgTimer > 0) {
+      firstMsgTimer--;
+    }
+  }
+  if (firstMsgTimer <= 0) {
+    if (secondMsgDelay > 0) {
+      secondMsgDelay--;
+    }
+  }
+  if (secondMsgDelay <= 0) {
+    if (secondMsgTimer > 0) {
+      secondMsgTimer--;
+    }
+  }
+  if (secondMsgTimer <= 0) {
+    if (thirdMsgDelay > 0) {
+      thirdMsgDelay--;
+    }
+  }
+  if (thirdMsgDelay <= 0) {
+    if (thirdMsgTimer > 0) {
+      thirdMsgTimer--;
+    }
+  }
+
+  if (firstMsgDelay <= 0 && firstMsgTimer > 0) {
+    fill(255);
+    rect(width/2-100, height/2-45, 200, 80);
+    textAlign(CENTER);
+    fill(0);
+    textFont(font, 24);
+    text("Autopilot enabled.", width/2, height/2-20);
+  }
+  if (secondMsgDelay <= 0 && secondMsgTimer > 0) {
+    fill(255);
+    rect(width/2-100, height/2-45, 200, 80);
+    textAlign(CENTER);
+    fill(0);
+    textFont(font, 24);
+    text("What a beautiful day.", width/2, height/2-20);
+  }
+  if (thirdMsgDelay <= 0 && thirdMsgTimer > 0) {
+    fill(255);
+    rect(width/2-100, height/2-45, 200, 80);
+    textAlign(CENTER);
+    fill(0);
+    textFont(font, 24);
+    text("Clear skies for\na safe launch.", width/2, height/2-20);
   }
 }
 
