@@ -7,9 +7,9 @@ class rocket {
   float xVel = 0;
   float yVel = 0;
   float slow = 0.9;
-  float knockbackSpeed = 10;
+  float knockbackSpeed = 20;
   int rotateTimer;
-  int rotateTimerLimit = 60;
+  int rotateTimerLimit = 30;
 
   boolean right;
   boolean left;
@@ -48,7 +48,7 @@ class rocket {
 
     if (xPos+wide>x && xPos<x+test.wide && yPos<y+test.length && yPos+length>y) {
       if (yPos > y+(test.length-(test.length/3))) {
-        yVel += knockbackSpeed;
+        yVel = knockbackSpeed;
         if (v>0) {
           rotateRight = true;
           rotateTimer = rotateTimerLimit;
@@ -59,7 +59,7 @@ class rocket {
         }
       }
       if (yPos+(length-(length/3)) < y+(test.length/3)) {
-        yVel += -knockbackSpeed;
+        yVel = -knockbackSpeed;
         if (v>0) {
           rotateLeft = true;
           rotateTimer = rotateTimerLimit;
@@ -83,7 +83,7 @@ class rocket {
 
       if (xPos+wide>x2 && xPos<x2+mySatellites[i].wide && yPos<y2+mySatellites[i].length && yPos+length>y2) {
         if (yPos > y2+(mySatellites[i].length-(mySatellites[i].length/3))) {
-          yVel += knockbackSpeed;
+          yVel = knockbackSpeed;
           if (v2>0) {
             rotateRight = true;
             rotateTimer = rotateTimerLimit;
@@ -94,7 +94,7 @@ class rocket {
           }
         }
         if (yPos+(length-(length/3)) < y2+(mySatellites[i].length/3)) {
-          yVel += -knockbackSpeed;
+          yVel = -knockbackSpeed;
           if (v2>0) {
             rotateLeft = true;
             rotateTimer = rotateTimerLimit;
@@ -151,19 +151,19 @@ class rocket {
       rotateLeft = false;
     }
 
-    if (yVel > 0) {
+    if (yVel != 0 ) {
       yVel *= slow;
     }
-
-    if (yVel <= 0.1) {
-      yVel = 0;
-    }
-
-    if (xVel > 0) {
+    
+    if (xVel != 0) {
       xVel *= slow;
     }
 
-    if (xVel <= 0.1) {
+    if (yVel <= 0.1 && yVel >= -0.1) {
+      yVel = 0;
+    }
+
+    if (xVel <= 0.1 && xVel >= -0.1) {
       xVel = 0;
     }
 

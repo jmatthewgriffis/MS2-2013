@@ -27,7 +27,6 @@ void setup() {
 }
 
 void draw() {
-  println(rocket.rotateRight);
   background(0, 0, 255);
 
   cloud1.displayCloud();
