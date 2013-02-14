@@ -7,7 +7,7 @@ class Rocket {
   float velocityX, velocityY;
   float speed;
   color rocketColor;
-//  PImage rocket1;
+  PImage rocket1;
 
 
   //Empty Constructor
@@ -42,22 +42,24 @@ class Rocket {
   //Draw Method
   void drawMe() {    
     
-//    rocket1 = loadImage("rocket.png");
+    rocket1 = loadImage("rocket.png");
   noStroke();
   fill(rocketColor);
     pushMatrix();
     translate(xPos, yPos);
     rotate(rotation);
     smooth();
+    rocket1.resize(halfWidth*3,halfHeight*3);
+  imageMode(CENTER);
 
+    image(rocket1, 0, 0);
 
-//    image(rocket1, 0, 0);
-
-        triangle(0, -halfHeight, -halfWidth, halfHeight, halfWidth,halfHeight);
-    rectMode(CORNERS);
-        rect(-halfWidth + 5, halfHeight, -halfWidth + 8, halfHeight + 3);
-        rect(halfWidth - 8, halfHeight, halfWidth - 5, halfHeight + 3);
+//        triangle(0, -halfHeight, -halfWidth, halfHeight, halfWidth,halfHeight);
+//    rectMode(CORNERS);
+//        rect(-halfWidth + 5, halfHeight, -halfWidth + 8, halfHeight + 3);
+//        rect(halfWidth - 8, halfHeight, halfWidth - 5, halfHeight + 3);
     popMatrix();
+  imageMode(CORNER);
 
     fill(255);
   }

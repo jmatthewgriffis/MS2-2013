@@ -178,6 +178,9 @@ void draw() {
         collisionCounter=0;
         rocket.xPos=400;
         rocket.yPos=300;
+        rocket.velocityX=0;
+        rocket.velocityY=0;
+
       }
     }
   }

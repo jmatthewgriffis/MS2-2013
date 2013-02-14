@@ -10,7 +10,6 @@ class rocket {
   float knockbackSpeed = 20;
   int rotateTimer;
   int rotateTimerLimit = 30;
-  int textTimer = 180;
 
   boolean allowMove;
   boolean right;
@@ -140,21 +139,6 @@ class rocket {
   }
 
   void updateRocket() {
-    if (test.delayArrayEntrance <= 0) {
-      allowMove = true;
-      if (textTimer > 0) {
-        textTimer--;
-        fill(255);
-        rect(width/2-100, height/2-45, 200, 80);
-        textAlign(CENTER);
-        fill(0);
-        textFont(font, 24);
-        text("Autopilot disabled.", width/2, height/2-20);
-        textFont(font, 48);
-        text("Dodge!", width/2, height/2+20);
-      }
-    }
-
     xPos += xVel;
     yPos += yVel;
 

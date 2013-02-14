@@ -1,11 +1,17 @@
 PFont font;
 
+color textBox = #FFFF00;
+color textColor = #000000;
+
+int fontSize = 24;
+
 int firstMsgDelay = 180;
 int firstMsgTimer = 180;
 int secondMsgDelay = 180;
 int secondMsgTimer = 180;
 int thirdMsgDelay = 180;
 int thirdMsgTimer = 180;
+int dodgeMsgTimer = 180;
 
 cloud cloud1;
 cloud cloud2;
@@ -13,7 +19,9 @@ cloud cloud3;
 rocket rocket;
 fire myFire;
 satellite test;
+
 int numSatellites = 10;
+
 satellite[] mySatellites = new satellite[numSatellites];
 
 void setup() {
@@ -109,29 +117,43 @@ void draw() {
   }
 
   if (firstMsgDelay <= 0 && firstMsgTimer > 0) {
-    fill(255);
-    rect(width/2-100, height/2-45, 200, 80);
+    fill(textBox);
+    rect(width/2-100-(25/2), height/2-45, 225, 80);
     textAlign(CENTER);
-    fill(0);
-    textFont(font, 24);
-    text("Autopilot enabled.", width/2, height/2-20);
+    fill(textColor);
+    textFont(font, fontSize);
+    text("Autopilot enabled.", width/2, height/2);
   }
   if (secondMsgDelay <= 0 && secondMsgTimer > 0) {
-    fill(255);
-    rect(width/2-100, height/2-45, 200, 80);
+    fill(textBox);
+    rect(width/2-100-(25/2), height/2-45, 225, 80);
     textAlign(CENTER);
-    fill(0);
-    textFont(font, 24);
-    text("What a beautiful day.", width/2, height/2-20);
+    fill(textColor);
+    textFont(font, fontSize);
+    text("What a beautiful day.", width/2, height/2);
   }
   if (thirdMsgDelay <= 0 && thirdMsgTimer > 0) {
-    fill(255);
-    rect(width/2-100, height/2-45, 200, 80);
+    fill(textBox);
+    rect(width/2-100-(25/2), height/2-45, 225, 80);
     textAlign(CENTER);
-    fill(0);
-    textFont(font, 24);
-    text("Clear skies for\na safe launch.", width/2, height/2-20);
+    fill(textColor);
+    textFont(font, fontSize);
+    text("Clear skies for\na safe launch.", width/2, height/2-15);
   }
+  if (test.delayArrayEntrance <= 0) {
+      rocket.allowMove = true;
+      if (dodgeMsgTimer > 0) {
+        dodgeMsgTimer--;
+        fill(textBox);
+        rect(width/2-100-(25/2), height/2-45, 225, 80);
+        textAlign(CENTER);
+        fill(textColor);
+        textFont(font, fontSize);
+        text("Autopilot disabled.", width/2, height/2-20);
+        textFont(font, fontSize*2);
+        text("Dodge!", width/2, height/2+20);
+      }
+    }
 }
 
 void keyPressed() {

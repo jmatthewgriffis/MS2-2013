@@ -5,7 +5,7 @@ class satellite {
   float wide;
   float xVel;
   int yVel;
-  int delayEntrance=1100;
+  int delayEntrance=1130;
   int delayArrayEntrance = 460;
   int xPosOffset = 240;
   boolean warpPosition;
