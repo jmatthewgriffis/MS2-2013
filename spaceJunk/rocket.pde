@@ -48,7 +48,7 @@ class rocket {
 
     if (xPos+wide>x && xPos<x+test.wide && yPos<y+test.length && yPos+length>y) {
       if (yPos > y+(test.length-(test.length/3))) {
-        yVel = knockbackSpeed;
+        yVel = knockbackSpeed/4;
         if (v>0) {
           rotateRight = true;
           rotateTimer = rotateTimerLimit;
@@ -59,7 +59,7 @@ class rocket {
         }
       }
       if (yPos+(length-(length/3)) < y+(test.length/3)) {
-        yVel = -knockbackSpeed;
+        yVel = -knockbackSpeed/4;
         if (v>0) {
           rotateLeft = true;
           rotateTimer = rotateTimerLimit;
@@ -83,7 +83,7 @@ class rocket {
 
       if (xPos+wide>x2 && xPos<x2+mySatellites[i].wide && yPos<y2+mySatellites[i].length && yPos+length>y2) {
         if (yPos > y2+(mySatellites[i].length-(mySatellites[i].length/3))) {
-          yVel = knockbackSpeed;
+          yVel = knockbackSpeed/4;
           if (v2>0) {
             rotateRight = true;
             rotateTimer = rotateTimerLimit;
@@ -94,7 +94,7 @@ class rocket {
           }
         }
         if (yPos+(length-(length/3)) < y2+(mySatellites[i].length/3)) {
-          yVel = -knockbackSpeed;
+          yVel = -knockbackSpeed/4;
           if (v2>0) {
             rotateLeft = true;
             rotateTimer = rotateTimerLimit;
