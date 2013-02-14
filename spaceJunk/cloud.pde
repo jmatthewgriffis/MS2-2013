@@ -1,3 +1,5 @@
+// This tab coded by Matt (and possibly modified by Owen and/or Michael).
+
 class cloud {
   float xPos;
   float yPos;
@@ -18,8 +20,9 @@ class cloud {
   }
 
   void updateCloud() {
-    yPos += speed;
+    yPos += speed; // Scroll the clouds downward to simulate the sensation of flying upward.
 
+    // If the cloud goes off the bottom of the screen, replace it above the screen at a random place and size:
     if (yPos > height + 50) {
       yPos = -50;
       xPos = random(width);
