@@ -49,7 +49,7 @@ class Rocket {
     translate(xPos, yPos);
     rotate(rotation);
     smooth();
-    rocket1.resize(halfWidth*3,halfHeight*3);
+    rocket1.resize(halfWidth*3+6,halfHeight*3+6);
   imageMode(CENTER);
 
     image(rocket1, 0, 0);

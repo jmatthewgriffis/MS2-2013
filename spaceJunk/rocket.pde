@@ -10,6 +10,11 @@ class rocket {
   float knockbackSpeed = 20;
   int rotateTimer;
   int rotateTimerLimit = 30;
+  int health = 200;
+  int thatHurts = 10;
+  boolean ouch;
+  color healthBar = #989890;
+  color healthBarStroke = #FFFFFF;
 
   boolean allowMove;
   boolean right;
@@ -31,7 +36,13 @@ class rocket {
   }
 
   void displayRocket(float x, float y, float v, float x2, float y2, float v2) {
-
+    stroke(healthBarStroke);
+    noFill();
+    rect(5,5,202,20);
+    noStroke();
+    fill(healthBar);
+    rect(6,6,health,18);
+    
     if (yPos+length>height) {
       yPos=height-length;
     }
@@ -44,10 +55,19 @@ class rocket {
     if (xPos<0) {
       xPos=0;
     }
+    
+    if (ouch == true) {
+      health -= thatHurts;
+      ouch = false;
+    }
 
     // Collision detection with the test satellite:
 
     if (xPos+wide>x && xPos<x+test.wide && yPos<y+test.length && yPos+length>y) {
+      // For some reason, the collision with the test satellite does 10 times normal damage.
+      // I don't know why and don't have the time to figure it out right now (maybe it's
+      // compounding the effect somehow?) but dividing by 10 achieves the desired effect:
+      health -= (thatHurts/10);
       if (yPos > y+(test.length-(test.length/3))) {
         yVel = knockbackSpeed/4;
         if (v>0) {
@@ -83,6 +103,7 @@ class rocket {
     for (int i=0; i<numSatellites; i++) {
 
       if (xPos+wide>x2 && xPos<x2+mySatellites[i].wide && yPos<y2+mySatellites[i].length && yPos+length>y2) {
+        ouch = true;
         if (yPos > y2+(mySatellites[i].length-(mySatellites[i].length/3))) {
           yVel = knockbackSpeed/4;
           if (v2>0) {

@@ -46,6 +46,7 @@ void setup() {
 }
 
 void draw() {
+  println(rocket.health + "; ouch = " + rocket.ouch);
   background(0, 0, 255);
 
   cloud1.displayCloud();

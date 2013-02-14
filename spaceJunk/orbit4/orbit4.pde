@@ -1,24 +1,30 @@
+//audio stuff
 import ddf.minim.*;
 Minim minim;
 AudioSnippet thud;
 AudioSnippet shipExplosion;
-int livesLeft;
+//text stuff
 PFont font;
 
-
-
-
+//
+int livesLeft;
+//SpaceJunk orbit stuff
 int cx;
 int cy;
 int orbitSize;
 float orbitTime;
 int circleSize;
 ArrayList spaceJunkList = new ArrayList();
+
+//art stuff
 PImage earth;
 int starAmount =100;
 Star[] stars = new Star[starAmount];
+//message stuff
 Message[] message = new Message[99];
 int nextMessage;
+
+//timers
 int timer;
 int spaceJunkTimer;
 
@@ -49,29 +55,31 @@ void setup() {
   font = loadFont("AdobeGothicStd-Bold-20.vlw");
 
 
-
+//orbit stuff
   cx = width/2;
   cy = height/2;
   orbitSize = 200;
   orbitTime = 1000.0;
   circleSize = 50;
-
+  //rocket movement
   right = false;
   left = false;
   up = false;
   down = false;
   space = false;
-
+  
+  //create initial space junks
   for (int i= 0; i<initialJunkAmount; i++) {
     spaceJunkList.add(new Satellite(width/2, height/2));
   }
 
+  //create stars
   for (int k=0; k<starAmount; k++) {
     stars[k] = new Star();
   }
 
   timer = 0;
-
+  //create message array
   for (int j=0; j<99; j++) {
     message[j] = new Message();
   }
@@ -83,13 +91,13 @@ void draw() {
   tint(255, 255);
   image(earth, width/2-75, height/2-75);
   spaceJunkTimer++;
-  livesLeft = 5-collisionCounter;
+  livesLeft = 5-collisionCounter; //calculate lives left
 
   fill(0);
   //  ellipse(width/2, height/2, 100, 100);
 
 
-
+  //display space junks
   for (int i=0; i<spaceJunkList.size(); i++) {
     Satellite temp = (Satellite) spaceJunkList.get(i);
     temp.display();
@@ -107,17 +115,17 @@ void draw() {
         float tempSize1=satellite1.circleSize;
         float tempSize2=satellite2.circleSize;
         //decrease size 
-        if (satellite1.circleSize>2) satellite1.circleSize=tempSize1/1.05;
+        if (satellite1.circleSize>2) satellite1.circleSize=tempSize1/1.05;//decrease size of involved satellites
         if (satellite2.circleSize>2) satellite2.circleSize=tempSize2/1.05;
 
 
 
         if (satellite1.split==true) { 
           //          spaceJunkList.add(new Satellite((int)satellite1.x, (int)satellite1.y));
-          spaceJunkList.add(new Satellite(width/2, height/2));
+          spaceJunkList.add(new Satellite(width/2, height/2)); //add new sattelite
           Satellite satellite3 = (Satellite) spaceJunkList.get(spaceJunkList.size()-1);
           satellite3.orbitSize = satellite1.orbitSize;
-          satellite3.cx = satellite1.cx+satellite1.circleSize;
+          satellite3.cx = satellite1.cx+satellite1.circleSize; //then give it location near collision
           satellite3.cy = satellite1.cy+satellite1.circleSize;
           satellite3.orbitTime = satellite1.orbitTime;
           thud.play();
@@ -151,7 +159,7 @@ void draw() {
       }
     }
   }
-
+  //satellite rocket collision
   for (int i=0; i<spaceJunkList.size(); i++) {
     Satellite satellite1 =(Satellite) spaceJunkList.get(i);
 
@@ -164,7 +172,7 @@ void draw() {
 
 
       if (collisionCounter==5) {
-        int randExplosion= (int)random(27, 30);
+        int randExplosion= (int)random(27, 30); //make ship explode into 27 to 30 pieces
         for (int j =0; j<randExplosion; j++) {
           spaceJunkList.add(new Satellite(width/2, height/2));
           Satellite satellite3 = (Satellite) spaceJunkList.get(spaceJunkList.size()-1);
@@ -175,7 +183,7 @@ void draw() {
           shipExplosion.play();
           shipExplosion.rewind();
         }
-        collisionCounter=0;
+        collisionCounter=0; //reset rocket in center with zero velocity
         rocket.xPos=400;
         rocket.yPos=300;
         rocket.velocityX=0;
@@ -197,10 +205,10 @@ void draw() {
 
   ////////////////////////////////////
 
-  for (int k=0; k < starAmount; k++) {
+  for (int k=0; k < starAmount; k++) { // display stars
     stars[k].display();
   }
-  if (collisionCounter <5) {
+  if (collisionCounter <5) { //only display rocket if collision less than 5
 
     if (right)
       rocket.rotateClockwise();
@@ -225,7 +233,7 @@ void draw() {
 
   timer = millis();
 
-  if (spaceJunkTimer==150) {
+  if (spaceJunkTimer==150) {             //add spacejunks periodically 
     int randNum = (int)random(0, 5);
     for (int i=0;i<randNum;i++) {
       Satellite temp = new Satellite(width/2, height/2);
