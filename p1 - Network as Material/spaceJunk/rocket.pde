@@ -39,6 +39,7 @@ class rocket {
     yPos = y;
     length = l;
     wide = w;
+    
   }
 
   // In order to do collision detection, we need to compare the rocket's position with the position

@@ -14,18 +14,24 @@ class satellite {
   int xPosOffset = 240; // Use this to position the satellites offscreen.
   boolean warpPosition; // Test whether the satellite should warp position.
   float die; // Use this to roll a die.
-
+  
+  PImage satellite; //satellite image
+  
   satellite(float x, float y, float w, float l, float v) {
     xPos = x;
     yPos = y;
     length = l;
     wide = w;
     xVel = v;
+    
+    int whichSatellite = int(random(1,5));
+    satellite = loadImage("Satellite" + str(whichSatellite) + ".png");
   }
 
   void displaySatellite() {
     fill(0, 255, 0);
-    rect(xPos, yPos, wide, length);
+    image(satellite,xPos,yPos);
+    //rect(xPos, yPos, wide, length);
   }
 
   void updateSatellite() {

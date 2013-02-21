@@ -5,18 +5,23 @@ class cloud {
   float yPos;
   float rad;
   int speed;
+  int whichCloud;
+  PImage cloud;
 
-  cloud(float x, float y, float r, int s) {
+  cloud(float x, float y, float r, int s, int _whichCloud) {
     xPos = x;
     yPos = y;
     rad = r;
     speed = s;
+    whichCloud = _whichCloud;
+    cloud = loadImage("cloud" + str(whichCloud) + ".png");
+    
   }
 
   void displayCloud() {
     fill(255);
     noStroke();
-    ellipse(xPos, yPos, rad, rad/2);
+    image(cloud,xPos, yPos);
   }
 
   void updateCloud() {
@@ -24,7 +29,7 @@ class cloud {
 
     // If the cloud goes off the bottom of the screen, replace it above the screen at a random place and size:
     if (yPos > height + 50) {
-      yPos = -50;
+      yPos = -100;
       xPos = random(width);
       rad = random(40, 200);
     }
