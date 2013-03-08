@@ -19,8 +19,6 @@ void draw() {
 
   player1.display();
   player1.update();
-  //player1.keyPressed();
-  //player1.keyReleased();
 }
 
 void keyPressed() {

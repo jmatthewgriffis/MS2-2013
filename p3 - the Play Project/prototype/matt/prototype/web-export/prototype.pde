@@ -19,8 +19,6 @@ void draw() {
 
   player1.display();
   player1.update();
-  //player1.keyPressed();
-  //player1.keyReleased();
 }
 
 void keyPressed() {
@@ -82,6 +80,8 @@ class avatar {
   float circY;
   boolean rotate;
   boolean fire;
+  int rotateKey;
+  //string fireKey;
 
   // WASD controls:
   /*boolean up;
@@ -93,6 +93,8 @@ class avatar {
     circX = width/2;
     circY = height/2;
     angle = 0;
+    rotateKey = 2;
+    //fireKey = 'q';
   }
 
   void display() {
