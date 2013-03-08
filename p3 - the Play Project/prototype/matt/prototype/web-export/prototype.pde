@@ -1,6 +1,10 @@
 // Game by MMM Studios
 
 avatar player1;
+key r1Upper;
+key r1Lower;
+key f1Upper;
+key f1Lower;
 
 void setup() {
   size(1024, 768);
@@ -10,6 +14,10 @@ void setup() {
   frameRate(60);
 
   player1 = new avatar();
+  r1Upper = 'W';
+  r1Lower = 'w';
+  f1Upper = 'Q';
+  f1Lower = 'q';
 
   player1.prep();
 }
@@ -23,12 +31,12 @@ void draw() {
 
 void keyPressed() {
   switch(key) {
-  case 'q':
-  case 'Q':
+  case r1Upper:
+  case r1Lower:
     player1.rotate = true;
     break;
-  case 'w':
-  case 'W':
+  case f1Upper:
+  case f1Lower:
     player1.fire = true;
     break;
 
@@ -50,12 +58,12 @@ void keyPressed() {
 
 void keyReleased() {
   switch(key) {
-  case 'q':
-  case 'Q':
+  case r1Upper:
+  case r1Lower:
     player1.rotate = false;
     break;
-  case 'w':
-  case 'W':
+  case f1Upper:
+  case f1Lower:
     player1.fire = false;
     break;
 
