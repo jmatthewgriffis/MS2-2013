@@ -2,30 +2,23 @@
 
 class avatar {
 
-  int angle;
   float circX;
   float circY;
+  int rad;
+  int angle;
   boolean rotate;
   boolean fire;
-  int rotateKey;
-  //string fireKey;
-
-  // WASD controls:
-  /*boolean up;
-   boolean left;
-   boolean down;
-   boolean right;*/
 
   void prep() {
     circX = width/2;
     circY = height/2;
+    rad = 50;
     angle = 0;
-    //rotateKey = ;
-    //fireKey = 'q';
   }
 
   void display() {
-    ellipse(circX, circY, 100, 100);
+    ellipseMode(RADIUS);
+    ellipse(circX, circY, rad, rad);
 
     pushMatrix();
     translate(circX, circY); // Move the origin to the center of the ellipse.
@@ -35,7 +28,23 @@ class avatar {
   }
 
   void update() {
-
+    
+    // I commented this out because for some reason colliding with the
+    // edge of the screen causes the game to freeze. We can present without
+    // boundaries tomorrow and we can figure out the issues later. -m
+    // Prevent the circle from moving offscreen:
+    /*if (circX + rad > width) {
+      circX + rad = width;
+    }
+    if (circX - rad < 0) {
+      circX - rad = 0;
+    }
+    if (circY + rad > height) {
+      circY + rad = height;
+    }
+    if (circY - rad < 0) {
+      circY - rad = 0;
+    }*/
 
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
@@ -67,20 +76,6 @@ class avatar {
         circX++;
       }
     }
-
-    // WASD controls:
-    /*if (up == true) {
-     circY--;
-     }
-     if (left == true) {
-     circX--;
-     }
-     if (down == true) {
-     circY++;
-     }
-     if (right == true) {
-     circX++;
-     }*/
   }
 }
 

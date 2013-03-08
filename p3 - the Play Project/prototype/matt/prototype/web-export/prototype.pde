@@ -6,6 +6,24 @@ key r1Lower;
 key f1Upper;
 key f1Lower;
 
+avatar player2;
+key r2Upper;
+key r2Lower;
+key f2Upper;
+key f2Lower;
+
+avatar player3;
+key r3Upper;
+key r3Lower;
+key f3Upper;
+key f3Lower;
+
+avatar player4;
+key r4Upper;
+key r4Lower;
+key f4Upper;
+key f4Lower;
+
 void setup() {
   size(1024, 768);
   smooth();
@@ -14,19 +32,47 @@ void setup() {
   frameRate(60);
 
   player1 = new avatar();
-  r1Upper = 'W';
-  r1Lower = 'w';
-  f1Upper = 'Q';
-  f1Lower = 'q';
+  r1Upper = 'W'; // player 1's key to rotate (uppercase).
+  r1Lower = 'w'; // player 1's key to rotate (lowercase).
+  f1Upper = 'Q'; // player 1's key to fire (uppercase).
+  f1Lower = 'q'; // player 1's key to fire (lowercase).
+
+  player2 = new avatar();
+  r2Upper = 'P';
+  r2Lower = 'p';
+  f2Upper = 'O';
+  f2Lower = 'o';
+
+  player3 = new avatar();
+  r3Upper = 'V';
+  r3Lower = 'v';
+  f3Upper = 'C';
+  f3Lower = 'c';
+
+  player4 = new avatar();
+  r4Upper = 'M';
+  r4Lower = 'm';
+  f4Upper = 'N';
+  f4Lower = 'n';
 
   player1.prep();
+  player2.prep();
+  player3.prep();
+  player4.prep();
 }
 
 void draw() {
   background(255);
 
   player1.display();
+  player2.display();
+  player3.display();
+  player4.display();
+
   player1.update();
+  player2.update();
+  player3.update();
+  player4.update();
 }
 
 void keyPressed() {
@@ -40,19 +86,32 @@ void keyPressed() {
     player1.fire = true;
     break;
 
-    // WASD controls:
-    /*case 'w':
-     up = true;
-     break;
-     case 'a':
-     left = true;
-     break;
-     case 's':
-     down = true;
-     break;
-     case 'd':
-     right = true;
-     break;*/
+  case r2Upper:
+  case r2Lower:
+    player2.rotate = true;
+    break;
+  case f2Upper:
+  case f2Lower:
+    player2.fire = true;
+    break;
+
+  case r3Upper:
+  case r3Lower:
+    player3.rotate = true;
+    break;
+  case f3Upper:
+  case f3Lower:
+    player3.fire = true;
+    break;
+
+  case r4Upper:
+  case r4Lower:
+    player4.rotate = true;
+    break;
+  case f4Upper:
+  case f4Lower:
+    player4.fire = true;
+    break;
   }
 }
 
@@ -67,19 +126,32 @@ void keyReleased() {
     player1.fire = false;
     break;
 
-    // WASD controls:
-    /*case 'w':
-     up = false;
-     break;
-     case 'a':
-     left = false;
-     break;
-     case 's':
-     down = false;
-     break;
-     case 'd':
-     right = false;
-     break;*/
+  case r2Upper:
+  case r2Lower:
+    player2.rotate = false;
+    break;
+  case f2Upper:
+  case f2Lower:
+    player2.fire = false;
+    break;
+
+  case r3Upper:
+  case r3Lower:
+    player3.rotate = false;
+    break;
+  case f3Upper:
+  case f3Lower:
+    player3.fire = false;
+    break;
+
+  case r4Upper:
+  case r4Lower:
+    player4.rotate = false;
+    break;
+  case f4Upper:
+  case f4Lower:
+    player4.fire = false;
+    break;
   }
 }
 
@@ -87,30 +159,23 @@ void keyReleased() {
 
 class avatar {
 
-  int angle;
   float circX;
   float circY;
+  int rad;
+  int angle;
   boolean rotate;
   boolean fire;
-  int rotateKey;
-  //string fireKey;
-
-  // WASD controls:
-  /*boolean up;
-   boolean left;
-   boolean down;
-   boolean right;*/
 
   void prep() {
     circX = width/2;
     circY = height/2;
+    rad = 50;
     angle = 0;
-    //rotateKey = ;
-    //fireKey = 'q';
   }
 
   void display() {
-    ellipse(circX, circY, 100, 100);
+    ellipseMode(RADIUS);
+    ellipse(circX, circY, rad, rad);
 
     pushMatrix();
     translate(circX, circY); // Move the origin to the center of the ellipse.
@@ -120,7 +185,23 @@ class avatar {
   }
 
   void update() {
-
+    
+    // I commented this out because for some reason colliding with the
+    // edge of the screen causes the game to freeze. We can present without
+    // boundaries tomorrow and we can figure out the issues later. -m
+    // Prevent the circle from moving offscreen:
+    /*if (circX + rad > width) {
+      circX + rad = width;
+    }
+    if (circX - rad < 0) {
+      circX - rad = 0;
+    }
+    if (circY + rad > height) {
+      circY + rad = height;
+    }
+    if (circY - rad < 0) {
+      circY - rad = 0;
+    }*/
 
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
@@ -152,20 +233,6 @@ class avatar {
         circX++;
       }
     }
-
-    // WASD controls:
-    /*if (up == true) {
-     circY--;
-     }
-     if (left == true) {
-     circX--;
-     }
-     if (down == true) {
-     circY++;
-     }
-     if (right == true) {
-     circX++;
-     }*/
   }
 }
 
