@@ -1,51 +1,48 @@
 // This is the player-character class.
 
 class avatar {
-
+  PVector circPos;
+  int rad;
   int angle;
-  float circX;
-  float circY;
   boolean rotate;
   boolean fire;
+  color myColor;
   
-  //
-  int healthMeter;
-  int playerNumber;
-
-  // WASD controls:
-  /*boolean up;
-   boolean left;
-   boolean down;
-   boolean right;*/
-
-  void prep() {
-    circX = width/2;
-    circY = height/2;
-    angle = 0;
-    healthMeter = 100;
-    //
-    playerNumber=1;
+  avatar(PVector _loc, color colorMe) {
+    circPos= _loc;
+    rad = 50;
+    angle =0;
+    myColor = colorMe;
   }
 
   void display() {
     noFill();
-    ellipse(circX, circY, 100, 100);
+    stroke(myColor);
+    ellipseMode(RADIUS);
+    ellipse(circPos.x, circPos.y, rad, rad);
 
     pushMatrix();
-    translate(circX, circY); // Move the origin to the center of the ellipse.
+    translate(circPos.x, circPos.y); // Move the origin to the center of the ellipse.
     rectMode(CENTER);
     rect(sin(angle)*50, cos(angle)*50, 50, 50); // Draw the rect on the circum.
     popMatrix(); // Revert to the regular coordinate system.
-    
-    //
-    if(playerNumber == 1){
-      fill(0);
-      rectMode(CORNER);
-      rect(25,25, healthMeter,20); 
-    }
   }
 
   void update() {
+    
+    if (circPos.x + rad > width) {
+      circPos.x = width - rad;
+    }
+    if (circPos.x - rad < 0) {
+      circPos.x = 0 + rad;
+    }
+    if (circPos.y + rad > height) {
+      circPos.y = height - rad;
+    }
+    if (circPos.y - rad < 0) {
+      circPos.y = 0 + rad;
+    }
+
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
     if (rotate == true) {
@@ -60,36 +57,22 @@ class avatar {
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
       if (angle <= PI/2) { // Lower-right of the circle.
-        circY--;
-        circX--;
+        circPos.y--; 
+        circPos.x--;
       }
       else if (angle >= PI/2 && angle < PI) { // Upper-right of the circle.
-        circY++;
-        circX--;
+        circPos.y++;
+        circPos.x--;
       }
       else if (angle >= PI && angle < 3*PI/2) { // Upper-left of the circle.
-        circY++;
-        circX++;
+        circPos.y++;
+        circPos.x++;
       }
       else if (angle >= 3*PI/2 && angle < 2*PI) { // Lower-left of the circle.
-        circY--;
-        circX++;
+        circPos.y--;
+        circPos.x++;
       }
     }
-
-    // WASD controls:
-    /*if (up == true) {
-     circY--;
-     }
-     if (left == true) {
-     circX--;
-     }
-     if (down == true) {
-     circY++;
-     }
-     if (right == true) {
-     circX++;
-     }*/
   }
 }
 
