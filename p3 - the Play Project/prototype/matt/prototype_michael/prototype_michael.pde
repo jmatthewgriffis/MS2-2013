@@ -27,13 +27,17 @@ key r3LowerB;
 key f3Upper;
 key f3Lower;
 
+// There is some weirdness with certain buttons not registering simultaneous
+// presses. It may have something to do with the keyboard design; I don't know.
+// In any case, to get controls that work for everyone at the same time, I'm
+// going to employ the arrow keys, which requires keyCode rather than key.
 avatar player4;
-key r4UpperA;
-key r4LowerA;
-key r4UpperB;
-key r4LowerB;
-key f4Upper;
-key f4Lower;
+keyCode r4UpperA;
+//keyCode r4LowerA;
+keyCode r4UpperB;
+//keyCode r4LowerB;
+keyCode f4Upper;
+//keyCode f4Lower;
 
 enemy enemy1;
 
@@ -41,7 +45,7 @@ enemy enemy1;
 
 void setup() {
   size(1024, 768);
-  stageID = 0;
+  stageID = 1;
   titlescreen = new titleScreen();
 
   player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0));
@@ -61,20 +65,20 @@ void setup() {
   f2Lower = 'o';
 
   player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255));
-  r3UpperA = 'Z';
-  r3LowerA = 'z';
-  r3UpperB = 'C';
-  r3LowerB = 'c';
-  f3Upper = 'X';
-  f3Lower = 'x';
+  r3UpperA = 'V';
+  r3LowerA = 'v';
+  r3UpperB = 'N';
+  r3LowerB = 'n';
+  f3Upper = 'B';
+  f3Lower = 'b';
 
   player4 = new avatar(new PVector(width-100, height-100), color(0, 0, 0));
-  r4UpperA = 'M';
-  r4LowerA = 'm';
-  r4UpperB = '>';
-  r4LowerB = '.';
-  f4Upper = '<';
-  f4Lower = ',';
+  r4UpperA = LEFT;
+  //r4LowerA = LEFT;
+  r4UpperB = RIGHT;
+  //r4LowerB = RIGHT;
+  f4Upper = DOWN;
+  //f4Lower = DOWN;
 
   enemy1 = new enemy(new PVector(400, 600), new PVector(2, 1), 100);
 }
@@ -107,114 +111,124 @@ void draw() {
   }
 }
 void keyPressed() {
-  switch(key) {
-  case r1UpperA:
-  case r1LowerA:
-    player1.rotateCCwise = true;
-    break;
-  case r1UpperB:
-  case r1LowerB:
-    player1.rotateCwise = true;
-    break;
-  case f1Upper:
-  case f1Lower:
-    player1.fire = true;
-    break;
+  if (key == CODED) {
+    switch(keyCode) {
+    case r4UpperA:
+      //case r4LowerA:
+      player4.rotateCCwise = true;
+      break;
+    case r4UpperB:
+      //case r4LowerB:
+      player4.rotateCwise = true;
+      break;
+    case f4Upper:
+      //case f4Lower:
+      player4.fire = true;
+      break;
+    }
+  }
+  else {
+    switch(key) {
+    case r1UpperA:
+    case r1LowerA:
+      player1.rotateCCwise = true;
+      break;
+    case r1UpperB:
+    case r1LowerB:
+      player1.rotateCwise = true;
+      break;
+    case f1Upper:
+    case f1Lower:
+      player1.fire = true;
+      break;
 
-  case r2UpperA:
-  case r2LowerA:
-    player2.rotateCCwise = true;
-    break;
-  case r2UpperB:
-  case r2LowerB:
-    player2.rotateCwise = true;
-    break;
-  case f2Upper:
-  case f2Lower:
-    player2.fire = true;
-    break;
+    case r2UpperA:
+    case r2LowerA:
+      player2.rotateCCwise = true;
+      break;
+    case r2UpperB:
+    case r2LowerB:
+      player2.rotateCwise = true;
+      break;
+    case f2Upper:
+    case f2Lower:
+      player2.fire = true;
+      break;
 
-  case r3UpperA:
-  case r3LowerA:
-    player3.rotateCCwise = true;
-    break;
-  case r3UpperB:
-  case r3LowerB:
-    player3.rotateCwise = true;
-    break;
-  case f3Upper:
-  case f3Lower:
-    player3.fire = true;
-    break;
-
-  case r4UpperA:
-  case r4LowerA:
-    player4.rotateCCwise = true;
-    break;
-  case r4UpperB:
-  case r4LowerB:
-    player4.rotateCwise = true;
-    break;
-  case f4Upper:
-  case f4Lower:
-    player4.fire = true;
-    break;
+    case r3UpperA:
+    case r3LowerA:
+      player3.rotateCCwise = true;
+      break;
+    case r3UpperB:
+    case r3LowerB:
+      player3.rotateCwise = true;
+      break;
+    case f3Upper:
+    case f3Lower:
+      player3.fire = true;
+      break;
+    }
   }
 }
 
 void keyReleased() {
-  switch(key) {
-  case r1UpperA:
-  case r1LowerA:
-    player1.rotateCCwise = false;
-    break;
-  case r1UpperB:
-  case r1LowerB:
-    player1.rotateCwise = false;
-    break;
-  case f1Upper:
-  case f1Lower:
-    player1.fire = false;
-    break;
+  if (key == CODED) {
+    switch(keyCode) {
+    case r4UpperA:
+      //case r4LowerA:
+      player4.rotateCCwise = false;
+      break;
+    case r4UpperB:
+      //case r4LowerB:
+      player4.rotateCwise = false;
+      break;
+    case f4Upper:
+      //case f4Lower:
+      player4.fire = false;
+      break;
+    }
+  }
+  else {
+    switch(key) {
+    case r1UpperA:
+    case r1LowerA:
+      player1.rotateCCwise = false;
+      break;
+    case r1UpperB:
+    case r1LowerB:
+      player1.rotateCwise = false;
+      break;
+    case f1Upper:
+    case f1Lower:
+      player1.fire = false;
+      break;
 
-  case r2UpperA:
-  case r2LowerA:
-    player2.rotateCCwise = false;
-    break;
-  case r2UpperB:
-  case r2LowerB:
-    player2.rotateCwise = false;
-    break;
-  case f2Upper:
-  case f2Lower:
-    player2.fire = false;
-    break;
+    case r2UpperA:
+    case r2LowerA:
+      player2.rotateCCwise = false;
+      break;
+    case r2UpperB:
+    case r2LowerB:
+      player2.rotateCwise = false;
+      break;
+    case f2Upper:
+    case f2Lower:
+      player2.fire = false;
+      break;
 
-  case r3UpperA:
-  case r3LowerA:
-    player3.rotateCCwise = false;
-    break;
-  case r3UpperB:
-  case r3LowerB:
-    player3.rotateCwise = false;
-    break;
-  case f3Upper:
-  case f3Lower:
-    player3.fire = false;
-    break;
-
-  case r4UpperA:
-  case r4LowerA:
-    player4.rotateCCwise = false;
-    break;
-  case r4UpperB:
-  case r4LowerB:
-    player4.rotateCwise = false;
-    break;
-  case f4Upper:
-  case f4Lower:
-    player4.fire = false;
-    break;
+    case r3UpperA:
+    case r3LowerA:
+      player3.rotateCCwise = false;
+      break;
+    case r3UpperB:
+    case r3LowerB:
+      player3.rotateCwise = false;
+      break;
+    case f3Upper:
+    case f3Lower:
+      player3.fire = false;
+      break;
+    }
   }
 }
 
