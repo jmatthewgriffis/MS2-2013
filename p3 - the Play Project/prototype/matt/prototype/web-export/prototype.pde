@@ -21,14 +21,14 @@ void draw() {
   player1.update();
 }
 
-void keyPressed() {
+/*void keyPressed() {
   switch(key) {
   case 'q':
     player1.rotate = true;
     break;
   case 'w':
     player1.fire = true;
-    break;
+    break;*/
 
     // WASD controls:
     /*case 'w':
@@ -43,17 +43,17 @@ void keyPressed() {
      case 'd':
      right = true;
      break;*/
-  }
-}
+  //}
+//}
 
-void keyReleased() {
+/*void keyReleased() {
   switch(key) {
   case 'q':
     player1.rotate = false;
     break;
   case 'w':
     player1.fire = false;
-    break;
+    break;*/
 
     // WASD controls:
     /*case 'w':
@@ -68,8 +68,8 @@ void keyReleased() {
      case 'd':
      right = false;
      break;*/
-  }
-}
+  //}
+//}
 
 // This is the player-character class.
 
@@ -93,7 +93,7 @@ class avatar {
     circX = width/2;
     circY = height/2;
     angle = 0;
-    rotateKey = 2;
+    //rotateKey = ;
     //fireKey = 'q';
   }
 
@@ -108,6 +108,8 @@ class avatar {
   }
 
   void update() {
+
+
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
     if (rotate == true) {
@@ -152,7 +154,110 @@ class avatar {
      if (right == true) {
      circX++;
      }*/
-  }
+
+    if (keyPressed) {
+      if (key == 'q') {
+        rotate = true;
+      }
+      if (key == 'w') {
+        fire = true;
+      }
+      /*if (key == 'q' && key != 'w') {
+        rotate = true;
+        fire = false;
+      }
+      if (key != 'q' && key == 'w') {
+        rotate = false;
+        fire = true;
+      }*/
+      /*if (key == 'w') {
+        fire = true;
+      }*/
+    }
+    
+    if (rotate == true) {
+      if (keyPressed == false) {
+        if (key == 'q') {
+          rotate = false;
+        }
+        /*else {
+          rotate = false;
+        }*/
+      }
+    }
+    
+    if (fire == true) {
+      if (keyPressed == false) {
+        if (key == 'w') {
+          fire = false;
+        }
+        /*else {
+          rotate = false;
+        }*/
+      }
+    }
+    
+    /*if (keyReleased) {
+      if (key == 'q') {
+        rotate = false;
+      }
+    }*/
+    /*if (keyPressed == false) {
+      rotate = false;
+      fire = false;
+    }*/
+
+    /*if (keyPressed(key = 'g') == false) {
+        rotate = false;
+      }
+      
+      if (keyPressed(key = 'w') == false) {
+        fire = false;
+      }*/
+      /*if (keyPressed == false && key == 'w') {
+        fire = false;
+      }*/
+
+      // WASD controls:
+      /*case 'w':
+       up = true;
+       break;
+       case 'a':
+       left = true;
+       break;
+       case 's':
+       down = true;
+       break;
+       case 'd':
+       right = true;
+       break;*/
+    }
+  
+
+  /*void keyReleased() {
+   switch(key) {
+   case 'q':
+   player1.rotate = false;
+   break;
+   case 'w':
+   player1.fire = false;
+   break;*/
+
+  // WASD controls:
+  /*case 'w':
+   up = false;
+   break;
+   case 'a':
+   left = false;
+   break;
+   case 's':
+   down = false;
+   break;
+   case 'd':
+   right = false;
+   break;*/
+  //}
+  //}
 }
 
 

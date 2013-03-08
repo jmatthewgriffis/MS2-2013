@@ -21,14 +21,14 @@ void draw() {
   player1.update();
 }
 
-void keyPressed() {
+/*void keyPressed() {
   switch(key) {
   case 'q':
     player1.rotate = true;
     break;
   case 'w':
     player1.fire = true;
-    break;
+    break;*/
 
     // WASD controls:
     /*case 'w':
@@ -43,17 +43,17 @@ void keyPressed() {
      case 'd':
      right = true;
      break;*/
-  }
-}
+  //}
+//}
 
-void keyReleased() {
+/*void keyReleased() {
   switch(key) {
   case 'q':
     player1.rotate = false;
     break;
   case 'w':
     player1.fire = false;
-    break;
+    break;*/
 
     // WASD controls:
     /*case 'w':
@@ -68,6 +68,6 @@ void keyReleased() {
      case 'd':
      right = false;
      break;*/
-  }
-}
+  //}
+//}
 
