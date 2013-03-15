@@ -11,15 +11,17 @@ class avatar {
   color myColor;
   float health;
   PImage spaceShip;
+  PImage propeller;
 
-  avatar(PVector _loc, color colorMe) {
+  avatar(PVector _loc, color colorMe, PImage _spaceShip) {
     circPos= _loc;
     rad = 50;
     angle = 0;
     myColor = colorMe;
     angleInc = 1/30;
     health=100;
-   spaceShip = loadImage("avatar1.png");
+   spaceShip = _spaceShip;
+   propeller = loadImage("propeller.png");
   }
 
   void display() {
@@ -32,10 +34,12 @@ class avatar {
     pushMatrix();
     translate(circPos.x, circPos.y); // Move the origin to the center of the ellipse.
     rectMode(CENTER);
-    rect(sin(angle)*50, cos(angle)*50, 50, 50); // Draw the rect on the circum.
-    popMatrix(); // Revert to the regular coordinate system.
+    noStroke();
     imageMode(CENTER);
-    image(spaceShip, circPos.x, circPos.y);
+    rect(sin(angle)*50, cos(angle)*50, 50, 50); // Draw the rect on the circum.
+    image(propeller,sin(angle)*50, cos(angle)*50);
+    popMatrix(); // Revert to the regular coordinate system.    
+    image(spaceShip, circPos.x, circPos.y);//Draws the Spaceship
     imageMode(CORNER);
   }
 

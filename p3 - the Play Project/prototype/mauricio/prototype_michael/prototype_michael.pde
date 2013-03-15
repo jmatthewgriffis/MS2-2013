@@ -58,7 +58,7 @@ void setup() {
   mapScreen = loadImage("background.png");
 
 
-  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0));
+  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0), loadImage("avatar1.png"));
   r1UpperA = 'Q'; // player 1's key to rotate counter-clockwise (uppercase).
   r1LowerA = 'q'; // player 1's key to rotate counter-clockwise (lowercase).
   r1UpperB = 'E'; // player 1's key to rotate clockwise (uppercase).
@@ -66,7 +66,7 @@ void setup() {
   f1Upper = 'W'; // player 1's key to fire (uppercase).
   f1Lower = 'w'; // player 1's key to fire (lowercase).
 
-  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0));
+  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0), loadImage("avatar2.png"));
   r2UpperA = 'I';
   r2LowerA = 'i';
   r2UpperB = 'P';
@@ -74,7 +74,7 @@ void setup() {
   f2Upper = 'O';
   f2Lower = 'o';
 
-  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255));
+  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255), loadImage("avatar1.png"));
   r3UpperA = 'V';
   r3LowerA = 'v';
   r3UpperB = 'N';
@@ -82,7 +82,7 @@ void setup() {
   f3Upper = 'B';
   f3Lower = 'b';
 
-  player4 = new avatar(new PVector(width-100, height-100), color(0, 0, 0));
+  player4 = new avatar(new PVector(width-100, height-100), color(0, 0, 0), loadImage("avatar1.png"));
   r4UpperA = LEFT;
   //r4LowerA = LEFT;
   r4UpperB = RIGHT;
@@ -326,4 +326,5 @@ void keyReleased() {
     }
   }
 }
+
 

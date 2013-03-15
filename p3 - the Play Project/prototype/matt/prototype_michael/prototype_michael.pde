@@ -3,7 +3,7 @@
 int stageID;
 titleScreen titlescreen;
 
-int masterSpeed;
+float masterSpeed;
 
 avatar player1;
 key r1UpperA;
@@ -48,7 +48,7 @@ enemy enemy1;
 void setup() {
   size(1024, 768);
   stageID = 1;
-  masterSpeed = 3;
+  masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
 
   player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0), masterSpeed);
@@ -60,12 +60,12 @@ void setup() {
   f1Lower = 'w'; // player 1's key to fire (lowercase).
 
   player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0), masterSpeed);
-  r2UpperA = 'I';
-  r2LowerA = 'i';
-  r2UpperB = 'P';
-  r2LowerB = 'p';
-  f2Upper = 'O';
-  f2Lower = 'o';
+  r2UpperA = 'J';
+  r2LowerA = 'j';
+  r2UpperB = 'L';
+  r2LowerB = 'l';
+  f2Upper = 'K';
+  f2Lower = 'k';
 
   player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255), masterSpeed);
   r3UpperA = 'V';
@@ -114,6 +114,7 @@ void draw() {
   }
   
   //println(player1.notAngled);
+  //println("addtox = " + player1.addToX + " addtoy = " + player1.addToY);
 }
 void keyPressed() {
   if (key == CODED) {

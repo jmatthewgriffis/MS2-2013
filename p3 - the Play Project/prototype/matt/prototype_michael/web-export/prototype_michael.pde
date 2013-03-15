@@ -3,7 +3,7 @@
 int stageID;
 titleScreen titlescreen;
 
-int masterSpeed;
+float masterSpeed;
 
 avatar player1;
 key r1UpperA;
@@ -48,7 +48,7 @@ enemy enemy1;
 void setup() {
   size(1024, 768);
   stageID = 1;
-  masterSpeed = 3;
+  masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
 
   player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0), masterSpeed);
@@ -60,12 +60,12 @@ void setup() {
   f1Lower = 'w'; // player 1's key to fire (lowercase).
 
   player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0), masterSpeed);
-  r2UpperA = 'I';
-  r2LowerA = 'i';
-  r2UpperB = 'P';
-  r2LowerB = 'p';
-  f2Upper = 'O';
-  f2Lower = 'o';
+  r2UpperA = 'J';
+  r2LowerA = 'j';
+  r2UpperB = 'L';
+  r2LowerB = 'l';
+  f2Upper = 'K';
+  f2Lower = 'k';
 
   player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255), masterSpeed);
   r3UpperA = 'V';
@@ -114,6 +114,7 @@ void draw() {
   }
   
   //println(player1.notAngled);
+  //println("addtox = " + player1.addToX + " addtoy = " + player1.addToY);
 }
 void keyPressed() {
   if (key == CODED) {
@@ -249,10 +250,16 @@ class avatar {
   boolean fire;
   color myColor;
   int inc;
-  int velocity;
+  float velocity;
+  float storeBaseSpeed;
   boolean notAngled;
+  float spdModifer;
+  boolean addToSpd;
+  //float addToY;
+  //float addToX;
+  //float reduceMomentum;
 
-  avatar(PVector _loc, color colorMe, int speed) {
+  avatar(PVector _loc, color colorMe, float speed) {
     circPos= _loc;
     rad = 50;
     angle = 0;
@@ -260,7 +267,12 @@ class avatar {
     angleInc = 1/15; // Controls the speed of rotation. Bigger means faster.
     inc = 15; // How much latitude to control direction of movement.
     notAngled = false;
-    velocity = speed;
+    storeBaseSpeed = speed;
+    velocity = storeBaseSpeed;
+    spdModifer = 1;
+    //addToY = 0;
+    //addToX = 0;
+    //reduceMomentum = 0.7;
   }
 
   void display() {
@@ -277,6 +289,8 @@ class avatar {
   }
 
   void update() {
+
+    velocity = storeBaseSpeed * spdModifer;
 
     if (circPos.x + rad > width) {
       circPos.x = width - rad;
@@ -317,7 +331,19 @@ class avatar {
       notAngled = false;
     }
 
+    if (addToSpd == true) {
+      if (velocity <= 4 * storeBaseSpeed) {
+        spdModifer += (0.25 * 1/60);
+      }
+    }
+
+    else {
+      spdModifer = 0.75;
+    }
+
     if (fire == true) {
+      addToSpd = true;
+
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
 
@@ -325,44 +351,77 @@ class avatar {
       if (angle < (PI/inc) || angle > (PI*2)-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.y -= velocity;
+        //addToY--;
       }
 
       // Move straight down:
       if (angle < PI+(PI/inc) && angle > PI-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.y += velocity;
+        //addToY++;
       }
 
       // Move straight left:
       if (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.x -= velocity;
+        //addToX--;
       }
 
       // Move straight right:
       if (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.x += velocity;
+        //addToX++;
       }
 
       if (notAngled == false) {
         if (angle < PI/2) { // Lower-right of the circle.
           circPos.y -= velocity; 
           circPos.x -= velocity;
+          //addToY--;
+          //addToX--;
         }
         else if (angle >= PI/2 && angle < PI) { // Upper-right of the circle.
           circPos.y += velocity;
           circPos.x -= velocity;
+          //addToY++;
+          //addToX--;
         }
         else if (angle >= PI && angle < 3*PI/2) { // Upper-left of the circle.
           circPos.y += velocity;
           circPos.x += velocity;
+          //addToY++;
+          //addToX++;
         }
         else if (angle >= 3*PI/2 && angle < 2*PI) { // Lower-left of the circle.
           circPos.y -= velocity;
           circPos.x += velocity;
+          //addToY--;
+          //addToX++;
         }
       }
+    }
+    else {
+      addToSpd = false;
+      //circPos.y += addToY/15;
+      //circPos.x += addToX/15;
+
+      /*if (addToY != 0) {
+        addToY *= reduceMomentum;
+      }
+
+      if (addToY > -1 && addToY < 1) {
+        addToY = 0;
+      }
+
+      if (addToX != 0) {
+        addToX *= reduceMomentum;
+      }
+
+      if (addToX > -1 && addToX < 1) {
+        addToX = 0;
+      }*/
     }
   }
 }

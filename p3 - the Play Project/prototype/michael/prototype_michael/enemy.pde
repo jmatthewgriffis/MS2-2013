@@ -23,24 +23,24 @@ class enemy {
     d3 = loc.dist(player3.circPos);
     d4 = loc.dist(player4.circPos);
 
-if(attack){
-    if (d1 < d2 && d1 < d3 && d1<d4) {
-      loc.x=lerp(loc.x, player1.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player1.circPos.y, 0.02);
+    if (attack) {
+      if (d1 < d2 && d1 < d3 && d1<d4) {
+        loc.x=lerp(loc.x, player1.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player1.circPos.y, 0.02);
+      }
+      if (d2 < d1 && d2 < d3 && d2<d4) {
+        loc.x=lerp(loc.x, player2.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player2.circPos.y, 0.02);
+      } 
+      if (d3 < d1 && d3 < d2 && d3<d4) {
+        loc.x=lerp(loc.x, player3.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player3.circPos.y, 0.02);
+      }
+      if (d4 < d1 && d4 < d2 && d4<d3) {
+        loc.x=lerp(loc.x, player4.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player4.circPos.y, 0.02);
+      }
     }
-    if (d2 < d1 && d2 < d3 && d2<d4) {
-      loc.x=lerp(loc.x, player2.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player2.circPos.y, 0.02);
-    } 
-    if (d3 < d1 && d3 < d2 && d3<d4) {
-      loc.x=lerp(loc.x, player3.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player3.circPos.y, 0.02);
-    }
-    if (d4 < d1 && d4 < d2 && d4<d3) {
-      loc.x=lerp(loc.x, player4.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player4.circPos.y, 0.02);
-    }
-}
 
     //bounce off walls
     if (loc.x>1024) vel.x=vel.x*-1;
@@ -50,6 +50,10 @@ if(attack){
 
 
     loc.add(vel);
+    if (health<1) {
+      health=0;
+      stageID=3;
+    }
   }
 }
 

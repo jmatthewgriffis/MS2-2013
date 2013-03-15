@@ -4,6 +4,8 @@ int stageID;
 titleScreen titlescreen;
 PImage overScreen;
 PImage mapScreen;
+PImage winScreen;
+
 
 avatar player1;
 key r1UpperA;
@@ -12,6 +14,7 @@ key r1UpperB;
 key r1LowerB;
 key f1Upper;
 key f1Lower;
+int shotCount1;
 
 avatar player2;
 key r2UpperA;
@@ -20,6 +23,8 @@ key r2UpperB;
 key r2LowerB;
 key f2Upper;
 key f2Lower;
+int shotCount2;
+
 
 avatar player3;
 key r3UpperA;
@@ -28,6 +33,8 @@ key r3UpperB;
 key r3LowerB;
 key f3Upper;
 key f3Lower;
+int shotCount3;
+
 
 // There is some weirdness with certain buttons not registering simultaneous
 // presses. It may have something to do with the keyboard design; I don't know.
@@ -40,6 +47,10 @@ keyCode r4UpperB;
 //keyCode r4LowerB;
 keyCode f4Upper;
 //keyCode f4Lower;
+int shotCount4;
+
+
+float shotTimer;
 
 //reset 
 key reset;
@@ -57,9 +68,12 @@ void setup() {
   titlescreen = new titleScreen();
   overScreen = loadImage("gameOver.png");
   mapScreen = loadImage("background.png");
+  winScreen = loadImage("win.png");
+
 
   bullets = new ArrayList();
 
+  shotTimer=0;
 
   player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0));
   r1UpperA = 'Q'; // player 1's key to rotate counter-clockwise (uppercase).
@@ -68,6 +82,7 @@ void setup() {
   r1LowerB = 'e'; // player 1's key to rotate clockwise (lowercase).
   f1Upper = 'W'; // player 1's key to fire (uppercase).
   f1Lower = 'w'; // player 1's key to fire (lowercase).
+  shotCount1 = 0;
 
   player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0));
   r2UpperA = 'I';
@@ -76,6 +91,8 @@ void setup() {
   r2LowerB = 'p';
   f2Upper = 'O';
   f2Lower = 'o';
+  shotCount2 = 0;
+
 
   player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255));
   r3UpperA = 'V';
@@ -84,14 +101,18 @@ void setup() {
   r3LowerB = 'n';
   f3Upper = 'B';
   f3Lower = 'b';
+  shotCount3 = 0;
 
-  player4 = new avatar(new PVector(width-100, height-100), color(0, 0, 0));
+
+  player4 = new avatar(new PVector(width-100, height-100), color(255, 255, 255));
   r4UpperA = LEFT;
   //r4LowerA = LEFT;
   r4UpperB = RIGHT;
   //r4LowerB = RIGHT;
   f4Upper = DOWN;
   //f4Lower = DOWN;
+  shotCount4 = 0;
+
 
   reset = 'r';
 
@@ -99,8 +120,8 @@ void setup() {
 }
 
 void draw() {
-  println(bullets.size());//just to make sure that the bullets offscreen are removed.
-
+  //  println(bullets.size());//just to make sure that the bullets offscreen are removed.
+  //  println(shotCount1);
   switch(stageID) {
   case 0:
     //draw title screen
@@ -109,6 +130,7 @@ void draw() {
   case 1:
     //draw gameplay
     background(255);
+    shotTimer++;
     image(mapScreen, 0, 0);
 
     if (player1.health>0) player1.display();
@@ -143,13 +165,11 @@ void draw() {
     rect(width-120, 20, player2.health, 5);
     fill(0, 0, 255);
     rect(20, height-15, player3.health, 5);
-    fill(0, 0, 0);
+    fill(255, 255, 255);
     rect(width-120, height-15, player4.health, 5);
     //draw enemy health rectangle
     fill(100);
-    rectMode(CENTER);
-    rect(width/2, 10, enemy1.health, 10);
-    rectMode(CORNER);
+    rect(164, 10, enemy1.health, 15);
 
     //draw bullets
 
@@ -159,6 +179,42 @@ void draw() {
         temp.update();  //display bullets
       }
     }
+
+    //add bullets
+    //player 1
+    if (shotCount1==2) {
+      bullet temp = new bullet(player1.circPos.x, player1.circPos.y, 2, 0); 
+      bullets.add(temp);  //adds new bullet to araylist
+      shotCount1=0;
+    }
+    //player 2
+    if (shotCount2==2) {
+      bullet temp = new bullet(player2.circPos.x, player2.circPos.y, 2, 0); 
+      bullets.add(temp);  //adds new bullet to araylist
+      shotCount2=0;
+    }    
+    //player 3
+    if (shotCount3==2) {
+      bullet temp = new bullet(player3.circPos.x, player3.circPos.y, 2, 0); 
+      bullets.add(temp);  //adds new bullet to araylist
+      shotCount3=0;
+    }    
+    //player 4
+    if (shotCount4==2) {
+      bullet temp = new bullet(player4.circPos.x, player4.circPos.y, 2, 0); 
+      bullets.add(temp);  //adds new bullet to araylist
+      shotCount4=0;
+    }
+
+    if (shotTimer>50) {  //makes it so you have to quickly tap thrust to fire bullet
+      shotCount1=0;
+      shotCount2=0;
+      shotCount3=0;
+      shotCount4=0;
+
+      shotTimer=0;
+    }
+
 
     // collision of avatars
 
@@ -210,6 +266,10 @@ void draw() {
   case 2:
     //draw game over screen
     image(overScreen, 0, 0);
+    break;
+  case 3:
+    //draw win screen
+    image(winScreen, 0, 0);
     break;
   }
 }
@@ -276,26 +336,19 @@ void keyPressed() {
       break;
     }
   }
-  
-   if (key == 'l') {
-//    if (shot==false) {   //to stop it from firing automatically while holding space bar. 
-      shot = true;
-      bullet temp = new bullet(player1.circPos.x, player1.circPos.y, 5*cos(PI/4), 5*sin(PI/4)); //creates new bullet. This version changes the velocity of the bullet to be diagonal (going up)
-      bullets.add(temp);  //adds new bullet to araylist
-
-/*
-      //Version 2 makes two bullets shoot out with diagonal movement...this adds the second bullet with a diagonal velocity
-      bullet temp2 = new bullet(hero.loc.x, hero.loc.y, 5*cos(-PI/4), 5*sin(-PI/4)); //creates new bullet  
-      bullets.add(temp2);  //adds new bullet to araylist
-
-      //third straight bullet
-      bullet temp3 = new bullet(hero.loc.x, hero.loc.y, 5, 0); //creates new bullet  
-      bullets.add(temp3);  //adds new bullet to araylist*/
-
-      //resource management problem... Array list grows a lot. Multiplies by three every time space is pressed.
-      // Once bullet goes off the screen it should delete itself
-//    }
-  }
+  /*
+  if (key == 'l') {
+   shot = true;
+   bullet temp = new bullet(player1.circPos.x, player1.circPos.y, 2, 0); 
+   bullets.add(temp);  //adds new bullet to araylist
+   }
+   
+   if (key == ']') {
+   shot = true;
+   bullet temp = new bullet(player2.circPos.x, player2.circPos.y, 2, 0); 
+   bullets.add(temp);  //adds new bullet to araylist
+   }
+   */
 }
 
 void keyReleased() {
@@ -312,6 +365,7 @@ void keyReleased() {
     case f4Upper:
       //case f4Lower:
       player4.fire = false;
+      shotCount4++;
       break;
     }
   }
@@ -328,6 +382,7 @@ void keyReleased() {
     case f1Upper:
     case f1Lower:
       player1.fire = false;
+      shotCount1++;
       break;
 
     case r2UpperA:
@@ -341,6 +396,7 @@ void keyReleased() {
     case f2Upper:
     case f2Lower:
       player2.fire = false;
+      shotCount2++;
       break;
 
     case r3UpperA:
@@ -354,6 +410,7 @@ void keyReleased() {
     case f3Upper:
     case f3Lower:
       player3.fire = false;
+      shotCount3++;
       break;
     }
   }
@@ -455,47 +512,42 @@ class avatar {
 }
 
 //this was added during class
-class bullet{
+class bullet {
   PVector pos;
   PVector vel;
-    
-  bullet(float _x, float _y, float _xsp, float _ysp){
-    pos = new PVector(_x,_y);
+
+  bullet(float _x, float _y, float _xsp, float _ysp) {
+    pos = new PVector(_x, _y);
     vel = new PVector(_xsp, _ysp);
   }
-  
-  void update(){
+
+  void update() {
     pos.add(vel);
-    
+
     //resource management (referenced in note at bottom of main class)
-    if (pos.x < 0 || pos.x>width || pos.y<0 || pos.y>height){
+    if (pos.x < 0 || pos.x>width || pos.y<0 || pos.y>height) {
       bullets.remove(this); //take this particular instance out of array list if the bullet goes off screen.
     }
-    
-  /*  //collision detection 
-    if(!lvlmng.enemies.isEmpty()){
-       for(int i=0; i<lvlmng.enemies.size(); i++){
-         enemy temp = lvlmng.enemies.get(i);
-         if(pos.dist(temp.pos)<80/2){
-           temp.die=true;
-           //lvlmng.enemies.remove(temp); //remove destroyed enemy. 
-           bullets.remove(this); //remove bullet so it doesn't go though the object it kills 
-         }
-       }
-    }*/
-    
+
+    //collision detection 
+    if (pos.dist(enemy1.loc)<enemy1.size) {
+      bullets.remove(this); //remove bullet so it doesn't go though the object it kills
+      enemy1.health=enemy1.health-100;
+    }
+
+
+
     pushMatrix();
     translate(pos.x, pos.y);   //sets the center of the spaceship at zero zero so bullets at zero zero will come out of spaceship
-//    rotate(atan2(vel.y,vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
+    //    rotate(atan2(vel.y,vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
     fill(255);
-    rect(0,0,5,2);
-    fill(255,0,0);
-    rect(-2,0,2,2);
+    rect(0, 0, 5, 2);
+    fill(255, 0, 0);
+    rect(-2, 0, 2, 2);
     popMatrix();
   }
 }
-  
-  
+
 class enemy {
   PVector loc;
   PVector vel; 
@@ -521,24 +573,24 @@ class enemy {
     d3 = loc.dist(player3.circPos);
     d4 = loc.dist(player4.circPos);
 
-if(attack){
-    if (d1 < d2 && d1 < d3 && d1<d4) {
-      loc.x=lerp(loc.x, player1.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player1.circPos.y, 0.02);
+    if (attack) {
+      if (d1 < d2 && d1 < d3 && d1<d4) {
+        loc.x=lerp(loc.x, player1.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player1.circPos.y, 0.02);
+      }
+      if (d2 < d1 && d2 < d3 && d2<d4) {
+        loc.x=lerp(loc.x, player2.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player2.circPos.y, 0.02);
+      } 
+      if (d3 < d1 && d3 < d2 && d3<d4) {
+        loc.x=lerp(loc.x, player3.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player3.circPos.y, 0.02);
+      }
+      if (d4 < d1 && d4 < d2 && d4<d3) {
+        loc.x=lerp(loc.x, player4.circPos.x, 0.02);    
+        loc.y=lerp(loc.y, player4.circPos.y, 0.02);
+      }
     }
-    if (d2 < d1 && d2 < d3 && d2<d4) {
-      loc.x=lerp(loc.x, player2.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player2.circPos.y, 0.02);
-    } 
-    if (d3 < d1 && d3 < d2 && d3<d4) {
-      loc.x=lerp(loc.x, player3.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player3.circPos.y, 0.02);
-    }
-    if (d4 < d1 && d4 < d2 && d4<d3) {
-      loc.x=lerp(loc.x, player4.circPos.x, 0.02);    
-      loc.y=lerp(loc.y, player4.circPos.y, 0.02);
-    }
-}
 
     //bounce off walls
     if (loc.x>1024) vel.x=vel.x*-1;
@@ -548,6 +600,10 @@ if(attack){
 
 
     loc.add(vel);
+    if (health<1) {
+      health=0;
+      stageID=3;
+    }
   }
 }
 
