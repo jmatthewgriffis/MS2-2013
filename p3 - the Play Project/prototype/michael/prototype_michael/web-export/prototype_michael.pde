@@ -6,6 +6,8 @@ PImage overScreen;
 PImage mapScreen;
 PImage winScreen;
 
+float masterSpeed;
+
 
 avatar player1;
 key r1UpperA;
@@ -65,6 +67,7 @@ ArrayList<bullet> bullets;
 void setup() {
   size(1024, 768);
   stageID = 1;
+  masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
   overScreen = loadImage("gameOver.png");
   mapScreen = loadImage("background.png");
@@ -75,7 +78,7 @@ void setup() {
 
   shotTimer=0;
 
-  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0));
+  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0), masterSpeed);
   r1UpperA = 'Q'; // player 1's key to rotate counter-clockwise (uppercase).
   r1LowerA = 'q'; // player 1's key to rotate counter-clockwise (lowercase).
   r1UpperB = 'E'; // player 1's key to rotate clockwise (uppercase).
@@ -84,17 +87,17 @@ void setup() {
   f1Lower = 'w'; // player 1's key to fire (lowercase).
   shotCount1 = 0;
 
-  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0));
-  r2UpperA = 'I';
-  r2LowerA = 'i';
-  r2UpperB = 'P';
-  r2LowerB = 'p';
-  f2Upper = 'O';
-  f2Lower = 'o';
+  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0), masterSpeed);
+  r2UpperA = 'J';
+  r2LowerA = 'j';
+  r2UpperB = 'L';
+  r2LowerB = 'l';
+  f2Upper = 'K';
+  f2Lower = 'k';
   shotCount2 = 0;
 
 
-  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255));
+  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255), masterSpeed);
   r3UpperA = 'V';
   r3LowerA = 'v';
   r3UpperB = 'N';
@@ -104,7 +107,7 @@ void setup() {
   shotCount3 = 0;
 
 
-  player4 = new avatar(new PVector(width-100, height-100), color(255, 255, 255));
+  player4 = new avatar(new PVector(width-100, height-100), color(255, 255, 255), masterSpeed);
   r4UpperA = LEFT;
   //r4LowerA = LEFT;
   r4UpperB = RIGHT;
@@ -427,15 +430,26 @@ class avatar {
   boolean rotateCCwise; // counter-clockwise.
   boolean fire;
   color myColor;
-  float health; 
+  float health;
+  int inc;
+  float velocity;
+  float storeBaseSpeed;
+  boolean notAngled;
+  float spdModifer;
+  boolean addToSpd; 
 
-  avatar(PVector _loc, color colorMe) {
+  avatar(PVector _loc, color colorMe, float speed) {
     circPos= _loc;
     rad = 50;
     angle = 0;
     myColor = colorMe;
-    angleInc = 1/30;
+    angleInc = 1/15; // Controls the speed of rotation. Bigger means faster.
     health=100;
+    inc = 15; // How much latitude to control direction of movement.
+    notAngled = false;
+    storeBaseSpeed = speed;
+    velocity = storeBaseSpeed;
+    spdModifer = 1;
   }
 
   void display() {
@@ -452,6 +466,8 @@ class avatar {
   }
 
   void update() {
+
+    velocity = storeBaseSpeed * spdModifer;
 
     if (circPos.x + rad > width) {
       circPos.x = width - rad;
@@ -482,25 +498,89 @@ class avatar {
       angle = 2*PI; // ...reset it to a full circle, which is the same.
     }
 
+    if ((angle < (PI/inc) || angle > (PI*2)-(PI/inc)) || 
+      (angle < PI+(PI/inc) && angle > PI-(PI/inc)) || 
+      (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) || 
+      (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc))) {
+      notAngled = true;
+    }
+    else {
+      notAngled = false;
+    }
+
+    if (addToSpd == true) {
+      if (velocity <= 4 * storeBaseSpeed) {
+        spdModifer += (0.25 * 1/60);
+      }
+    }
+
+    else {
+      spdModifer = 0.75;
+    }
+
     if (fire == true) {
+
+      addToSpd = true;
+
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
-      if (angle <= PI/2) { // Lower-right of the circle.
-        circPos.y--; 
-        circPos.x--;
+      // Move straight up:
+      if (angle < (PI/inc) || angle > (PI*2)-(PI/inc)) {
+        // Bottom of circle is zero, increases counter-clockwise.
+        circPos.y -= velocity;
+        //addToY--;
       }
-      else if (angle >= PI/2 && angle < PI) { // Upper-right of the circle.
-        circPos.y++;
-        circPos.x--;
+
+      // Move straight down:
+      if (angle < PI+(PI/inc) && angle > PI-(PI/inc)) {
+        // Bottom of circle is zero, increases counter-clockwise.
+        circPos.y += velocity;
+        //addToY++;
       }
-      else if (angle >= PI && angle < 3*PI/2) { // Upper-left of the circle.
-        circPos.y++;
-        circPos.x++;
+
+      // Move straight left:
+      if (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) {
+        // Bottom of circle is zero, increases counter-clockwise.
+        circPos.x -= velocity;
+        //addToX--;
       }
-      else if (angle >= 3*PI/2 && angle < 2*PI) { // Lower-left of the circle.
-        circPos.y--;
-        circPos.x++;
+
+      // Move straight right:
+      if (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc)) {
+        // Bottom of circle is zero, increases counter-clockwise.
+        circPos.x += velocity;
+        //addToX++;
       }
+
+      if (notAngled == false) {
+        if (angle < PI/2) { // Lower-right of the circle.
+          circPos.y -= velocity; 
+          circPos.x -= velocity;
+          //addToY--;
+          //addToX--;
+        }
+        else if (angle >= PI/2 && angle < PI) { // Upper-right of the circle.
+          circPos.y += velocity;
+          circPos.x -= velocity;
+          //addToY++;
+          //addToX--;
+        }
+        else if (angle >= PI && angle < 3*PI/2) { // Upper-left of the circle.
+          circPos.y += velocity;
+          circPos.x += velocity;
+          //addToY++;
+          //addToX++;
+        }
+        else if (angle >= 3*PI/2 && angle < 2*PI) { // Lower-left of the circle.
+          circPos.y -= velocity;
+          circPos.x += velocity;
+          //addToY--;
+          //addToX++;
+        }
+      }
+    }
+    else {
+      addToSpd = false;
     }
 
     if (health<1) {
@@ -524,7 +604,7 @@ class bullet {
   void update() {
     pos.add(vel);
 
-    //resource management (referenced in note at bottom of main class)
+    //resource management
     if (pos.x < 0 || pos.x>width || pos.y<0 || pos.y>height) {
       bullets.remove(this); //take this particular instance out of array list if the bullet goes off screen.
     }

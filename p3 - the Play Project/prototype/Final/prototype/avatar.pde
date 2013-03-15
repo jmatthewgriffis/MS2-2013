@@ -35,7 +35,7 @@ class avatar {
     spdModifer = 1;
     spaceShip = _spaceShip;
     propeller = loadImage("propeller.png");
-    bulletSpeed=2;
+    bulletSpeed=4;
     bulletVel= new PVector(0, 0);
   }
 

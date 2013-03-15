@@ -66,7 +66,7 @@ ArrayList<bullet> bullets;
 
 void setup() {
   size(1024, 768);
-  stageID = 1;
+  stageID = 0;
   masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
   overScreen = loadImage("gameOver.png");

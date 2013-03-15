@@ -6,6 +6,8 @@ PImage overScreen;
 PImage mapScreen;
 PImage winScreen;
 
+float masterSpeed;
+
 
 avatar player1;
 key r1UpperA;
@@ -65,6 +67,7 @@ ArrayList<bullet> bullets;
 void setup() {
   size(1024, 768);
   stageID = 1;
+  masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
   overScreen = loadImage("gameOver.png");
   mapScreen = loadImage("background.png");
@@ -75,7 +78,7 @@ void setup() {
 
   shotTimer=0;
 
-  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0));
+  player1 = new avatar(new PVector(0+100, 0+100), color(255, 0, 0), masterSpeed);
   r1UpperA = 'Q'; // player 1's key to rotate counter-clockwise (uppercase).
   r1LowerA = 'q'; // player 1's key to rotate counter-clockwise (lowercase).
   r1UpperB = 'E'; // player 1's key to rotate clockwise (uppercase).
@@ -84,17 +87,17 @@ void setup() {
   f1Lower = 'w'; // player 1's key to fire (lowercase).
   shotCount1 = 0;
 
-  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0));
-  r2UpperA = 'I';
-  r2LowerA = 'i';
-  r2UpperB = 'P';
-  r2LowerB = 'p';
-  f2Upper = 'O';
-  f2Lower = 'o';
+  player2 = new avatar(new PVector(width-100, 0+100), color(0, 255, 0), masterSpeed);
+  r2UpperA = 'J';
+  r2LowerA = 'j';
+  r2UpperB = 'L';
+  r2LowerB = 'l';
+  f2Upper = 'K';
+  f2Lower = 'k';
   shotCount2 = 0;
 
 
-  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255));
+  player3 = new avatar(new PVector(0+100, height-100), color(0, 0, 255), masterSpeed);
   r3UpperA = 'V';
   r3LowerA = 'v';
   r3UpperB = 'N';
@@ -104,7 +107,7 @@ void setup() {
   shotCount3 = 0;
 
 
-  player4 = new avatar(new PVector(width-100, height-100), color(255, 255, 255));
+  player4 = new avatar(new PVector(width-100, height-100), color(255, 255, 255), masterSpeed);
   r4UpperA = LEFT;
   //r4LowerA = LEFT;
   r4UpperB = RIGHT;
