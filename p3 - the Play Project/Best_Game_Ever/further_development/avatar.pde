@@ -9,43 +9,52 @@ class avatar {
   boolean rotateCCwise; // counter-clockwise.
   boolean fire;
   color myColor;
+  float health;
   int inc;
   float velocity;
   float storeBaseSpeed;
   boolean notAngled;
   float spdModifer;
-  boolean addToSpd;
-  //float addToY;
-  //float addToX;
-  //float reduceMomentum;
+  boolean addToSpd; 
+  PImage spaceShip;
+  PImage propeller;
+  PVector bulletVel;
+  float bulletSpeed;
 
-  avatar(PVector _loc, color colorMe, float speed) {
+  avatar(PVector _loc, color colorMe, float speed, PImage _spaceShip) {
     circPos= _loc;
     rad = 50;
     angle = 0;
     myColor = colorMe;
     angleInc = 1/15; // Controls the speed of rotation. Bigger means faster.
+    health=100;
     inc = 15; // How much latitude to control direction of movement.
     notAngled = false;
     storeBaseSpeed = speed;
     velocity = storeBaseSpeed;
     spdModifer = 1;
-    //addToY = 0;
-    //addToX = 0;
-    //reduceMomentum = 0.7;
+    spaceShip = _spaceShip;
+    propeller = loadImage("propeller.png");
+    bulletSpeed=4;
+    bulletVel= new PVector(0, 0);
   }
 
   void display() {
     noFill();
-    stroke(myColor);
+    stroke(0);
     ellipseMode(RADIUS);
     ellipse(circPos.x, circPos.y, rad, rad);
 
     pushMatrix();
     translate(circPos.x, circPos.y); // Move the origin to the center of the ellipse.
     rectMode(CENTER);
+    noStroke();
+    imageMode(CENTER);
     rect(sin(angle)*50, cos(angle)*50, 50, 50); // Draw the rect on the circum.
+    image(propeller, sin(angle)*50, cos(angle)*50);//propeller
     popMatrix(); // Revert to the regular coordinate system.
+    image(spaceShip, circPos.x, circPos.y);//Draws the Spaceship
+    imageMode(CORNER);
   }
 
   void update() {
@@ -102,15 +111,17 @@ class avatar {
     }
 
     if (fire == true) {
+
       addToSpd = true;
 
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
-
       // Move straight up:
       if (angle < (PI/inc) || angle > (PI*2)-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.y -= velocity;
+        bulletVel.y=-bulletSpeed;
+        bulletVel.x=0;
         //addToY--;
       }
 
@@ -118,6 +129,8 @@ class avatar {
       if (angle < PI+(PI/inc) && angle > PI-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.y += velocity;
+        bulletVel.y=bulletSpeed;
+        bulletVel.x=0;
         //addToY++;
       }
 
@@ -125,6 +138,8 @@ class avatar {
       if (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.x -= velocity;
+        bulletVel.y=0;
+        bulletVel.x=-bulletSpeed;
         //addToX--;
       }
 
@@ -132,6 +147,8 @@ class avatar {
       if (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
         circPos.x += velocity;
+        bulletVel.y=0;
+        bulletVel.x=bulletSpeed;
         //addToX++;
       }
 
@@ -139,24 +156,32 @@ class avatar {
         if (angle < PI/2) { // Lower-right of the circle.
           circPos.y -= velocity; 
           circPos.x -= velocity;
+          bulletVel.y=-bulletSpeed;
+          bulletVel.x=-bulletSpeed;
           //addToY--;
           //addToX--;
         }
         else if (angle >= PI/2 && angle < PI) { // Upper-right of the circle.
           circPos.y += velocity;
           circPos.x -= velocity;
+          bulletVel.y= bulletSpeed;
+          bulletVel.x= -bulletSpeed;
           //addToY++;
           //addToX--;
         }
         else if (angle >= PI && angle < 3*PI/2) { // Upper-left of the circle.
           circPos.y += velocity;
           circPos.x += velocity;
+          bulletVel.y= bulletSpeed;
+          bulletVel.x= bulletSpeed;
           //addToY++;
           //addToX++;
         }
         else if (angle >= 3*PI/2 && angle < 2*PI) { // Lower-left of the circle.
           circPos.y -= velocity;
           circPos.x += velocity;
+          bulletVel.y= -bulletSpeed;
+          bulletVel.x= bulletSpeed;
           //addToY--;
           //addToX++;
         }
@@ -164,24 +189,12 @@ class avatar {
     }
     else {
       addToSpd = false;
-      //circPos.y += addToY/15;
-      //circPos.x += addToX/15;
+    }
 
-      /*if (addToY != 0) {
-        addToY *= reduceMomentum;
-      }
-
-      if (addToY > -1 && addToY < 1) {
-        addToY = 0;
-      }
-
-      if (addToX != 0) {
-        addToX *= reduceMomentum;
-      }
-
-      if (addToX > -1 && addToX < 1) {
-        addToX = 0;
-      }*/
+    if (health<1) {
+      health=0;
+      circPos.y=-3000;
+      circPos.x=-3000;
     }
   }
 }
