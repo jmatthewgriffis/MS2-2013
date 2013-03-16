@@ -614,8 +614,8 @@ class avatar {
 
     if (health<1) {
       health=0;
-      circPos.y=-300;
-      circPos.x=-300;
+      circPos.y=-3000;
+      circPos.x=-3000;
     }
   }
 }
