@@ -26,7 +26,7 @@ class bullet {
 
     pushMatrix();
     translate(pos.x, pos.y);   //sets the center of the spaceship at zero zero so bullets at zero zero will come out of spaceship
-    rotate(atan2(vel.y,vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
+    rotate(atan2(vel.y, vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
     fill(255);
     rect(0, 0, 5, 2);
     fill(255, 0, 0);

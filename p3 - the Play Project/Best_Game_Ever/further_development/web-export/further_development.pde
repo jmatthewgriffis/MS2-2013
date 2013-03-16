@@ -1,12 +1,37 @@
-// Game by MMM Studios
+/*
+  
+ ***************************************************************************
+ * Space Odyssey                                                           *
+ * an m^3 Studios production                                               *
+ *                                                                         *
+ * Alternate title: Best Game Ever                                         *
+ *                                                                         *
+ * March 16, 2013                                                          *
+ *                                                                         *
+ * m^3 Studios is Mauricio Sanchez-Duque, Michael Kahane and Matt Griffis. *
+ *                                                                         *
+ * We made this game in two weeks for the Play project of our Major Studio *
+ * 2 class in the MFADT department of Parsons the New School for Design.   *
+ *                                                                         *
+ * Enjoy!                                                                  *
+ ***************************************************************************
+ 
+ // Classy formatting style above copied from the esteemed Jennifer Presto.
+ 
+ */
+
 
 int stageID;
 titleScreen titlescreen;
 PImage overScreen;
 PImage mapScreen;
 PImage winScreen;
-
 float masterSpeed;
+float shotTimer;
+key reset1; //reset
+key reset2; //reset
+boolean attack;
+float attackCounter;
 
 
 avatar player1;
@@ -38,10 +63,10 @@ key f3Lower;
 int shotCount3;
 
 
-// There is some weirdness with certain buttons not registering simultaneous
-// presses. It may have something to do with the keyboard design; I don't know.
-// In any case, to get controls that work for everyone at the same time, I'm
-// going to employ the arrow keys, which requires keyCode rather than key.
+/* There is some weirdness with certain buttons not registering simultaneous
+ presses. It may have something to do with the keyboard design; I don't know. In
+ any case, to get controls that work for everyone at the same time, I'm going to
+ employ the arrow keys, which requires keyCode rather than key. */
 avatar player4;
 keyCode r4UpperA;
 //keyCode r4LowerA;
@@ -52,26 +77,19 @@ keyCode f4Upper;
 int shotCount4;
 
 
-float shotTimer;
-
-//reset 
-key reset;
-
 enemy enemy1;
 
-boolean attack;
-float attackCounter;
 
 ArrayList<bullet> bullets;
 
 void setup() {
   size(1024, 768);
-  stageID = 0;
+  stageID = 0; // This controls which screen displays (i.e. level).
   masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
-  overScreen = loadImage("gameOver.png");
+  overScreen = loadImage("gameOverNew.png");
   mapScreen = loadImage("background.png");
-  winScreen = loadImage("win.png");
+  winScreen = loadImage("winNew.png");
 
 
   bullets = new ArrayList();
@@ -117,7 +135,8 @@ void setup() {
   shotCount4 = 0;
 
 
-  reset = 'r';
+  reset1 = '6';
+  reset2 = '^';
 
   enemy1 = new enemy(new PVector(400, 600), new PVector(2, 1), 100);
 }
@@ -334,7 +353,8 @@ void keyPressed() {
       player3.fire = true;
       break;
 
-    case reset:
+    case reset1:
+    case reset2:
       setup();
       break;
     }
@@ -443,17 +463,20 @@ class avatar {
   float bulletSpeed;
 
   avatar(PVector _loc, color colorMe, float speed, PImage _spaceShip) {
-    circPos= _loc;
-    rad = 50;
-    angle = 0;
+    circPos= _loc; // set the variable entered through the constructor equal to
+    // an external variable so we can use it elsewhere.
+    rad = 50; // size of avatar.
+    angle = 0; // Position of engine rect.
     myColor = colorMe;
     angleInc = 1/15; // Controls the speed of rotation. Bigger means faster.
     health=100;
     inc = 15; // How much latitude to control direction of movement.
-    notAngled = false;
-    storeBaseSpeed = speed;
-    velocity = storeBaseSpeed;
-    spdModifer = 1;
+    notAngled = false; // Control whether moving diagonally or not.
+    storeBaseSpeed = speed; // set the variable entered through the constructor equal to
+    // an external variable so we can use it elsewhere.
+    velocity = storeBaseSpeed; // We will use this extra variable to modify how quickly the
+    // avatar moves without changing the original value of base speed so we can reuse it.
+    spdModifer = 1; // This will modify speed over time when accelerating.
     spaceShip = _spaceShip;
     propeller = loadImage("propeller.png");
     bulletSpeed=4;
@@ -480,8 +503,12 @@ class avatar {
 
   void update() {
 
-    velocity = storeBaseSpeed * spdModifer;
+    velocity = storeBaseSpeed * spdModifer; // We use this to strictly control
+    // how fast the avatar moves. It goes faster with acceleration but reverts
+    // to the starting speed when the player lets off the gas. storeBaseSpeed
+    // stays the same; spdModifier changes, and with it, the velocity.
 
+    // Prevent the avatars from moving offscreen:
     if (circPos.x + rad > width) {
       circPos.x = width - rad;
     }
@@ -498,45 +525,48 @@ class avatar {
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
     if (rotateCCwise == true) {
-      angle += angleInc; // Change this to 1 for an interesting visual effect.
+      angle += angleInc; // Change the angleInc to 1 for an interesting visual effect.
     }
     if (rotateCwise == true) {
-      angle -= angleInc; // Change this to 1 for an interesting visual effect.
+      angle -= angleInc;
     }
 
     if (angle > 2*PI) { // If the angle gets bigger than a full circle...
       angle = 0; // ...reset it so it doesn't get too big.
     }
     if (angle < 0) { // If the angle gets negative...
-      angle = 2*PI; // ...reset it to a full circle, which is the same.
+      angle = 2*PI; // ...reset it to a full circle, which is the same as zero.
     }
 
+    // This ugly thing just says check if the engine is positioned for movement
+    // in one of the four cardinal directions.
     if ((angle < (PI/inc) || angle > (PI*2)-(PI/inc)) || 
       (angle < PI+(PI/inc) && angle > PI-(PI/inc)) || 
       (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) || 
       (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc))) {
-      notAngled = true;
+      notAngled = true; // In that case we don't have angled movement.
     }
     else {
-      notAngled = false;
+      notAngled = false; // Otherwise we do!
     }
 
     if (addToSpd == true) {
       if (velocity <= 4 * storeBaseSpeed) {
-        spdModifer += (0.25 * 1/60);
+        spdModifer += (0.25 * 1/60); // Here we change the velocity if accelerating.
       }
     }
 
     else {
-      spdModifer = 0.75;
+      spdModifer = 0.75; // And here we reset it when not accelerating.
     }
 
     if (fire == true) {
 
-      addToSpd = true;
+      addToSpd = true; // Fire is the same as accelerate, so we should pick up speed.
 
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
+
       // Move straight up:
       if (angle < (PI/inc) || angle > (PI*2)-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.
@@ -648,7 +678,7 @@ class bullet {
 
     pushMatrix();
     translate(pos.x, pos.y);   //sets the center of the spaceship at zero zero so bullets at zero zero will come out of spaceship
-    rotate(atan2(vel.y,vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
+    rotate(atan2(vel.y, vel.x)); //paramater y, x. This is to rotate the bullet based on the angle. 
     fill(255);
     rect(0, 0, 5, 2);
     fill(255, 0, 0);
@@ -724,7 +754,7 @@ class enemy {
 class titleScreen {
   PImage screen;
   titleScreen() {
-    screen = loadImage("titleScreen.png");
+    screen = loadImage("titleScreenNew.png");
   }
   void update() {
     //display title screen image

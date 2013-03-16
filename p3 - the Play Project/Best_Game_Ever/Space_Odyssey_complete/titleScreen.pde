@@ -1,7 +1,7 @@
 class titleScreen {
   PImage screen;
   titleScreen() {
-    screen = loadImage("titleScreen.png");
+    screen = loadImage("titleScreenNew.png");
   }
   void update() {
     //display title screen image

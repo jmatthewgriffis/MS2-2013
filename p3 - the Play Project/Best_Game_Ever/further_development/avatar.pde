@@ -22,17 +22,20 @@ class avatar {
   float bulletSpeed;
 
   avatar(PVector _loc, color colorMe, float speed, PImage _spaceShip) {
-    circPos= _loc;
-    rad = 50;
-    angle = 0;
+    circPos= _loc; // set the variable entered through the constructor equal to
+    // an external variable so we can use it elsewhere.
+    rad = 50; // size of avatar.
+    angle = 0; // Position of engine rect.
     myColor = colorMe;
     angleInc = 1/15; // Controls the speed of rotation. Bigger means faster.
     health=100;
     inc = 15; // How much latitude to control direction of movement.
-    notAngled = false;
-    storeBaseSpeed = speed;
-    velocity = storeBaseSpeed;
-    spdModifer = 1;
+    notAngled = false; // Control whether moving diagonally or not.
+    storeBaseSpeed = speed; // set the variable entered through the constructor equal to
+    // an external variable so we can use it elsewhere.
+    velocity = storeBaseSpeed; // We will use this extra variable to modify how quickly the
+    // avatar moves without changing the original value of base speed so we can reuse it.
+    spdModifer = 1; // This will modify speed over time when accelerating.
     spaceShip = _spaceShip;
     propeller = loadImage("propeller.png");
     bulletSpeed=4;
@@ -59,8 +62,12 @@ class avatar {
 
   void update() {
 
-    velocity = storeBaseSpeed * spdModifer;
+    velocity = storeBaseSpeed * spdModifer; // We use this to strictly control
+    // how fast the avatar moves. It goes faster with acceleration but reverts
+    // to the starting speed when the player lets off the gas. storeBaseSpeed
+    // stays the same; spdModifier changes, and with it, the velocity.
 
+    // Prevent the avatars from moving offscreen:
     if (circPos.x + rad > width) {
       circPos.x = width - rad;
     }
@@ -77,45 +84,48 @@ class avatar {
     // The rectangle is drawn at a point on the ellipse's circumference based
     // on angle, so to rotate we change the angle:
     if (rotateCCwise == true) {
-      angle += angleInc; // Change this to 1 for an interesting visual effect.
+      angle += angleInc; // Change the angleInc to 1 for an interesting visual effect.
     }
     if (rotateCwise == true) {
-      angle -= angleInc; // Change this to 1 for an interesting visual effect.
+      angle -= angleInc;
     }
 
     if (angle > 2*PI) { // If the angle gets bigger than a full circle...
       angle = 0; // ...reset it so it doesn't get too big.
     }
     if (angle < 0) { // If the angle gets negative...
-      angle = 2*PI; // ...reset it to a full circle, which is the same.
+      angle = 2*PI; // ...reset it to a full circle, which is the same as zero.
     }
 
+    // This ugly thing just says check if the engine is positioned for movement
+    // in one of the four cardinal directions.
     if ((angle < (PI/inc) || angle > (PI*2)-(PI/inc)) || 
       (angle < PI+(PI/inc) && angle > PI-(PI/inc)) || 
       (angle < (PI/2+PI/inc) && angle > (PI/2-PI/inc)) || 
       (angle < (3*PI/2+PI/inc) && angle > (3*PI/2-PI/inc))) {
-      notAngled = true;
+      notAngled = true; // In that case we don't have angled movement.
     }
     else {
-      notAngled = false;
+      notAngled = false; // Otherwise we do!
     }
 
     if (addToSpd == true) {
       if (velocity <= 4 * storeBaseSpeed) {
-        spdModifer += (0.25 * 1/60);
+        spdModifer += (0.25 * 1/60); // Here we change the velocity if accelerating.
       }
     }
 
     else {
-      spdModifer = 0.75;
+      spdModifer = 0.75; // And here we reset it when not accelerating.
     }
 
     if (fire == true) {
 
-      addToSpd = true;
+      addToSpd = true; // Fire is the same as accelerate, so we should pick up speed.
 
       // Fire to propel the avatar. We check the current angle to determine
       // which direction the avatar should move:
+
       // Move straight up:
       if (angle < (PI/inc) || angle > (PI*2)-(PI/inc)) {
         // Bottom of circle is zero, increases counter-clockwise.

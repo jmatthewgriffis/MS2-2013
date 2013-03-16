@@ -1,12 +1,37 @@
-// Game by MMM Studios
+/*
+  
+ ***************************************************************************
+ * Space Odyssey                                                           *
+ * an m^3 Studios production                                               *
+ *                                                                         *
+ * Alternate title: Best Game Ever                                         *
+ *                                                                         *
+ * March 16, 2013                                                          *
+ *                                                                         *
+ * m^3 Studios is Mauricio Sanchez-Duque, Michael Kahane and Matt Griffis. *
+ *                                                                         *
+ * We made this game in two weeks for the Play project of our Major Studio *
+ * 2 class in the MFADT department of Parsons the New School for Design.   *
+ *                                                                         *
+ * Enjoy!                                                                  *
+ ***************************************************************************
+ 
+ // Classy formatting style above copied from the esteemed Jennifer Presto.
+ 
+ */
+
 
 int stageID;
 titleScreen titlescreen;
 PImage overScreen;
 PImage mapScreen;
 PImage winScreen;
-
 float masterSpeed;
+float shotTimer;
+key reset1; //reset
+key reset2; //reset
+boolean attack;
+float attackCounter;
 
 
 avatar player1;
@@ -38,10 +63,10 @@ key f3Lower;
 int shotCount3;
 
 
-// There is some weirdness with certain buttons not registering simultaneous
-// presses. It may have something to do with the keyboard design; I don't know.
-// In any case, to get controls that work for everyone at the same time, I'm
-// going to employ the arrow keys, which requires keyCode rather than key.
+/* There is some weirdness with certain buttons not registering simultaneous
+ presses. It may have something to do with the keyboard design; I don't know. In
+ any case, to get controls that work for everyone at the same time, I'm going to
+ employ the arrow keys, which requires keyCode rather than key. */
 avatar player4;
 keyCode r4UpperA;
 //keyCode r4LowerA;
@@ -52,26 +77,19 @@ keyCode f4Upper;
 int shotCount4;
 
 
-float shotTimer;
-
-//reset 
-key reset;
-
 enemy enemy1;
 
-boolean attack;
-float attackCounter;
 
 ArrayList<bullet> bullets;
 
 void setup() {
   size(1024, 768);
-  stageID = 0;
+  stageID = 0; // This controls which screen displays (i.e. level).
   masterSpeed = 3; // Give this an initial value. We'll update it in the Update.
   titlescreen = new titleScreen();
-  overScreen = loadImage("gameOver.png");
+  overScreen = loadImage("gameOverNew.png");
   mapScreen = loadImage("background.png");
-  winScreen = loadImage("win.png");
+  winScreen = loadImage("winNew.png");
 
 
   bullets = new ArrayList();
@@ -117,7 +135,8 @@ void setup() {
   shotCount4 = 0;
 
 
-  reset = 'r';
+  reset1 = '6';
+  reset2 = '^';
 
   enemy1 = new enemy(new PVector(400, 600), new PVector(2, 1), 100);
 }
@@ -334,7 +353,8 @@ void keyPressed() {
       player3.fire = true;
       break;
 
-    case reset:
+    case reset1:
+    case reset2:
       setup();
       break;
     }
