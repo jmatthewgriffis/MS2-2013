@@ -30,7 +30,7 @@ public:
     bool moveLEFT;
     bool moveRIGHT;
     
-    ofColor yay;
+    ofColor player;
     ofColor cUP;
     ofColor cDOWN;
     ofColor cLEFT;

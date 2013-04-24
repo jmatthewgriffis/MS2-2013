@@ -13,6 +13,9 @@ void testApp::setup(){
     yVel = 5;
     wide = 10;
     tall = 10;
+    player.r = 255;
+    player.g = 255;
+    player.b = 255;
     
 }
 
@@ -22,7 +25,7 @@ void testApp::update(){
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight()); // This takes the data from the screen and converts it into an image. We'll use the pixel data for gameplay.
     
     // Allow movement under certain conditions:
-    if (moveUP == true) yPos += -yVel;
+    if (moveUP == true && cUP != player) yPos += -yVel;
     if (moveDOWN == true) yPos += yVel;
     if (moveLEFT == true) xPos += -xVel;
     if (moveRIGHT == true) xPos += xVel;
@@ -56,33 +59,31 @@ void testApp::draw(){
     }
      */
     
-    
-    yay.r = pixels[ (0 * screenGrab.width + 0) * 3];
-    yay.g = pixels[ (0 * screenGrab.width + 0) * 3 + 1];
-    yay.b = pixels[ (0 * screenGrab.width + 0) * 3 + 2];
-    
+    // Store the color above the player:
     cUP.r = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3];
     cUP.g = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
     cUP.b = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
     
+    // Store the color below the player:
     cDOWN.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3];
     cDOWN.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
     cDOWN.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
     
+    // Store the color left of the player:
     cLEFT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3];
     cLEFT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 1];
     cLEFT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 2];
     
+    // Store the color right of the player:
     cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3];
     cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
     cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
     
-    ofSetColor(255, 0, 0);
+    ofSetColor(player);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
-    //ofSetColor(yay);
-    //ofCircle(ofGetWidth()/2+20, ofGetHeight()/2-90, 10);
-    ofSetColor(255);
+    //ofSetColor(player);
     ofRect(xPos, yPos, wide, tall); // Draw the player character.
+    ofSetColor(255);
     
 }
 
