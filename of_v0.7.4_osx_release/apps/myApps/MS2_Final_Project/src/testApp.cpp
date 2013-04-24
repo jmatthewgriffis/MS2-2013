@@ -32,7 +32,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    cout<<yay<<endl;
+    cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
     
     ofBackground(0); // Refresh the background each frame.
     
@@ -61,11 +61,27 @@ void testApp::draw(){
     yay.g = pixels[ (0 * screenGrab.width + 0) * 3 + 1];
     yay.b = pixels[ (0 * screenGrab.width + 0) * 3 + 2];
     
+    cUP.r = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3];
+    cUP.g = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
+    cUP.b = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
+    
+    cDOWN.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3];
+    cDOWN.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
+    cDOWN.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
+    
+    cLEFT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3];
+    cLEFT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 1];
+    cLEFT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 2];
+    
+    cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3];
+    cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
+    cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+    
     ofSetColor(255, 0, 0);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
-    ofSetColor(yay);
-    ofCircle(ofGetWidth()/2+20, ofGetHeight()/2-90, 10);
-    ofSetColor(185,200,0);
+    //ofSetColor(yay);
+    //ofCircle(ofGetWidth()/2+20, ofGetHeight()/2-90, 10);
+    ofSetColor(255);
     ofRect(xPos, yPos, wide, tall); // Draw the player character.
     
 }
