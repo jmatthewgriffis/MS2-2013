@@ -5,6 +5,7 @@ void testApp::setup(){
     
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
+    ofSetFrameRate(30);
     
     xPos = ofGetWidth()/2;
     yPos = ofGetHeight()/2;
@@ -18,20 +19,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    for (int i = 0; i < ofGetWidth(); i++) {
-        for (int j = 0; j < ofGetHeight(); j++) {
-            int k = (j * ofGetWidth() + i);
-            while( k < pix.size()) {
-                char c = pix[k];
-                k++;
-            }
-        }
-    }
-    
-    //ofColor cUP = pix.getColor(xPos, yPos);
-    //ofColor cUP = pix.getColor(ofGetWidth()/2, ofGetHeight()/2);
-    
-    //cout<<cUP<<endl;
+    screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight()); // This takes the data from the screen and converts it into an image. We'll use the pixel data for gameplay.
     
     // Allow movement under certain conditions:
     if (moveUP == true) yPos += -yVel;
@@ -45,6 +33,29 @@ void testApp::update(){
 void testApp::draw(){
     
     ofBackground(0); // Refresh the background each frame.
+    
+    unsigned char * pixels = screenGrab.getPixels();
+	
+	for (int x = 0; x < screenGrab.width; x++){
+		for (int y = 0; y < screenGrab.height; y++){
+			
+			int red = pixels[ (y * screenGrab.width + x) * 3];
+			int green = pixels[ (y * screenGrab.width + x) * 3 + 1];
+			int blue = pixels[ (y * screenGrab.width + x) * 3 + 2];
+            
+            /*xPos = 175 + x;
+            yPos = 135 + y;
+            
+			ofSetColor(red,green,blue);
+			ofEllipse(xPos, yPos, 10, 10);*/
+            
+        }
+    }
+    
+    ofColor yay = pixels[0];
+    
+    cout<<yay<<endl;
+
     
     ofSetColor(255, 0, 0);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.

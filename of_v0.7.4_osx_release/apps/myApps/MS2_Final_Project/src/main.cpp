@@ -6,7 +6,9 @@
 int main( ){
 
     ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1024,768, OF_WINDOW);			// <-------- setup the GL context
+    
+    // Use the screen pixel resolution of the iPhone 5:
+	ofSetupOpenGL(&window, 1136,640, OF_WINDOW);			// <-------- setup the GL context
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
