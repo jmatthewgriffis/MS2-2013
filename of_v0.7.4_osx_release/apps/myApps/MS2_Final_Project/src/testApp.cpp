@@ -32,34 +32,40 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
+    cout<<yay<<endl;
+    
     ofBackground(0); // Refresh the background each frame.
     
     unsigned char * pixels = screenGrab.getPixels();
 	
+    /* // This is the loadImage example from "week7":
 	for (int x = 0; x < screenGrab.width; x++){
 		for (int y = 0; y < screenGrab.height; y++){
 			
-			int red = pixels[ (y * screenGrab.width + x) * 3];
-			int green = pixels[ (y * screenGrab.width + x) * 3 + 1];
-			int blue = pixels[ (y * screenGrab.width + x) * 3 + 2];
+             int red = pixels[ (y * screenGrab.width + x) * 3];
+             int green = pixels[ (y * screenGrab.width + x) * 3 + 1];
+             int blue = pixels[ (y * screenGrab.width + x) * 3 + 2];
             
-            /*xPos = 175 + x;
-            yPos = 135 + y;
-            
-			ofSetColor(red,green,blue);
-			ofEllipse(xPos, yPos, 10, 10);*/
+             xPos = 175 + x;
+             yPos = 135 + y;
+             
+             ofSetColor(red,green,blue);
+             ofEllipse(xPos, yPos, 10, 10);
             
         }
     }
+     */
     
-    ofColor yay = pixels[0];
     
-    cout<<yay<<endl;
-
+    yay.r = pixels[ (0 * screenGrab.width + 0) * 3];
+    yay.g = pixels[ (0 * screenGrab.width + 0) * 3 + 1];
+    yay.b = pixels[ (0 * screenGrab.width + 0) * 3 + 2];
     
     ofSetColor(255, 0, 0);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
-    ofSetColor(255);
+    ofSetColor(yay);
+    ofCircle(ofGetWidth()/2+20, ofGetHeight()/2-90, 10);
+    ofSetColor(185,200,0);
     ofRect(xPos, yPos, wide, tall); // Draw the player character.
     
 }

@@ -30,6 +30,9 @@ public:
     bool moveLEFT;
     bool moveRIGHT;
     
+    ofColor yay;
+    int red, green, blue;
+    
     ofImage screenGrab; // We'll use this object to store color data from the screen.
     
 };
