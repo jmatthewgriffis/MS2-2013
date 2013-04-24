@@ -31,6 +31,7 @@ public:
     bool moveRIGHT;
     
     ofColor player;
+    ofColor collider;
     ofColor cUP;
     ofColor cDOWN;
     ofColor cLEFT;

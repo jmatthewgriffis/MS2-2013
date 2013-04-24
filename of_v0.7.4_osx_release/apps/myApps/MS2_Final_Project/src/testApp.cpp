@@ -16,6 +16,7 @@ void testApp::setup(){
     player.r = 255;
     player.g = 255;
     player.b = 255;
+    collider = player; // Wall color equals player color.
     
 }
 
@@ -25,10 +26,10 @@ void testApp::update(){
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight()); // This takes the data from the screen and converts it into an image. We'll use the pixel data for gameplay.
     
     // Allow movement under certain conditions:
-    if (moveUP == true && cUP != player) yPos += -yVel;
-    if (moveDOWN == true) yPos += yVel;
-    if (moveLEFT == true) xPos += -xVel;
-    if (moveRIGHT == true) xPos += xVel;
+    if (moveUP == true && cUP != collider) yPos += -yVel;
+    if (moveDOWN == true && cDOWN != collider) yPos += yVel;
+    if (moveLEFT == true && cLEFT != collider) xPos += -xVel;
+    if (moveRIGHT == true && cRIGHT != collider) xPos += xVel;
     
 }
 
@@ -65,9 +66,9 @@ void testApp::draw(){
     cUP.b = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
     
     // Store the color below the player:
-    cDOWN.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3];
-    cDOWN.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
-    cDOWN.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
+    cDOWN.r = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3];
+    cDOWN.g = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3 + 1];
+    cDOWN.b = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3 + 2];
     
     // Store the color left of the player:
     cLEFT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3];
@@ -75,9 +76,9 @@ void testApp::draw(){
     cLEFT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 2];
     
     // Store the color right of the player:
-    cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3];
-    cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
-    cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+    cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3];
+    cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 1];
+    cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 2];
     
     ofSetColor(player);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
