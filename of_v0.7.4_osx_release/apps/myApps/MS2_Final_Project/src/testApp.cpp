@@ -17,6 +17,7 @@ void testApp::setup(){
     player.g = 255;
     player.b = 255;
     collider = player; // Wall color equals player color.
+    ofSetLineWidth(0.1);
     
 }
 
@@ -82,6 +83,27 @@ void testApp::draw(){
     
     ofSetColor(player);
     ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
+    ofRect(ofGetWidth()/4, ofGetHeight() - 300, 30, 100); // A wall.
+    ofCircle(ofGetWidth()/3, ofGetHeight()/3, 50);
+    
+    ofFill();
+    ofSetColor(player);
+    ofBeginShape();
+    ofVertex(543,500);
+    ofVertex(274,500);
+    ofVertex(140,267);
+    ofVertex(274,34);
+    ofVertex(536,34);
+    ofVertex(536,56);
+    ofVertex(287,56);
+    ofVertex(165,267);
+    ofVertex(287,478);
+    ofVertex(530,478);
+    ofVertex(655,262);
+    ofVertex(674,273);
+    ofVertex(543,500);
+    ofEndShape();
+    
     //ofSetColor(player);
     ofRect(xPos, yPos, wide, tall); // Draw the player character.
     ofSetColor(255);
