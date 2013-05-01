@@ -3,63 +3,77 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
+    //------------------------------------//
+    
+    // Housekeeping:
+    
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     
-    xPos = ofGetWidth()/2;
-    yPos = ofGetHeight()/2;
+    //------------------------------------//
+    
+    // The player:
+    
+    wide = 20;
+    tall = 20;
+    xPos = ofGetWidth()/2-(wide/2)-3;
+    yPos = ofGetHeight()/2-70;
     xVel = 5;
     yVel = 5;
-    wide = 10;
-    tall = 10;
     player.r = 255;
     player.g = 255;
     player.b = 255;
-    collider = player; // Wall color equals player color.
-    ofSetLineWidth(0.1);
     
+    //------------------------------------//
+    
+    // The walls:
+    
+    collider = player; // Wall color equals player color.
+    
+    //------------------------------------//
+        
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     
-    screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight()); // This takes the data from the screen and converts it into an image. We'll use the pixel data for gameplay.
+    //------------------------------------//
     
-    // Allow movement under certain conditions:
+    // Housekeeping:
+    
+    // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
+    screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+    
+    //------------------------------------//
+    
+    // The player:
+    
+    // Allow player movement under certain conditions:
     if (moveUP == true && cUP != collider) yPos += -yVel;
     if (moveDOWN == true && cDOWN != collider) yPos += yVel;
     if (moveLEFT == true && cLEFT != collider) xPos += -xVel;
     if (moveRIGHT == true && cRIGHT != collider) xPos += xVel;
+    
+    //------------------------------------//
     
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
+    //------------------------------------//
+    
+    // Housekeeping:
+    
+    // Print the color data:
+    //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
     
     ofBackground(0); // Refresh the background each frame.
     
     unsigned char * pixels = screenGrab.getPixels();
-	
-    /* // This is the loadImage example from "week7":
-	for (int x = 0; x < screenGrab.width; x++){
-		for (int y = 0; y < screenGrab.height; y++){
-			
-             int red = pixels[ (y * screenGrab.width + x) * 3];
-             int green = pixels[ (y * screenGrab.width + x) * 3 + 1];
-             int blue = pixels[ (y * screenGrab.width + x) * 3 + 2];
-            
-             xPos = 175 + x;
-             yPos = 135 + y;
-             
-             ofSetColor(red,green,blue);
-             ofEllipse(xPos, yPos, 10, 10);
-            
-        }
-    }
-     */
+    
+    // Prep for collision detection with color analysis: [
     
     // Store the color above the player:
     cUP.r = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3];
@@ -81,32 +95,123 @@ void testApp::draw(){
     cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 1];
     cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 2];
     
-    ofSetColor(player);
-    ofRect(ofGetWidth()/2, ofGetHeight()/2 - 100, 100, 20); // A wall.
-    ofRect(ofGetWidth()/4, ofGetHeight() - 300, 30, 100); // A wall.
-    ofCircle(ofGetWidth()/3, ofGetHeight()/3, 50);
+    // ] end color analysis.
     
-    ofFill();
-    ofSetColor(player);
+    //------------------------------------//
+    
+    // The walls:
+    
+    
+    
+    //-------------------
+    // start Level 1:
+    
+    ofSetColor(collider);
+    
+    ofNoFill();
+    ofSetLineWidth(4);
+    //ofSetColor(collider);
     ofBeginShape();
-    ofVertex(543,500);
-    ofVertex(274,500);
-    ofVertex(140,267);
-    ofVertex(274,34);
-    ofVertex(536,34);
-    ofVertex(536,56);
-    ofVertex(287,56);
-    ofVertex(165,267);
-    ofVertex(287,478);
-    ofVertex(530,478);
-    ofVertex(655,262);
-    ofVertex(674,273);
-    ofVertex(543,500);
+    ofVertex(541,361);
+    ofVertex(518,321);
+    ofVertex(541,280);
+    ofVertex(588,280);
+    ofVertex(612,321);
+    ofVertex(588,361);
+    ofVertex(541,361);
     ofEndShape();
     
-    //ofSetColor(player);
-    ofRect(xPos, yPos, wide, tall); // Draw the player character.
+    ofNoFill();
+    ofSetLineWidth(22);
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(1051,325);
+    ofEndShape();
+    
+    ofFill();
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(671,505);
+    ofVertex(465,505);
+    ofVertex(465,483);
+    ofVertex(658,483);
+    ofVertex(752,321);
+    ofVertex(658,158);
+    ofVertex(471,158);
+    ofVertex(374,326);
+    ofVertex(355,315);
+    ofVertex(458,136);
+    ofVertex(671,136);
+    ofVertex(778,321);
+    ofVertex(671,505);
+    ofEndShape();
+    
+    ofFill();
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(359,672);
+    ofVertex(159,326);
+    ofVertex(178,315);
+    ofVertex(378,661);
+    ofVertex(359,672);
+    ofEndShape();
+    
+    ofFill();
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(959,326);
+    ofVertex(759,-19);
+    ofVertex(778,-30);
+    ofVertex(978,315);
+    ofVertex(959,326);
+    ofEndShape();
+    
+    ofNoFill();
+    ofSetLineWidth(22);
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(369,-25);
+    ofEndShape();
+    
+    ofFill();
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(903,889);
+    ofVertex(884,878);
+    ofVertex(1206,321);
+    ofVertex(884,-236);
+    ofVertex(903,-247);
+    ofVertex(1231,321);
+    ofVertex(903,889);
+    ofEndShape();
+    
+    ofFill();
+    //ofSetColor(collider);
+    ofBeginShape();
+    ofVertex(234,889);
+    ofVertex(-93,321);
+    ofVertex(234,-247);
+    ofVertex(253,-236);
+    ofVertex(-68,321);
+    ofVertex(253,878);
+    ofVertex(234,889);
+    ofEndShape();
+    
+    // end Level 1
+    //-------------------
+    // start Level 2:
+    
+    
+
+    //------------------------------------//
+    
+    // The player:
+    
+    ofSetColor(player);
+    ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
     ofSetColor(255);
+    
+    //------------------------------------//
     
 }
 
