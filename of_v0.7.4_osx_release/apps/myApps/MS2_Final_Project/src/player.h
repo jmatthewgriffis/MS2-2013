@@ -14,7 +14,7 @@ class player {
 public:
     
     void setup();
-    void update();
+    void update(ofColor _background);
     void draw();
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
@@ -29,6 +29,7 @@ public:
     bool moveDOWN;
     bool moveLEFT;
     bool moveRIGHT;
+    ofColor background;
     ofColor cPlayer;
     ofColor cUP; // The color just above the player.
     ofColor cDOWN; // The color just below the player.

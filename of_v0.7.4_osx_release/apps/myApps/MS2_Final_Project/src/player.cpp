@@ -33,8 +33,18 @@ void player::setup(){
 }
 
 //--------------------------------------------------------------
-void player::update(){
+void player::update(ofColor _background){
     
+    background = _background;
+    
+    // If the player color gets too close to the background color (which would prevent movement), change the player color:
+    if ((fabs(cPlayer.r-background.r) < closeEnough) && (fabs(cPlayer.g-background.g) < closeEnough) && (fabs(cPlayer.b-background.b) < closeEnough)) {
+        cPlayer.r += cVelR;
+        cPlayer.g += cVelG;
+        cPlayer.b += cVelB;
+    }
+    
+    // Use a delay to control when the color changes:
     if (cVelRdelay > 0) cVelRdelay--;
     if (cVelGdelay > 0) cVelGdelay--;
     if (cVelBdelay > 0) cVelBdelay--;

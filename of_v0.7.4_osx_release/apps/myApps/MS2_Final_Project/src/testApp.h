@@ -21,6 +21,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    ofColor background;
     ofColor collider; // Prevents player movement.
     
     // Call some classes:

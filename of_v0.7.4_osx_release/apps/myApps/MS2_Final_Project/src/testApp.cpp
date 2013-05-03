@@ -7,6 +7,8 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     
+    background = (200,200,200);
+    
     player.setup();
     
     collider = player.cPlayer;
@@ -16,7 +18,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    player.update();
+    player.update(background);
     
     collider = player.cPlayer;
     
@@ -25,7 +27,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    //ofBackground(0); // Refresh the background each frame.
+    ofBackground(background); // Refresh the background each frame.
     
     maze.draw(collider);
     
