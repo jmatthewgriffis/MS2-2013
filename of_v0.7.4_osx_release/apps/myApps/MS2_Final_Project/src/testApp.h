@@ -21,27 +21,10 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    // The player:
-    float xPos;
-    float yPos;
-    float xVel;
-    float yVel;
-    float wide;
-    float tall;
-    bool moveUP;
-    bool moveDOWN;
-    bool moveLEFT;
-    bool moveRIGHT;
-    ofColor player;
-    ofColor cUP;
-    ofColor cDOWN;
-    ofColor cLEFT;
-    ofColor cRIGHT;
+    ofColor collider; // Prevents player movement.
     
-    // The world:
-    ofColor collider;
+    // Call some classes:
+    player player; // The...player.
     maze maze; // The maze screen.
-    
-    ofImage screenGrab; // We'll use this object to store color data from the screen.
     
 };

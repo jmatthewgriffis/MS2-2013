@@ -9,7 +9,7 @@
 #ifndef __MS2_Final_Project__maze__
 #define __MS2_Final_Project__maze__
 
-class maze {
+class maze { // This is a series of walls creating a maze for the player.
     
 public:
     

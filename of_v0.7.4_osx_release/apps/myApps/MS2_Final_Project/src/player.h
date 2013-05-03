@@ -14,8 +14,27 @@ class player {
 public:
     
     void setup();
-    void update();
+    void update(ofColor _collider);
     void draw();
+    
+    ofImage screenGrab; // We'll use this object to store color data from the screen.
+    
+    float xPos;
+    float yPos;
+    float xVel;
+    float yVel;
+    float wide;
+    float tall;
+    bool moveUP;
+    bool moveDOWN;
+    bool moveLEFT;
+    bool moveRIGHT;
+    ofColor cPlayer;
+    ofColor collider;
+    ofColor cUP;
+    ofColor cDOWN;
+    ofColor cLEFT;
+    ofColor cRIGHT;
     
 };
 
