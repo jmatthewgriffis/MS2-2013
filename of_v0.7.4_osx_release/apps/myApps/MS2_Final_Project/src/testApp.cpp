@@ -5,13 +5,16 @@ void testApp::setup(){
     
     //------------------------------------//
     
+    
     // Housekeeping:
     
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     
+    
     //------------------------------------//
+    
     
     // The player:
     
@@ -25,11 +28,14 @@ void testApp::setup(){
     player.g = 255;
     player.b = 255;
     
+    
     //------------------------------------//
+    
     
     // The walls:
     
     collider = player; // Wall color equals player color.
+    
     
     //------------------------------------//
         
@@ -40,12 +46,15 @@ void testApp::update(){
     
     //------------------------------------//
     
+    
     // Housekeeping:
     
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
     
+    
     //------------------------------------//
+    
     
     // The player:
     
@@ -54,6 +63,7 @@ void testApp::update(){
     if (moveDOWN == true && cDOWN != collider) yPos += yVel;
     if (moveLEFT == true && cLEFT != collider) xPos += -xVel;
     if (moveRIGHT == true && cRIGHT != collider) xPos += xVel;
+    
     
     //------------------------------------//
     
@@ -64,10 +74,8 @@ void testApp::draw(){
     
     //------------------------------------//
     
-    // Housekeeping:
     
-    // Print the color data:
-    //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
+    // Housekeeping:
     
     ofBackground(0); // Refresh the background each frame.
     
@@ -97,113 +105,17 @@ void testApp::draw(){
     
     // ] end color analysis.
     
+    
     //------------------------------------//
+    
     
     // The walls:
     
+    maze.draw(collider);
     
     
-    //-------------------
-    // start Level 1:
-    
-    ofSetColor(collider);
-    
-    ofNoFill();
-    ofSetLineWidth(4);
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(541,361);
-    ofVertex(518,321);
-    ofVertex(541,280);
-    ofVertex(588,280);
-    ofVertex(612,321);
-    ofVertex(588,361);
-    ofVertex(541,361);
-    ofEndShape();
-    
-    ofNoFill();
-    ofSetLineWidth(22);
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(1051,325);
-    ofEndShape();
-    
-    ofFill();
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(671,505);
-    ofVertex(465,505);
-    ofVertex(465,483);
-    ofVertex(658,483);
-    ofVertex(752,321);
-    ofVertex(658,158);
-    ofVertex(471,158);
-    ofVertex(374,326);
-    ofVertex(355,315);
-    ofVertex(458,136);
-    ofVertex(671,136);
-    ofVertex(778,321);
-    ofVertex(671,505);
-    ofEndShape();
-    
-    ofFill();
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(359,672);
-    ofVertex(159,326);
-    ofVertex(178,315);
-    ofVertex(378,661);
-    ofVertex(359,672);
-    ofEndShape();
-    
-    ofFill();
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(959,326);
-    ofVertex(759,-19);
-    ofVertex(778,-30);
-    ofVertex(978,315);
-    ofVertex(959,326);
-    ofEndShape();
-    
-    ofNoFill();
-    ofSetLineWidth(22);
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(369,-25);
-    ofEndShape();
-    
-    ofFill();
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(903,889);
-    ofVertex(884,878);
-    ofVertex(1206,321);
-    ofVertex(884,-236);
-    ofVertex(903,-247);
-    ofVertex(1231,321);
-    ofVertex(903,889);
-    ofEndShape();
-    
-    ofFill();
-    //ofSetColor(collider);
-    ofBeginShape();
-    ofVertex(234,889);
-    ofVertex(-93,321);
-    ofVertex(234,-247);
-    ofVertex(253,-236);
-    ofVertex(-68,321);
-    ofVertex(253,878);
-    ofVertex(234,889);
-    ofEndShape();
-    
-    // end Level 1
-    //-------------------
-    // start Level 2:
-    
-    
-
     //------------------------------------//
+    
     
     // The player:
     
@@ -211,7 +123,12 @@ void testApp::draw(){
     ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
     ofSetColor(255);
     
+    
     //------------------------------------//
+    
+    
+    // Print the color data:
+    //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
     
 }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "player.h"
+#include "maze.h"
 
 class testApp : public ofBaseApp{
     
@@ -19,6 +21,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    // The player:
     float xPos;
     float yPos;
     float xVel;
@@ -29,13 +32,15 @@ public:
     bool moveDOWN;
     bool moveLEFT;
     bool moveRIGHT;
-    
     ofColor player;
-    ofColor collider;
     ofColor cUP;
     ofColor cDOWN;
     ofColor cLEFT;
     ofColor cRIGHT;
+    
+    // The world:
+    ofColor collider;
+    maze maze; // The maze screen.
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
     
