@@ -47,6 +47,10 @@ public:
     int cVelB; // Speed of blue color change.
     int cVelBdelay; // Delay when the color changes.
     int randLimit; // Set the upper limit for random determinatino of color change timing.
+    int degrees; // Rotate the triangle based on movement.
+    int degreesVel; // Direction of rotation.
+    int rotateWait; // Wait to rotate.
+    int rotateWaitMax; // Default starting value for the timer.
     
 };
 

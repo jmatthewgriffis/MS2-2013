@@ -29,11 +29,20 @@ void player::setup(){
     cVelB = 1;
     cVelBdelay = 0;
     randLimit = 60;
+    degrees = 0;
+    degreesVel = 1;
+    rotateWaitMax = 180;
+    rotateWait = rotateWaitMax;
     
 }
 
 //--------------------------------------------------------------
 void player::update(ofColor _background){
+    
+    // Start color change behavior.
+    
+    
+    
     
     background = _background;
     
@@ -69,6 +78,16 @@ void player::update(ofColor _background){
     // Print the RGB values of the player color:
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
     
+    
+    
+    
+    // End color change behavior.
+    //-------------------------------------
+    // Start collision/movement behavior.
+    
+    
+    
+    
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
     
@@ -87,6 +106,61 @@ void player::update(ofColor _background){
     if (moveDOWN == true && cDOWNdiff) yPos += yVel;
     if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
     if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+    
+    
+    
+    
+    // End collision/movement behavior.
+    //-------------------------------------
+    // Start rotation behavior.
+    
+    
+    
+    
+    // We'll set the rotation based on what directions are pressed. If no directions are pressed, wait a bit, then rotate:
+    if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
+        if (rotateWait > 0) rotateWait--; // Deplete the timer...
+        else degrees += degreesVel; // ...then start rotating.
+    }
+    
+    else { // Something pressed?
+        rotateWait = rotateWaitMax; // Reset the timer.
+        
+        // Change the degree of rotation appropriate to the movement:
+        if (moveUP == true) {
+            if (moveLEFT == true) degrees = 315;
+            else if (moveRIGHT == true) degrees = 45;
+            else degrees = 0;
+        }
+        else if (moveDOWN == true) {
+            if (moveLEFT == true) degrees = 225;
+            else if (moveRIGHT == true) degrees = 135;
+            else degrees = 180;
+        }
+        else if (moveLEFT == true) degrees = 270;
+        else if (moveRIGHT == true) degrees = 90;
+    }
+    
+    // Vary the direction of rotation with some randomness:
+    if (degrees < 0 || degrees > 360) {
+        if (ofRandom(1) < 0.5f) degreesVel *= -1;
+        else {
+            if (degrees < 0) degrees = 360;
+            else if (degrees > 360) degrees = 0;
+        }
+    }
+    
+    
+    
+    
+    // End rotation behavior.
+    //-------------------------------------
+    // New stuff goes here.
+    
+    
+    
+    
+    // New stuff goes here.
     
 }
 
@@ -123,7 +197,14 @@ void player::draw(){
     // ] end color analysis.
     
     ofSetColor(cPlayer);
-    ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
+    //ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
+    
+    // We'll translate the origin so we can rotate the triangle about its center:
+    ofPushMatrix();
+    ofTranslate(xPos+wide/2, yPos+tall/2);
+    ofRotate(degrees);
+    ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
+    ofPopMatrix();
     ofSetColor(255);
     
 }
