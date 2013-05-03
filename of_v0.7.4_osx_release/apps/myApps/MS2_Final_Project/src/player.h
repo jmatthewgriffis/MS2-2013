@@ -14,7 +14,7 @@ class player {
 public:
     
     void setup();
-    void update(ofColor _collider);
+    void update();
     void draw();
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
@@ -30,11 +30,18 @@ public:
     bool moveLEFT;
     bool moveRIGHT;
     ofColor cPlayer;
-    ofColor collider;
-    ofColor cUP;
-    ofColor cDOWN;
-    ofColor cLEFT;
-    ofColor cRIGHT;
+    ofColor cUP; // The color just above the player.
+    ofColor cDOWN; // The color just below the player.
+    ofColor cLEFT; // The color just left of the player.
+    ofColor cRIGHT; // The color just right of the player.
+    int closeEnough; // How close do the colors have to be?
+    bool cUPdiff; // Player color and cUP are close enough.
+    bool cDOWNdiff; // Player color and cDOWN are close enough.
+    bool cLEFTdiff; // Player color and cLEFT are close enough.
+    bool cRIGHTdiff; // Player color and cRIGHT are close enough.
+    int cVelR; // Speed of red color change.
+    int cVelG; // Speed of green color change.
+    int cVelB; // Speed of blue color change.
     
 };
 

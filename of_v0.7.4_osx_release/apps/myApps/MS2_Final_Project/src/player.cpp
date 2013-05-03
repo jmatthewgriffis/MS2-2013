@@ -19,24 +19,47 @@ void player::setup(){
     xVel = 5;
     yVel = 5;
     cPlayer.r = 255;
-    cPlayer.g = 255;
+    cPlayer.g = 245; // Make this slightly different so that the grayscale background can never match the player color sufficiently to stop movement.
     cPlayer.b = 255;
+    closeEnough = 5;
+    cVelR = 1;
+    cVelG = 1;
+    cVelB = 1;
     
 }
 
 //--------------------------------------------------------------
-void player::update(ofColor _collider){
+void player::update(){
     
-    collider = _collider;
+    // Change the RGB color values. If one maxes or mins out, reverse the direction of change:
+    if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 1) cPlayer.r += cVelR;
+    else cVelR *= -1;
+    if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 1) cPlayer.g += cVelG;
+    else cVelG *= -1;
+    if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 1) cPlayer.b += cVelB;
+    else cVelB *= -1;
+    
+    // Print the RGB values of the player color:
+    //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
     
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
     
-    // Allow player movement under certain conditions:
-    if (moveUP == true && cUP != collider) yPos += -yVel;
-    if (moveDOWN == true && cDOWN != collider) yPos += yVel;
-    if (moveLEFT == true && cLEFT != collider) xPos += -xVel;
-    if (moveRIGHT == true && cRIGHT != collider) xPos += xVel;
+    /* We're going to compare the color of the player with the color of the surrounding environment and use that to control movement. However, the player/environmental color changes and there is a tiny bit of lag before the pixel data updates. This could prevent the collision from registering, so we use some mathematical jiujitsu. Instead of checking if the pixel data returns the identical color as the player, we check if it's within a certain range (big enough to cover the lag). */
+    if ((fabs(cPlayer.r-cUP.r) <= closeEnough) && (fabs(cPlayer.g-cUP.g) <= closeEnough) && (fabs(cPlayer.b-cUP.b) <= closeEnough)) cUPdiff = false;
+    else cUPdiff = true;
+    if ((fabs(cPlayer.r-cDOWN.r) <= closeEnough) && (fabs(cPlayer.g-cDOWN.g) <= closeEnough) && (fabs(cPlayer.b-cDOWN.b) <= closeEnough)) cDOWNdiff = false;
+    else cDOWNdiff = true;
+    if ((fabs(cPlayer.r-cLEFT.r) <= closeEnough) && (fabs(cPlayer.g-cLEFT.g) <= closeEnough) && (fabs(cPlayer.b-cLEFT.b) <= closeEnough)) cLEFTdiff = false;
+    else cLEFTdiff = true;
+    if ((fabs(cPlayer.r-cRIGHT.r) <= closeEnough) && (fabs(cPlayer.g-cRIGHT.g) <= closeEnough) && (fabs(cPlayer.b-cRIGHT.b) <= closeEnough)) cRIGHTdiff = false;
+    else cRIGHTdiff = true;
+    
+    // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player:
+    if (moveUP == true && cUPdiff) yPos += -yVel;
+    if (moveDOWN == true && cDOWNdiff) yPos += yVel;
+    if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
+    if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
     
 }
 
@@ -68,7 +91,7 @@ void player::draw(){
     cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 2];
     
     // Print the color data:
-    //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<endl;
+    //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<"; cPlayer = "<<cPlayer<<endl;
     
     // ] end color analysis.
     

@@ -16,14 +16,16 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    player.update(collider);
+    player.update();
+    
+    collider = player.cPlayer;
     
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    ofBackground(0); // Refresh the background each frame.
+    //ofBackground(0); // Refresh the background each frame.
     
     maze.draw(collider);
     
