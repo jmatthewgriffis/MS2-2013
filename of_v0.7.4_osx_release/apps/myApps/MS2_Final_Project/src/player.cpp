@@ -14,6 +14,7 @@ void player::setup(){
     
     wide = 20;
     tall = 20;
+    pixelSpacer = 5;
     xPos = ofGetWidth()/2-(wide/2)-3;
     yPos = ofGetHeight()/2-70;
     xVel = 5;
@@ -170,6 +171,19 @@ void player::draw(){
     unsigned char * pixels = screenGrab.getPixels();
     
     // Prep for collision detection with color analysis: [
+    
+    // Debug the location of the relevant pixels:
+    /* Original set:
+     ofLine(int(xPos), int(yPos-tall/2), int(xPos), int(yPos-tall/2)-10); // UP
+     ofLine(int(xPos), int(yPos+tall), int(xPos), int(yPos+tall)+10); // DOWN
+     ofLine(int(xPos-wide/2), int(yPos), int(xPos-wide/2)-10, int(yPos)); // LEFT
+     ofLine(int(xPos+wide), int(yPos), int(xPos+wide)+10, int(yPos)); // RIGHT
+     */
+    // Tweaked set:
+    ofLine(int(xPos+wide/2), int(yPos-pixelSpacer), int(xPos+wide/2), int(yPos-pixelSpacer)-10); // UP
+    ofLine(int(xPos+wide/2), int(yPos+tall+pixelSpacer), int(xPos+wide/2), int(yPos+tall+pixelSpacer)+10); // DOWN
+    ofLine(int(xPos-pixelSpacer), int(yPos+tall/2), int(xPos-pixelSpacer)-10, int(yPos+tall/2)); // LEFT
+    ofLine(int(xPos+wide+pixelSpacer), int(yPos+tall/2), int(xPos+wide+pixelSpacer)+10, int(yPos+tall/2)); // RIGHT
     
     // Store the color above the player:
     cUP.r = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3];

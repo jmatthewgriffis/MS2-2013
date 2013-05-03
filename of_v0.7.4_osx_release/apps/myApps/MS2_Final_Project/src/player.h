@@ -25,6 +25,7 @@ public:
     float yVel;
     float wide;
     float tall;
+    int pixelSpacer; // Give sufficient distance from the triangle when checking the pixel data that the rotation won't screw things up.
     bool moveUP;
     bool moveDOWN;
     bool moveLEFT;
