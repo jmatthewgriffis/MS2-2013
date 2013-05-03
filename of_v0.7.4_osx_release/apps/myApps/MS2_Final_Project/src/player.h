@@ -40,8 +40,12 @@ public:
     bool cLEFTdiff; // Player color and cLEFT are close enough.
     bool cRIGHTdiff; // Player color and cRIGHT are close enough.
     int cVelR; // Speed of red color change.
+    int cVelRdelay; // Delay when the color changes.
     int cVelG; // Speed of green color change.
+    int cVelGdelay; // Delay when the color changes.
     int cVelB; // Speed of blue color change.
+    int cVelBdelay; // Delay when the color changes.
+    int randLimit; // Set the upper limit for random determinatino of color change timing.
     
 };
 

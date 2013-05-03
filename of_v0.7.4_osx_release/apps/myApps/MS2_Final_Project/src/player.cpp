@@ -19,25 +19,42 @@ void player::setup(){
     xVel = 5;
     yVel = 5;
     cPlayer.r = 255;
-    cPlayer.g = 245; // Make this slightly different so that the grayscale background can never match the player color sufficiently to stop movement.
+    cPlayer.g = 255;
     cPlayer.b = 255;
     closeEnough = 5;
     cVelR = 1;
+    cVelRdelay = 0;
     cVelG = 1;
+    cVelGdelay = 0;
     cVelB = 1;
+    cVelBdelay = 0;
+    randLimit = 60;
     
 }
 
 //--------------------------------------------------------------
 void player::update(){
     
-    // Change the RGB color values. If one maxes or mins out, reverse the direction of change:
+    if (cVelRdelay > 0) cVelRdelay--;
+    if (cVelGdelay > 0) cVelGdelay--;
+    if (cVelBdelay > 0) cVelBdelay--;
+    
+    // Change the RGB color values. If one maxes or mins out, reverse the direction of change after a randomly-determined interval:
     if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 1) cPlayer.r += cVelR;
-    else cVelR *= -1;
+    else {
+        cVelRdelay = int(ofRandom(randLimit));
+        if (cVelRdelay == 0) cVelR *= -1;
+    }
     if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 1) cPlayer.g += cVelG;
-    else cVelG *= -1;
+    else {
+        cVelGdelay = int(ofRandom(randLimit));
+        if (cVelGdelay == 0) cVelG *= -1;
+    }
     if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 1) cPlayer.b += cVelB;
-    else cVelB *= -1;
+    else {
+        cVelBdelay = int(ofRandom(randLimit));
+        if (cVelBdelay == 0) cVelB *= -1;
+    }
     
     // Print the RGB values of the player color:
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
