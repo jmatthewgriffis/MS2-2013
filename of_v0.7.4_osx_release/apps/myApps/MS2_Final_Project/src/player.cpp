@@ -89,7 +89,7 @@ void player::update(ofColor _background){
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
     
     cGhost = cPlayer;
-    cGhost.a = 75;
+    cGhost.a = 75; // When the player goes into "ghost" mode, become transparent.
     
     
     
@@ -105,6 +105,7 @@ void player::update(ofColor _background){
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
     
     /* We're going to compare the color of the player with the color of the surrounding environment and use that to control movement. However, the player/environmental color changes and there is a tiny bit of lag before the pixel data updates. This could prevent the collision from registering, so we use some mathematical jiujitsu. Instead of checking if the pixel data returns the identical color as the player, we check if it's within a certain range (big enough to cover the lag). */
+    
     if ((fabs(cPlayer.r-cUP.r) <= closeEnough) && (fabs(cPlayer.g-cUP.g) <= closeEnough) && (fabs(cPlayer.b-cUP.b) <= closeEnough)) cUPdiff = false;
     else cUPdiff = true;
     if ((fabs(cPlayer.r-cDOWN.r) <= closeEnough) && (fabs(cPlayer.g-cDOWN.g) <= closeEnough) && (fabs(cPlayer.b-cDOWN.b) <= closeEnough)) cDOWNdiff = false;
@@ -153,9 +154,8 @@ void player::update(ofColor _background){
     // Start rotation behavior.
     
     if (suddenFreedom == true) {
-        //ofGetWidth()/2+shiftX, ofGetHeight()/2
-        xPos = ofGetWidth()/2+shiftX-rotX-wide/2;
-        yPos = ofGetHeight()/2+rotY-tall;
+        xPos = ofGetWidth()/2+shiftX-rotX;
+        yPos = ofGetHeight()/2+rotY;
         youSpinMeRightRound = false;
         suddenFreedom = false;
     }
@@ -302,8 +302,9 @@ void player::draw(){
         ofTranslate(ofGetWidth()/2+shiftX, ofGetHeight()/2);
         
         // Store the rotation data to make new coordinates for when we enable free movement. This preserves the position of the player when we switch modes (maybe it would have been easier just to do rotation this way too, but oh well):
-        rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall);
-        rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall);
+        // IMPORTANT: THESE COORDINATES ARE FOR THE CENTER OF THE TRIANGLE!
+        rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall/2);
+        rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall/2);
 
         ofLine(-rotX, rotY, 0, 0);
         ofRotate(degrees);
@@ -314,7 +315,8 @@ void player::draw(){
     }
     // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
     else {
-        ofTranslate(xPos+wide/2, yPos+tall/2);
+        //ofTranslate(xPos+wide/2, yPos+tall/2);
+        ofTranslate(xPos, yPos);
         ofRotate(degrees);
         ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
         ofNoFill();
