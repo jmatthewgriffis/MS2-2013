@@ -21,6 +21,7 @@ public:
     
     int shiftX; // Shift the xPos by this much.
     int shiftY; // Shift the yPos by this much, and get up to no good.
+    float rotX, rotY; // Store the intial rotation information in coordinates.
     float xPos;
     float yPos;
     int xVel;
@@ -36,8 +37,9 @@ public:
     bool moveDOWN;
     bool moveLEFT;
     bool moveRIGHT;
-    bool youSpinMeRightRound;
+    bool youSpinMeRightRound; // Rotate about the hexagon.
     int spinMeFaster; // Control the speed of constricted rotation.
+    bool suddenFreedom; // Move freely.
     ofColor background;
     ofColor cPlayer;
     ofColor cGhost; // Control the player's alpha value when a ghost.

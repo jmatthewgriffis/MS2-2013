@@ -152,7 +152,16 @@ void player::update(ofColor _background){
     //-------------------------------------
     // Start rotation behavior.
     
+    if (suddenFreedom == true) {
+        //ofGetWidth()/2+shiftX, ofGetHeight()/2
+        xPos = ofGetWidth()/2+shiftX-rotX-wide/2;
+        yPos = ofGetHeight()/2+rotY-tall;
+        youSpinMeRightRound = false;
+        suddenFreedom = false;
+    }
     
+    cout<<"rotX = "<<rotX<<"; rotY = "<<rotY<<"; xPos = "<<xPos<<"; yPos = "<<yPos<<endl;
+    //cout<<"freedom="<<suddenFreedom<<"; youspinme="<<youSpinMeRightRound<<endl;
     
     
     // We'll set the rotation based on what directions are pressed.
@@ -160,6 +169,8 @@ void player::update(ofColor _background){
     if (youSpinMeRightRound) {
         if (moveLEFT) degrees -= spinMeFaster;
         if (moveRIGHT) degrees += spinMeFaster;
+        if (degrees > 360) degrees = 0;
+        if (degrees < 0) degrees = 360;
     }
     else { // Free movement is allowed?
         // If no directions are pressed, wait a bit, then rotate:
@@ -289,6 +300,12 @@ void player::draw(){
     if (youSpinMeRightRound) {
         // If so, we translate the origin to the center of the architecture and rotate the triangle about the origin:
         ofTranslate(ofGetWidth()/2+shiftX, ofGetHeight()/2);
+        
+        // Store the rotation data to make new coordinates for when we enable free movement. This preserves the position of the player when we switch modes (maybe it would have been easier just to do rotation this way too, but oh well):
+        rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall);
+        rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall);
+
+        ofLine(-rotX, rotY, 0, 0);
         ofRotate(degrees);
         ofTriangle(-wide/2, shiftY+tall, wide/2, shiftY+tall, 0, shiftY);
         ofNoFill();
