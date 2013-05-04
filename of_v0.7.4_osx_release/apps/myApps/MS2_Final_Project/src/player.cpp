@@ -12,6 +12,8 @@
 //--------------------------------------------------------------
 void player::setup(){
     
+    shiftX = -3;
+    shiftY = -80;
     wide = 20;
     wideSoul = wide;
     wideSoulVel = 0.5;
@@ -19,8 +21,8 @@ void player::setup(){
     tall = powf((powf(wide, 2)-powf(wide/2, 2)), 0.5); // Use the Pythagorian theorem to calculate the height so that the triangle will be equilateral.
     tallSoul = tall;
     pixelSpacer = 10;
-    xPos = ofGetWidth()/2-(wide/2)-3;
-    yPos = ofGetHeight()/2-70;
+    xPos = ofGetWidth()/2-(wide/2)+shiftX;
+    yPos = ofGetHeight()/2+shiftY;
     xVel = 5;
     yVel = 5;
     cPlayer.r = 255;
@@ -39,6 +41,8 @@ void player::setup(){
     degreesVel = 1;
     rotateWaitMax = 180;
     rotateWait = rotateWaitMax;
+    youSpinMeRightRound = true;
+    spinMeFaster = 10;
     
 }
 
@@ -110,15 +114,22 @@ void player::update(ofColor _background){
     if ((fabs(cPlayer.r-cRIGHT.r) <= closeEnough) && (fabs(cPlayer.g-cRIGHT.g) <= closeEnough) && (fabs(cPlayer.b-cRIGHT.b) <= closeEnough)) cRIGHTdiff = false;
     else cRIGHTdiff = true;
     
-    // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player:
-    
-    // But first, check if a ghost, and if so allow movement regardless:
-    if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
-    
-    if (moveUP == true && cUPdiff) yPos += -yVel;
-    if (moveDOWN == true && cDOWNdiff) yPos += yVel;
-    if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
-    if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+    if (youSpinMeRightRound) {
+        
+    }
+    else {
+        
+        // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player:
+        
+        // But first, check if a ghost, and if so allow movement regardless:
+        if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
+        
+        if (moveUP == true && cUPdiff) yPos += -yVel;
+        if (moveDOWN == true && cDOWNdiff) yPos += yVel;
+        if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
+        if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+        
+    }
     
     // If the player moves offscreen:
     if (xPos < -wide || xPos > ofGetWidth() || yPos < -tall || yPos > ofGetHeight()) {
@@ -144,36 +155,44 @@ void player::update(ofColor _background){
     
     
     
-    // We'll set the rotation based on what directions are pressed. If no directions are pressed, wait a bit, then rotate:
-    if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
-        if (rotateWait > 0) rotateWait--; // Deplete the timer...
-        else degrees += degreesVel; // ...then start rotating.
+    // We'll set the rotation based on what directions are pressed.
+    // First, we check if movement is restricted.
+    if (youSpinMeRightRound) {
+        if (moveLEFT) degrees -= spinMeFaster;
+        if (moveRIGHT) degrees += spinMeFaster;
     }
-    
-    else { // Something pressed?
-        rotateWait = rotateWaitMax; // Reset the timer.
+    else { // Free movement is allowed?
+        // If no directions are pressed, wait a bit, then rotate:
+        if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
+            if (rotateWait > 0) rotateWait--; // Deplete the timer...
+            else degrees += degreesVel; // ...then start rotating.
+        }
         
-        // Change the degree of rotation appropriate to the movement:
-        if (moveUP == true) {
-            if (moveLEFT == true) degrees = 315;
-            else if (moveRIGHT == true) degrees = 45;
-            else degrees = 0;
+        else { // Something pressed?
+            rotateWait = rotateWaitMax; // Reset the timer.
+            
+            // Change the degree of rotation appropriate to the movement:
+            if (moveUP == true) {
+                if (moveLEFT == true) degrees = 315;
+                else if (moveRIGHT == true) degrees = 45;
+                else degrees = 0;
+            }
+            else if (moveDOWN == true) {
+                if (moveLEFT == true) degrees = 225;
+                else if (moveRIGHT == true) degrees = 135;
+                else degrees = 180;
+            }
+            else if (moveLEFT == true) degrees = 270;
+            else if (moveRIGHT == true) degrees = 90;
         }
-        else if (moveDOWN == true) {
-            if (moveLEFT == true) degrees = 225;
-            else if (moveRIGHT == true) degrees = 135;
-            else degrees = 180;
-        }
-        else if (moveLEFT == true) degrees = 270;
-        else if (moveRIGHT == true) degrees = 90;
-    }
-    
-    // Vary the direction of rotation with some randomness:
-    if (degrees < 0 || degrees > 360) {
-        if (ofRandom(1) < 0.5f) degreesVel *= -1;
-        else {
-            if (degrees < 0) degrees = 360;
-            else if (degrees > 360) degrees = 0;
+        
+        // Vary the direction of rotation with some randomness:
+        if (degrees < 0 || degrees > 360) {
+            if (ofRandom(1) < 0.5f) degreesVel *= -1;
+            else {
+                if (degrees < 0) degrees = 360;
+                else if (degrees > 360) degrees = 0;
+            }
         }
     }
     
@@ -264,14 +283,27 @@ void player::draw(){
     else ofSetColor(cPlayer);
     //ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
     
-    // We'll translate the origin so we can rotate the triangle about its center:
+    // We'll translate the origin to achieve two kinds of rotation:
     ofPushMatrix();
-    ofTranslate(xPos+wide/2, yPos+tall/2);
-    ofRotate(degrees);
-    ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
-    ofNoFill();
-    ofSetLineWidth(2);
-    ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2);
+    // First we check if movement is constricted:
+    if (youSpinMeRightRound) {
+        // If so, we translate the origin to the center of the architecture and rotate the triangle about the origin:
+        ofTranslate(ofGetWidth()/2+shiftX, ofGetHeight()/2);
+        ofRotate(degrees);
+        ofTriangle(-wide/2, shiftY+tall, wide/2, shiftY+tall, 0, shiftY);
+        ofNoFill();
+        ofSetLineWidth(2);
+        ofTriangle(-wideSoul/2, shiftY+tallSoul/2+tall/2, wideSoul/2, shiftY+tallSoul/2+tall/2, 0, shiftY-tallSoul/2+tall/2);
+    }
+    // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
+    else {
+        ofTranslate(xPos+wide/2, yPos+tall/2);
+        ofRotate(degrees);
+        ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
+        ofNoFill();
+        ofSetLineWidth(2);
+        ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2);
+    }
     ofPopMatrix();
     ofSetColor(255);
     

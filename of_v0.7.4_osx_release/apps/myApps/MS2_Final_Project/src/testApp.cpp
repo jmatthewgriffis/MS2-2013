@@ -68,10 +68,16 @@ void testApp::keyPressed(int key){
         case OF_KEY_RIGHT:
             player.moveRIGHT = true;
             break;
-            
+        
+        // Debug. Comment this out later.
         case 'g':
         case 'G':
             player.ghost = true;
+            break;
+            
+        // Debug. Comment this out later.
+        case 'm':
+            player.youSpinMeRightRound = !player.youSpinMeRightRound;
             break;
     }
     

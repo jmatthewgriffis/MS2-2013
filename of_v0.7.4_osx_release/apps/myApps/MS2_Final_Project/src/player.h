@@ -19,6 +19,8 @@ public:
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
     
+    int shiftX; // Shift the xPos by this much.
+    int shiftY; // Shift the yPos by this much, and get up to no good.
     float xPos;
     float yPos;
     int xVel;
@@ -34,9 +36,11 @@ public:
     bool moveDOWN;
     bool moveLEFT;
     bool moveRIGHT;
+    bool youSpinMeRightRound;
+    int spinMeFaster; // Control the speed of constricted rotation.
     ofColor background;
     ofColor cPlayer;
-    ofColor cGhost;
+    ofColor cGhost; // Control the player's alpha value when a ghost.
     ofColor cUP; // The color just above the player.
     ofColor cDOWN; // The color just below the player.
     ofColor cLEFT; // The color just left of the player.
