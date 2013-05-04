@@ -13,7 +13,7 @@
 void player::setup(){
     
     wide = 20;
-    tall = 20;
+    tall = powf((powf(wide, 2)-powf(wide/2, 2)), 0.5); // Use the Pythagorian theorem to calculate the height so that the triangle will be equilateral.
     pixelSpacer = 5;
     xPos = ofGetWidth()/2-(wide/2)-3;
     yPos = ofGetHeight()/2-70;
@@ -107,6 +107,17 @@ void player::update(ofColor _background){
     if (moveDOWN == true && cDOWNdiff) yPos += yVel;
     if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
     if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+    
+    // If the player moves offscreen:
+    if (xPos < -wide || xPos > ofGetWidth() || yPos < -tall || yPos > ofGetHeight()) {
+        // First, prevent a pixel check since the player is offscreen:
+        cUP = cDOWN = cLEFT = cRIGHT = (0,0,0);
+        // Then shift the player's position to the other side:
+        if (xPos < -wide) xPos = ofGetWidth()-wide;
+        if (xPos > ofGetWidth()) xPos = 0;
+        if (yPos < -tall) yPos = ofGetHeight()-tall;
+        if (yPos > ofGetHeight()) yPos = 0;
+    }
     
     
     
