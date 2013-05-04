@@ -42,6 +42,7 @@ public:
     bool suddenFreedom; // Move freely.
     ofColor background;
     ofColor cPlayer;
+    ofColor instructions; // Cues appear onscreen if needed.
     ofColor cGhost; // Control the player's alpha value when a ghost.
     ofColor cUP; // The color just above the player.
     ofColor cDOWN; // The color just below the player.
@@ -64,6 +65,10 @@ public:
     int rotateWait; // Wait to rotate.
     int rotateWaitMax; // Default starting value for the timer.
     bool ghost; // Move through solid objects.
+    bool movedYet; // Only false until the player presses a key.
+    bool instructMove; // The player needs instruction on how to move?
+    int whySoStill; // Advances if no one presses a key at first.
+    int whySoStillMax; // Upper limit of the counter.
     
 };
 

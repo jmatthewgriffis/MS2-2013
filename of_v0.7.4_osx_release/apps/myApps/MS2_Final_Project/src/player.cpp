@@ -29,6 +29,8 @@ void player::setup(){
     cPlayer.g = 255;
     cPlayer.b = 255;
     cGhost = cPlayer;
+    instructions = cPlayer;
+    instructions.a = 0; // Instructions are invisible at first.
     closeEnough = 5;
     cVelR = 1;
     cVelRdelay = 0;
@@ -43,6 +45,8 @@ void player::setup(){
     rotateWait = rotateWaitMax;
     youSpinMeRightRound = true;
     spinMeFaster = 10;
+    whySoStill = 0;
+    whySoStillMax = 360;
     
 }
 
@@ -91,6 +95,15 @@ void player::update(ofColor _background){
     cGhost = cPlayer;
     cGhost.a = 75; // When the player goes into "ghost" mode, become transparent.
     
+    // Color the instructions according to the player but make them fade in and out as appropriate:
+    instructions.r = cPlayer.r;
+    instructions.g = cPlayer.g;
+    instructions.b = cPlayer.b;
+    if (!movedYet) {
+    if (whySoStill >= whySoStillMax && instructions.a < 254) instructions.a += 2;
+    } // Instructions fade in on cue.
+    else if (instructions.a > 1) instructions.a -= 2; // If the player moves and the instructions are visible, they fade out.
+    
     
     
     
@@ -100,6 +113,11 @@ void player::update(ofColor _background){
     
     
     
+    
+    if (!movedYet) { // If there's no record of movement...
+    if (moveLEFT || moveRIGHT) movedYet = true; //...set the record if the player moves.
+    else if (whySoStill <= whySoStillMax) whySoStill++; // Otherwise advance the counter to cue the movement instructions.
+    }
     
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
@@ -298,6 +316,19 @@ void player::draw(){
     if (youSpinMeRightRound) {
         // If so, we translate the origin to the center of the architecture and rotate the triangle about the origin:
         ofTranslate(ofGetWidth()/2+shiftX, ofGetHeight()/2);
+        
+        // Draw arrow keys to cue the player if needed:
+        ofSetColor(instructions);
+        ofNoFill();
+        ofSetLineWidth(5);
+        ofRect(-125, -75, 75, 50);
+        ofRect(125-75, -75, 75, 50);
+        ofFill();
+        // Left arrow key:
+        ofTriangle(-115, -75+(50/2), -65, -75+(50/2)-20, -65, -75+(50/2)+20);
+        // Right arrow key:
+        ofTriangle(115, -75+(50/2), 65, -75+(50/2)-20, 65, -75+(50/2)+20);
+        ofSetColor(cPlayer);
         
         // Store the rotation data to make new coordinates for when we enable free movement. This preserves the position of the player when we switch modes (maybe it would have been easier just to do rotation this way too, but oh well):
         // IMPORTANT: THESE COORDINATES ARE FOR THE CENTER OF THE TRIANGLE!
