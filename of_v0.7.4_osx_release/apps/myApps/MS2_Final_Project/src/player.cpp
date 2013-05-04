@@ -13,8 +13,12 @@
 void player::setup(){
     
     wide = 20;
+    wideSoul = wide;
+    wideSoulVel = 0.5;
+    soulMultiplier = 2;
     tall = powf((powf(wide, 2)-powf(wide/2, 2)), 0.5); // Use the Pythagorian theorem to calculate the height so that the triangle will be equilateral.
-    pixelSpacer = 5;
+    tallSoul = tall;
+    pixelSpacer = 10;
     xPos = ofGetWidth()/2-(wide/2)-3;
     yPos = ofGetHeight()/2-70;
     xVel = 5;
@@ -119,7 +123,10 @@ void player::update(ofColor _background){
     // If the player moves offscreen:
     if (xPos < -wide || xPos > ofGetWidth() || yPos < -tall || yPos > ofGetHeight()) {
         // First, prevent a pixel check since the player is offscreen:
-        cUP = cDOWN = cLEFT = cRIGHT = (0,0,0);
+        cUP = (0,0,0);
+        cDOWN = (0,0,0);
+        cLEFT = (0,0,0);
+        cRIGHT = (0,0,0);
         // Then shift the player's position to the other side:
         if (xPos < -wide) xPos = ofGetWidth()-wide;
         if (xPos > ofGetWidth()) xPos = 0;
@@ -175,6 +182,22 @@ void player::update(ofColor _background){
     
     // End rotation behavior.
     //-------------------------------------
+    // Start soul behavior.
+    
+    
+    
+    
+    // The size of the "soul" triangle fluctuates between two limits:
+    wideSoul += wideSoulVel;
+    tallSoul = powf((powf(wideSoul, 2)-powf(wideSoul/2, 2)), 0.5); // Use the Pythagorian theorem to calculate the height so that the triangle will be equilateral.
+    
+    if (wideSoul >= wide*soulMultiplier || wideSoul <= wide) wideSoulVel *= -1;
+    
+    
+    
+    
+    // End soul behavior.
+    //-------------------------------------
     // New stuff goes here.
     
     
@@ -199,25 +222,38 @@ void player::draw(){
      ofLine(int(xPos+wide+pixelSpacer), int(yPos+tall/2), int(xPos+wide+pixelSpacer)+10, int(yPos+tall/2)); // RIGHT
      */
     
-    // Store the color above the player:
-    cUP.r = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
-    cUP.g = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
-    cUP.b = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+    // Check if the player is onscreen, and if so, store the pixel data:
+    if (xPos >= 0 && xPos <= ofGetWidth()-wide && yPos >= 0 && yPos <= ofGetHeight()-tall) {
+        
+        // Store the color above the player:
+        cUP.r = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
+        cUP.g = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
+        cUP.b = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+        
+        // Store the color below the player:
+        cDOWN.r = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
+        cDOWN.g = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
+        cDOWN.b = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+        
+        // Store the color left of the player:
+        cLEFT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3];
+        cLEFT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 1];
+        cLEFT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 2];
+        
+        // Store the color right of the player:
+        cRIGHT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3];
+        cRIGHT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 1];
+        cRIGHT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 2];
+        
+    }
     
-    // Store the color below the player:
-    cDOWN.r = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
-    cDOWN.g = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
-    cDOWN.b = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
-    
-    // Store the color left of the player:
-    cLEFT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3];
-    cLEFT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 1];
-    cLEFT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 2];
-    
-    // Store the color right of the player:
-    cRIGHT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3];
-    cRIGHT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 1];
-    cRIGHT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 2];
+    // If the player is not onscreen, don't check the pixel data (this prevents crashes):
+    else {
+        cUP = (0,0,0);
+        cDOWN = (0,0,0);
+        cLEFT = (0,0,0);
+        cRIGHT = (0,0,0);
+    }
     
     // Print the color data:
     //cout<<"UP = "<<cUP<<"; DOWN = "<<cDOWN<<"; LEFT = "<<cLEFT<<"; RIGHT = "<<cRIGHT<<"; cPlayer = "<<cPlayer<<endl;
@@ -233,6 +269,9 @@ void player::draw(){
     ofTranslate(xPos+wide/2, yPos+tall/2);
     ofRotate(degrees);
     ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
+    ofNoFill();
+    ofSetLineWidth(2);
+    ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2);
     ofPopMatrix();
     ofSetColor(255);
     

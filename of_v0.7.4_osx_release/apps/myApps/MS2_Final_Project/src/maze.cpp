@@ -120,5 +120,6 @@ void maze::draw(ofColor _collider){
     // end maze
     
     ofSetColor(255);
+    ofSetLineWidth(1);
     
 }

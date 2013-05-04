@@ -34,6 +34,10 @@ void testApp::draw(){
     
     player.draw();
     
+    // Housekeeping:
+    ofSetColor(255);
+    ofSetLineWidth(1);
+    
 }
 
 //--------------------------------------------------------------

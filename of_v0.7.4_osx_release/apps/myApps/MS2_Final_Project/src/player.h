@@ -21,10 +21,14 @@ public:
     
     float xPos;
     float yPos;
-    float xVel;
-    float yVel;
-    float wide;
+    int xVel;
+    int yVel;
+    int wide;
+    float wideSoul; // Control the width of the soul emanation (of course!).
+    float wideSoulVel; // Control the changing size of the soul.
+    float soulMultiplier; // How much can the soul exceed the triangle?
     float tall;
+    float tallSoul;
     int pixelSpacer; // Give sufficient distance from the triangle when checking the pixel data that the rotation won't screw things up.
     bool moveUP;
     bool moveDOWN;
