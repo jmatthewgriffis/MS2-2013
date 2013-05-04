@@ -104,6 +104,7 @@ void player::update(ofColor _background){
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
     screenGrab.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
     
+    
     /* We're going to compare the color of the player with the color of the surrounding environment and use that to control movement. However, the player/environmental color changes and there is a tiny bit of lag before the pixel data updates. This could prevent the collision from registering, so we use some mathematical jiujitsu. Instead of checking if the pixel data returns the identical color as the player, we check if it's within a certain range (big enough to cover the lag). */
     
     if ((fabs(cPlayer.r-cUP.r) <= closeEnough) && (fabs(cPlayer.g-cUP.g) <= closeEnough) && (fabs(cPlayer.b-cUP.b) <= closeEnough)) cUPdiff = false;
@@ -115,14 +116,27 @@ void player::update(ofColor _background){
     if ((fabs(cPlayer.r-cRIGHT.r) <= closeEnough) && (fabs(cPlayer.g-cRIGHT.g) <= closeEnough) && (fabs(cPlayer.b-cRIGHT.b) <= closeEnough)) cRIGHTdiff = false;
     else cRIGHTdiff = true;
     
-    if (youSpinMeRightRound) {
-        
+    
+    // Now we proceed to the movement itself. At first, the player is trapped, able only to rotate about the center. We need to check if escape has been achieved:
+    if (suddenFreedom == true) {
+        // We set the player's position equal to the position reached when he or she broke free of the hexagon:
+        xPos = ofGetWidth()/2+shiftX-rotX;
+        yPos = ofGetHeight()/2+rotY;
+        // Then we turn off these booleans so they don't affect the position or movement any further:
+        youSpinMeRightRound = false;
+        suddenFreedom = false;
     }
+    
+    // When trapped, the player can only rotate about the hexagon in the center of the screen:
+    if (youSpinMeRightRound) {
+        if (moveLEFT) degrees -= spinMeFaster;
+        if (moveRIGHT) degrees += spinMeFaster;
+        if (degrees > 360) degrees = 0;
+        if (degrees < 0) degrees = 360;
+    }
+    // Escaping the center enables free motion:
     else {
-        
-        // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player:
-        
-        // But first, check if a ghost, and if so allow movement regardless:
+        // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player. But first, check if a ghost, and if so allow movement regardless:
         if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
         
         if (moveUP == true && cUPdiff) yPos += -yVel;
@@ -151,29 +165,14 @@ void player::update(ofColor _background){
     
     // End collision/movement behavior.
     //-------------------------------------
-    // Start rotation behavior.
-    
-    if (suddenFreedom == true) {
-        xPos = ofGetWidth()/2+shiftX-rotX;
-        yPos = ofGetHeight()/2+rotY;
-        youSpinMeRightRound = false;
-        suddenFreedom = false;
-    }
-    
-    cout<<"rotX = "<<rotX<<"; rotY = "<<rotY<<"; xPos = "<<xPos<<"; yPos = "<<yPos<<endl;
-    //cout<<"freedom="<<suddenFreedom<<"; youspinme="<<youSpinMeRightRound<<endl;
+    // Start non-moving rotation behavior.
     
     
-    // We'll set the rotation based on what directions are pressed.
-    // First, we check if movement is restricted.
-    if (youSpinMeRightRound) {
-        if (moveLEFT) degrees -= spinMeFaster;
-        if (moveRIGHT) degrees += spinMeFaster;
-        if (degrees > 360) degrees = 0;
-        if (degrees < 0) degrees = 360;
-    }
-    else { // Free movement is allowed?
-        // If no directions are pressed, wait a bit, then rotate:
+    
+    
+    // Let's make the triangle rotate about its center in the direction of movement. First, we check if movement is restricted:
+    if (!youSpinMeRightRound) { // Free movement is allowed?
+        // But what if the player presses no controls? Let's do a nice idling animation. If no directions are pressed, wait a bit, then rotate:
         if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
             if (rotateWait > 0) rotateWait--; // Deplete the timer...
             else degrees += degreesVel; // ...then start rotating.
@@ -210,7 +209,7 @@ void player::update(ofColor _background){
     
     
     
-    // End rotation behavior.
+    // End non-moving rotation behavior.
     //-------------------------------------
     // Start soul behavior.
     
@@ -292,7 +291,6 @@ void player::draw(){
     
     if (ghost == true) ofSetColor(cGhost);
     else ofSetColor(cPlayer);
-    //ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
     
     // We'll translate the origin to achieve two kinds of rotation:
     ofPushMatrix();
@@ -306,22 +304,21 @@ void player::draw(){
         rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall/2);
         rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall/2);
 
-        ofLine(-rotX, rotY, 0, 0);
+        //ofLine(-rotX, rotY, 0, 0); // Debug - draw a line from the center to the new coordinates.
         ofRotate(degrees);
-        ofTriangle(-wide/2, shiftY+tall, wide/2, shiftY+tall, 0, shiftY);
+        ofTriangle(-wide/2, shiftY+tall, wide/2, shiftY+tall, 0, shiftY); // The player.
         ofNoFill();
         ofSetLineWidth(2);
-        ofTriangle(-wideSoul/2, shiftY+tallSoul/2+tall/2, wideSoul/2, shiftY+tallSoul/2+tall/2, 0, shiftY-tallSoul/2+tall/2);
+        ofTriangle(-wideSoul/2, shiftY+tallSoul/2+tall/2, wideSoul/2, shiftY+tallSoul/2+tall/2, 0, shiftY-tallSoul/2+tall/2); // The soul.
     }
     // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
     else {
-        //ofTranslate(xPos+wide/2, yPos+tall/2);
         ofTranslate(xPos, yPos);
         ofRotate(degrees);
-        ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2);
+        ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2); // The player.
         ofNoFill();
         ofSetLineWidth(2);
-        ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2);
+        ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2); // The soul.
     }
     ofPopMatrix();
     ofSetColor(255);
