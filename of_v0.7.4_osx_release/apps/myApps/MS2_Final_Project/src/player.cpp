@@ -20,7 +20,7 @@ void player::setup(){
     soulMultiplier = 2;
     tall = powf((powf(wide, 2)-powf(wide/2, 2)), 0.5); // Use the Pythagorian theorem to calculate the height so that the triangle will be equilateral.
     tallSoul = tall;
-    pixelSpacer = 10;
+    pixelSpacer = 15;
     xPos = ofGetWidth()/2-(wide/2)+shiftX;
     yPos = ofGetHeight()/2+shiftY;
     xVel = 5;
@@ -147,17 +147,17 @@ void player::update(ofColor _background){
     }
     
     // If the player moves offscreen:
-    if (xPos < -wide || xPos > ofGetWidth() || yPos < -tall || yPos > ofGetHeight()) {
+    if (xPos < -wide/2 || xPos > ofGetWidth()+wide/2 || yPos < -tall/2 || yPos > ofGetHeight()+tall/2) {
         // First, prevent a pixel check since the player is offscreen:
         cUP = (0,0,0);
         cDOWN = (0,0,0);
         cLEFT = (0,0,0);
         cRIGHT = (0,0,0);
         // Then shift the player's position to the other side:
-        if (xPos < -wide) xPos = ofGetWidth()-wide;
-        if (xPos > ofGetWidth()) xPos = 0;
-        if (yPos < -tall) yPos = ofGetHeight()-tall;
-        if (yPos > ofGetHeight()) yPos = 0;
+        if (xPos < -wide/2) xPos = ofGetWidth()-wide/2;
+        if (xPos > ofGetWidth()+wide/2) xPos = wide/2;
+        if (yPos < -tall/2) yPos = ofGetHeight()-tall/2;
+        if (yPos > ofGetHeight()+tall/2) yPos = tall/2;
     }
     
     
@@ -245,34 +245,34 @@ void player::draw(){
     
     // Debug the location of the relevant pixels:
     /*
-     ofLine(int(xPos+wide/2), int(yPos-pixelSpacer), int(xPos+wide/2), int(yPos-pixelSpacer)-10); // UP
-     ofLine(int(xPos+wide/2), int(yPos+tall+pixelSpacer), int(xPos+wide/2), int(yPos+tall+pixelSpacer)+10); // DOWN
-     ofLine(int(xPos-pixelSpacer), int(yPos+tall/2), int(xPos-pixelSpacer)-10, int(yPos+tall/2)); // LEFT
-     ofLine(int(xPos+wide+pixelSpacer), int(yPos+tall/2), int(xPos+wide+pixelSpacer)+10, int(yPos+tall/2)); // RIGHT
+     ofLine(int(xPos), int(yPos-pixelSpacer), int(xPos), int(yPos-pixelSpacer)-10); // UP
+     ofLine(int(xPos), int(yPos+pixelSpacer), int(xPos), int(yPos+pixelSpacer)+10); // DOWN
+     ofLine(int(xPos-pixelSpacer), int(yPos), int(xPos-pixelSpacer)-10, int(yPos)); // LEFT
+     ofLine(int(xPos+pixelSpacer), int(yPos), int(xPos+pixelSpacer)+10, int(yPos)); // RIGHT
      */
     
     // Check if the player is onscreen, and if so, store the pixel data:
-    if (xPos >= 0 && xPos <= ofGetWidth()-wide && yPos >= 0 && yPos <= ofGetHeight()-tall) {
+    if (xPos >= wide/2+pixelSpacer && xPos <= ofGetWidth()-wide/2-pixelSpacer && yPos >= tall/2+pixelSpacer && yPos <= ofGetHeight()-tall/2-pixelSpacer) {
         
         // Store the color above the player:
-        cUP.r = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
-        cUP.g = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
-        cUP.b = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+        cUP.r = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos)) * 3];
+        cUP.g = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos)) * 3 + 1];
+        cUP.b = pixels[ (int(yPos-pixelSpacer) * screenGrab.width + int(xPos)) * 3 + 2];
         
         // Store the color below the player:
-        cDOWN.r = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3];
-        cDOWN.g = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 1];
-        cDOWN.b = pixels[ (int(yPos+tall+pixelSpacer) * screenGrab.width + int(xPos+wide/2)) * 3 + 2];
+        cDOWN.r = pixels[ (int(yPos+pixelSpacer) * screenGrab.width + int(xPos)) * 3];
+        cDOWN.g = pixels[ (int(yPos+pixelSpacer) * screenGrab.width + int(xPos)) * 3 + 1];
+        cDOWN.b = pixels[ (int(yPos+pixelSpacer) * screenGrab.width + int(xPos)) * 3 + 2];
         
         // Store the color left of the player:
-        cLEFT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3];
-        cLEFT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 1];
-        cLEFT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 2];
+        cLEFT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos-pixelSpacer)) * 3];
+        cLEFT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 1];
+        cLEFT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos-pixelSpacer)) * 3 + 2];
         
         // Store the color right of the player:
-        cRIGHT.r = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3];
-        cRIGHT.g = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 1];
-        cRIGHT.b = pixels[ (int(yPos+tall/2) * screenGrab.width + int(xPos+wide+pixelSpacer)) * 3 + 2];
+        cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+pixelSpacer)) * 3];
+        cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+pixelSpacer)) * 3 + 1];
+        cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+pixelSpacer)) * 3 + 2];
         
     }
     
@@ -303,7 +303,7 @@ void player::draw(){
         // IMPORTANT: THESE COORDINATES ARE FOR THE CENTER OF THE TRIANGLE!
         rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall/2);
         rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall/2);
-
+        
         //ofLine(-rotX, rotY, 0, 0); // Debug - draw a line from the center to the new coordinates.
         ofRotate(degrees);
         ofTriangle(-wide/2, shiftY+tall, wide/2, shiftY+tall, 0, shiftY); // The player.
@@ -324,32 +324,3 @@ void player::draw(){
     ofSetColor(255);
     
 }
-
-/* Store this old color detection code for the time being, just in case:
- // Original debug line set:
- ofLine(int(xPos), int(yPos-tall/2), int(xPos), int(yPos-tall/2)-10); // UP
- ofLine(int(xPos), int(yPos+tall), int(xPos), int(yPos+tall)+10); // DOWN
- ofLine(int(xPos-wide/2), int(yPos), int(xPos-wide/2)-10, int(yPos)); // LEFT
- ofLine(int(xPos+wide), int(yPos), int(xPos+wide)+10, int(yPos)); // RIGHT
- 
- // Original pixel set:
- // Store the color above the player:
- cUP.r = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3];
- cUP.g = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 1];
- cUP.b = pixels[ (int(yPos-tall/2) * screenGrab.width + int(xPos)) * 3 + 2];
- 
- // Store the color below the player:
- cDOWN.r = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3];
- cDOWN.g = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3 + 1];
- cDOWN.b = pixels[ (int(yPos+tall) * screenGrab.width + int(xPos)) * 3 + 2];
- 
- // Store the color left of the player:
- cLEFT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3];
- cLEFT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 1];
- cLEFT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos-wide/2)) * 3 + 2];
- 
- // Store the color right of the player:
- cRIGHT.r = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3];
- cRIGHT.g = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 1];
- cRIGHT.b = pixels[ (int(yPos) * screenGrab.width + int(xPos+wide)) * 3 + 2];
- */
