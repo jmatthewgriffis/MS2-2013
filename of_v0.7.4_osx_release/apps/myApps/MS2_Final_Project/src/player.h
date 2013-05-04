@@ -32,6 +32,7 @@ public:
     bool moveRIGHT;
     ofColor background;
     ofColor cPlayer;
+    ofColor cGhost;
     ofColor cUP; // The color just above the player.
     ofColor cDOWN; // The color just below the player.
     ofColor cLEFT; // The color just left of the player.
@@ -52,6 +53,7 @@ public:
     int degreesVel; // Direction of rotation.
     int rotateWait; // Wait to rotate.
     int rotateWaitMax; // Default starting value for the timer.
+    bool ghost; // Move through solid objects.
     
 };
 

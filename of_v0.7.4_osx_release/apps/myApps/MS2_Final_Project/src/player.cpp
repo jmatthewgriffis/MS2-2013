@@ -22,6 +22,7 @@ void player::setup(){
     cPlayer.r = 255;
     cPlayer.g = 255;
     cPlayer.b = 255;
+    cGhost = cPlayer;
     closeEnough = 5;
     cVelR = 1;
     cVelRdelay = 0;
@@ -79,6 +80,9 @@ void player::update(ofColor _background){
     // Print the RGB values of the player color:
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
     
+    cGhost = cPlayer;
+    cGhost.a = 75;
+    
     
     
     
@@ -103,6 +107,10 @@ void player::update(ofColor _background){
     else cRIGHTdiff = true;
     
     // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player:
+    
+    // But first, check if a ghost, and if so allow movement regardless:
+    if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
+    
     if (moveUP == true && cUPdiff) yPos += -yVel;
     if (moveDOWN == true && cDOWNdiff) yPos += yVel;
     if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
@@ -216,7 +224,8 @@ void player::draw(){
     
     // End color analysis.
     
-    ofSetColor(cPlayer);
+    if (ghost == true) ofSetColor(cGhost);
+    else ofSetColor(cPlayer);
     //ofTriangle(xPos, yPos+tall, xPos+wide, yPos+tall, xPos+wide/2, yPos);
     
     // We'll translate the origin so we can rotate the triangle about its center:

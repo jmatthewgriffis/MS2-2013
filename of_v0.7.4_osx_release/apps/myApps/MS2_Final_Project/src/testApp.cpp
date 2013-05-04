@@ -6,13 +6,14 @@ void testApp::setup(){
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
+    ofEnableAlphaBlending();
     
     background = (200,200,200);
     
     player.setup();
     
     collider = player.cPlayer;
-        
+    
 }
 
 //--------------------------------------------------------------
@@ -63,6 +64,11 @@ void testApp::keyPressed(int key){
         case OF_KEY_RIGHT:
             player.moveRIGHT = true;
             break;
+            
+        case 'g':
+        case 'G':
+            player.ghost = true;
+            break;
     }
     
 }
@@ -94,6 +100,11 @@ void testApp::keyReleased(int key){
         case 'D':
         case OF_KEY_RIGHT:
             player.moveRIGHT = false;
+            break;
+            
+        case 'g':
+        case 'G':
+            player.ghost = false;
             break;
     }
     
