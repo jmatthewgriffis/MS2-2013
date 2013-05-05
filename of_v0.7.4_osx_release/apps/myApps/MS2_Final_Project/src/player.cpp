@@ -23,15 +23,34 @@ void player::setup(){
     pixelSpacer = 15;
     xPos = ofGetWidth()/2-(wide/2)+shiftX;
     yPos = ofGetHeight()/2+shiftY;
+    rotX = xPos;
+    rotY = yPos;
     xVel = 5;
     yVel = 5;
+    ghost = false;
+    moveUP = false;
+    moveDOWN = false;
+    moveLEFT = false;
+    moveRIGHT = false;
+    youSpinMeRightRound = true;
+    spinMeFaster = 10;
+    suddenFreedom = false;
+    background = 0;
     cPlayer.r = 255;
     cPlayer.g = 255;
     cPlayer.b = 255;
     cGhost = cPlayer;
     instructions = cPlayer;
     instructions.a = 0; // Instructions are invisible at first.
+    cUP = 0;
+    cDOWN = 0;
+    cLEFT = 0;
+    cRIGHT = 0;
     closeEnough = 5;
+    cUPdiff = false;
+    cDOWNdiff = false;
+    cLEFTdiff = false;
+    cRIGHTdiff = false;
     cVelR = 1;
     cVelRdelay = 0;
     cVelG = 1;
@@ -43,10 +62,13 @@ void player::setup(){
     degreesVel = 1;
     rotateWaitMax = 180;
     rotateWait = rotateWaitMax;
-    youSpinMeRightRound = true;
-    spinMeFaster = 10;
+    movedYet = false;
+    instructMove = false;
     whySoStill = 0;
     whySoStillMax = 360;
+    instructEscape = false;
+    whyStillRotating = 0;
+    whyStillRotatingMax = whySoStillMax;
     
 }
 
@@ -100,7 +122,7 @@ void player::update(ofColor _background){
     instructions.g = cPlayer.g;
     instructions.b = cPlayer.b;
     if (!movedYet) {
-    if (whySoStill >= whySoStillMax && instructions.a < 254) instructions.a += 2;
+        if (whySoStill >= whySoStillMax && instructions.a < 254) instructions.a += 2;
     } // Instructions fade in on cue.
     else if (instructions.a > 1) instructions.a -= 2; // If the player moves and the instructions are visible, they fade out.
     
@@ -114,9 +136,19 @@ void player::update(ofColor _background){
     
     
     
-    if (!movedYet) { // If there's no record of movement...
-    if (moveLEFT || moveRIGHT) movedYet = true; //...set the record if the player moves.
-    else if (whySoStill <= whySoStillMax) whySoStill++; // Otherwise advance the counter to cue the movement instructions.
+    if (youSpinMeRightRound) { // If we're in the first stage of motion...
+        if (!movedYet) { // If there's no record of movement...
+            if (moveLEFT || moveRIGHT) movedYet = true; //...set the record if the player moves.
+            else if (whySoStill < whySoStillMax) whySoStill++; // Otherwise advance the counter to cue the movement instructions.
+        }
+        // If the player spins for a certain duration, provide another instruction:
+        else if (!instructEscape) {
+            if (whyStillRotating < whyStillRotatingMax) whyStillRotating++;
+            else instructEscape = true;
+        }
+        
+        // If the player rotates to face the gap and presses UP, enable free movement:
+        if (degrees >= 215 && degrees <= 265 && moveUP) suddenFreedom = true;
     }
     
     // Take the data from the screen and convert it into an image. We'll use the pixel data for gameplay:
@@ -334,6 +366,14 @@ void player::draw(){
         // IMPORTANT: THESE COORDINATES ARE FOR THE CENTER OF THE TRIANGLE!
         rotX = sin(ofDegToRad(degrees-180))*fabs(shiftY+tall/2);
         rotY = sin(ofDegToRad(270-degrees))*fabs(shiftY+tall/2);
+        
+        // Draw an exclamation mark to hint at the player's next move:
+        if (instructEscape) {
+            if (degrees >= 215 && degrees <= 265) {
+                ofRect(-rotX-(5/2), rotY-40, 5, -20);
+                ofCircle(-rotX+0.5, rotY-35, 3);
+            }
+        }
         
         //ofLine(-rotX, rotY, 0, 0); // Debug - draw a line from the center to the new coordinates.
         ofRotate(degrees);

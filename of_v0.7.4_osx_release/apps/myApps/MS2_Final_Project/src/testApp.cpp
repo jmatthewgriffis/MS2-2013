@@ -6,6 +6,7 @@ void testApp::setup(){
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
+    ofSetCircleResolution(60);
     ofEnableAlphaBlending();
     
     background = (200,200,200);
@@ -69,20 +70,15 @@ void testApp::keyPressed(int key){
             player.moveRIGHT = true;
             break;
             
+            // Restart the game:
+        case 'r':
+            setup();
+            break;
+            
             // Debug. Comment this out later.
         case 'g':
         case 'G':
             player.ghost = true;
-            break;
-            
-            // Debug. Comment this out later.
-        case 'm':
-            player.suddenFreedom = !player.suddenFreedom;
-            break;
-            
-            // Debug? Consider commenting this out later.
-        case 'r':
-            setup();
             break;
     }
     

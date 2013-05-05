@@ -21,11 +21,6 @@ public:
     
     int shiftX; // Shift the xPos by this much.
     int shiftY; // Shift the yPos by this much, and get up to no good.
-    float rotX, rotY; // Store the intial rotation information in coordinates.
-    float xPos;
-    float yPos;
-    int xVel;
-    int yVel;
     int wide;
     float wideSoul; // Control the width of the soul emanation (of course!).
     float wideSoulVel; // Control the changing size of the soul.
@@ -33,6 +28,12 @@ public:
     float tall;
     float tallSoul;
     int pixelSpacer; // Give sufficient distance from the triangle when checking the pixel data that the rotation won't screw things up.
+    float xPos;
+    float yPos;
+    float rotX, rotY; // Store the intial rotation information in coordinates.
+    int xVel;
+    int yVel;
+    bool ghost; // Move through solid objects.
     bool moveUP;
     bool moveDOWN;
     bool moveLEFT;
@@ -42,8 +43,8 @@ public:
     bool suddenFreedom; // Move freely.
     ofColor background;
     ofColor cPlayer;
-    ofColor instructions; // Cues appear onscreen if needed.
     ofColor cGhost; // Control the player's alpha value when a ghost.
+    ofColor instructions; // Cues appear onscreen if needed.
     ofColor cUP; // The color just above the player.
     ofColor cDOWN; // The color just below the player.
     ofColor cLEFT; // The color just left of the player.
@@ -62,13 +63,15 @@ public:
     int randLimit; // Set the upper limit for random determinatino of color change timing.
     int degrees; // Rotate the triangle based on movement.
     int degreesVel; // Direction of rotation.
-    int rotateWait; // Wait to rotate.
     int rotateWaitMax; // Default starting value for the timer.
-    bool ghost; // Move through solid objects.
+    int rotateWait; // Wait to rotate.
     bool movedYet; // Only false until the player presses a key.
     bool instructMove; // The player needs instruction on how to move?
     int whySoStill; // Advances if no one presses a key at first.
     int whySoStillMax; // Upper limit of the counter.
+    bool instructEscape; // True if the player spins for a while without breaking free.
+    int whyStillRotating; // Advances if the player rotates but not does escape.
+    int whyStillRotatingMax; // Upper limit of the counter.
     
 };
 
