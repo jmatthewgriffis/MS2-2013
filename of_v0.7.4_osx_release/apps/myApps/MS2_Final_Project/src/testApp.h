@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "player.h"
-#include "maze.h"
+#include "rm_maze.h"
 
 class testApp : public ofBaseApp{
     
@@ -26,6 +26,6 @@ public:
     
     // Call some classes:
     player player; // The...player.
-    maze maze; // The maze screen.
+    rm_maze maze; // The maze screen.
     
 };

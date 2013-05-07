@@ -1,5 +1,5 @@
 //
-//  maze.cpp
+//  rm_maze.cpp
 //  MS2_Final_Project
 //
 //  Created by J. Matthew Griffis on 5/1/13.
@@ -7,20 +7,20 @@
 //
 
 #include "ofMain.h"
-#include "maze.h"
+#include "rm_maze.h"
 
 //--------------------------------------------------------------
-void maze::setup(){
+void rm_maze::setup(){
     
 }
 
 //--------------------------------------------------------------
-void maze::update(){
+void rm_maze::update(){
     
 }
 
 //--------------------------------------------------------------
-void maze::draw(ofColor _collider){
+void rm_maze::draw(ofColor _collider){
     
     collider = _collider;
     
