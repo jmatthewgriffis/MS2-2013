@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_win.h"
+
+//--------------------------------------------------------------
+void rm_win::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_win::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_win::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}

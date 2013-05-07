@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_discarded.h"
+
+//--------------------------------------------------------------
+void rm_discarded::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_discarded::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_discarded::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}

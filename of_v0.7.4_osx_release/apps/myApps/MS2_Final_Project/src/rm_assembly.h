@@ -9,6 +9,16 @@
 #ifndef __MS2_Final_Project__rm_assembly__
 #define __MS2_Final_Project__rm_assembly__
 
-#include <iostream>
+class rm_assembly { // This room assembles and disassembles itself.
+    
+public:
+    
+    void setup();
+    void update();
+    void draw(ofColor _collider);
+    
+    ofColor collider;
+    
+};
 
 #endif /* defined(__MS2_Final_Project__rm_assembly__) */

@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_generator.h"
+
+//--------------------------------------------------------------
+void rm_generator::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_generator::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_generator::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}

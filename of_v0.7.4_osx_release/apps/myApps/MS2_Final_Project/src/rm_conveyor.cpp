@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_conveyor.h"
+
+//--------------------------------------------------------------
+void rm_conveyor::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_conveyor::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_conveyor::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}

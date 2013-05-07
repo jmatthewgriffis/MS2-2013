@@ -9,6 +9,16 @@
 #ifndef __MS2_Final_Project__rm_discarded__
 #define __MS2_Final_Project__rm_discarded__
 
-#include <iostream>
+class rm_discarded { // This room contains discarded triangles.
+    
+public:
+    
+    void setup();
+    void update();
+    void draw(ofColor _collider);
+    
+    ofColor collider;
+    
+};
 
 #endif /* defined(__MS2_Final_Project__rm_discarded__) */

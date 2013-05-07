@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_music.h"
+
+//--------------------------------------------------------------
+void rm_music::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_music::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_music::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}

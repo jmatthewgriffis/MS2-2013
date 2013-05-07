@@ -6,4 +6,28 @@
 //
 //
 
+#include "ofMain.h"
 #include "rm_blocked.h"
+
+//--------------------------------------------------------------
+void rm_blocked::setup(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_blocked::update(){
+    
+}
+
+//--------------------------------------------------------------
+void rm_blocked::draw(ofColor _collider){
+    
+    collider = _collider;
+    
+    ofSetColor(collider);
+    
+    
+    
+    ofSetColor(255);
+    
+}
