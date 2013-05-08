@@ -381,6 +381,7 @@ void player::draw(){
         ofNoFill();
         ofSetLineWidth(2);
         ofTriangle(-wideSoul/2, shiftY+tallSoul/2+tall/2, wideSoul/2, shiftY+tallSoul/2+tall/2, 0, shiftY-tallSoul/2+tall/2); // The soul.
+        ofFill();
     }
     // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
     else {
@@ -390,6 +391,7 @@ void player::draw(){
         ofNoFill();
         ofSetLineWidth(2);
         ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2); // The soul.
+        ofFill();
     }
     ofPopMatrix();
     ofSetColor(255);

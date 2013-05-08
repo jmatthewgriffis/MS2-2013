@@ -10,24 +10,40 @@
 #include "rm_blocked.h"
 
 //--------------------------------------------------------------
-void rm_blocked::setup(){
+void rm_blocked::setup(int _thisLevel){
+    
+    thisLevel = _thisLevel;
     
 }
 
 //--------------------------------------------------------------
-void rm_blocked::update(){
+void rm_blocked::update(int _currentLevel){
+    
+    currentLevel = _currentLevel;
+    
+    if (currentLevel == thisLevel) {
+        
+        // Update goes here.
+        
+    }
     
 }
 
 //--------------------------------------------------------------
 void rm_blocked::draw(ofColor _collider){
     
-    collider = _collider;
-    
-    ofSetColor(collider);
-    
-    
-    
-    ofSetColor(255);
+    if (currentLevel == thisLevel) {
+        
+        // Placeholder: draw the current level number onscreen:
+        ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
+        
+        collider = _collider;
+        
+        ofSetColor(collider);
+        
+        // Draw goes here.
+        
+        ofSetColor(255);
+    }
     
 }

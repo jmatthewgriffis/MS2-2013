@@ -13,10 +13,11 @@ class rm_blocked { // This room blocks further progress.
     
 public:
     
-    void setup();
-    void update();
+    void setup(int _thisLevel);
+    void update(int _currentLevel);
     void draw(ofColor _collider);
     
+    int thisLevel, currentLevel;
     ofColor collider;
     
 };

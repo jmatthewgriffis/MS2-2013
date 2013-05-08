@@ -33,9 +33,20 @@ public:
     
     ofColor background;
     ofColor collider; // Prevents player movement.
+    int currentLevel; // Use this to control the game screen.
+    int numLevels; // How many game screens?
     
     // Call some classes:
-    player player; // The...player.
-    rm_maze maze; // The maze screen.
+    player player;
+    rm_assembly assembly;
+    rm_blocked blocked;
+    rm_conveyor conveyor;
+    rm_discarded discarded;
+    rm_generator generator;
+    rm_hallway hallway;
+    rm_maze maze;
+    rm_music music;
+    rm_time time;
+    rm_win win;
     
 };

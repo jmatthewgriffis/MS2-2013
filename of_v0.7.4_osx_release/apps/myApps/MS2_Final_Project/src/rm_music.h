@@ -13,10 +13,11 @@ class rm_music { // This room contains a music player.
     
 public:
     
-    void setup();
-    void update();
+    void setup(int _thisLevel);
+    void update(int _currentLevel);
     void draw(ofColor _collider);
     
+    int thisLevel, currentLevel;
     ofColor collider;
     
 };

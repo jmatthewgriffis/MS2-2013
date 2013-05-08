@@ -13,10 +13,11 @@ class rm_win { // This room is the win screen.
     
 public:
     
-    void setup();
-    void update();
+    void setup(int _thisLevel);
+    void update(int _currentLevel);
     void draw(ofColor _collider);
     
+    int thisLevel, currentLevel;
     ofColor collider;
     
 };
