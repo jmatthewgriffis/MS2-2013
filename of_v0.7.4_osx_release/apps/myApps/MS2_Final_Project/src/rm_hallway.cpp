@@ -10,9 +10,11 @@
 #include "rm_hallway.h"
 
 //--------------------------------------------------------------
-void rm_hallway::setup(int _thisLevel){
+void rm_hallway::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
+    gap = thickWall;
     
 }
 
@@ -35,13 +37,16 @@ void rm_hallway::draw(ofColor _collider){
     if (currentLevel == thisLevel) {
         
         // Placeholder: draw the current level number onscreen:
-        ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
+        //ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
         
         collider = _collider;
         
         ofSetColor(collider);
         
-        // Draw goes here.
+        ofRect(ofGetWidth()/2, 0, ofGetWidth()/2, thickWall); // Top
+        ofRect(0, ofGetHeight()-thickWall, ofGetWidth()/4, thickWall); // Bottom-left
+        ofRect(ofGetWidth()/4+gap, ofGetHeight()-thickWall, ofGetWidth()-(ofGetWidth()/4+gap), thickWall); // Bottom-right
+        ofRect(0, 0, thickWall, ofGetHeight()); // Left
         
         ofSetColor(255);
     }

@@ -35,6 +35,7 @@ public:
     ofColor collider; // Prevents player movement.
     int currentLevel; // Use this to control the game screen.
     int numLevels; // How many game screens?
+    int thickWall; // Thickness of border walls.
     
     // Call some classes:
     player player;

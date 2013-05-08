@@ -11,8 +11,10 @@ void testApp::setup(){
     
     currentLevel = 5;
     numLevels = 11;
+    thickWall = 22;
     
-    background = (200,200,200);
+    //background = (200,200,200);
+    background = 0,0,0;
     player.setup();
     collider = player.cPlayer;
     
@@ -24,15 +26,15 @@ void testApp::setup(){
      
      Note that the passageways between rooms may not match up to each other in all configurations so it may be necessary to revise the code for moving between rooms when changing their numbering (see the update function below). */
     assembly.setup(7);
-    blocked.setup(1);
+    blocked.setup(1, thickWall);
     conveyor.setup(9);
-    discarded.setup(8);
+    discarded.setup(8); //need to do
     generator.setup(6);
-    hallway.setup(4);
+    hallway.setup(4, thickWall);
     maze.setup(5);
-    music.setup(2);
+    music.setup(2); //need to do
     time.setup(3);
-    win.setup(10);
+    win.setup(10); //need to do
     
 }
 
