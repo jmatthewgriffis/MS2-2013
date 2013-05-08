@@ -9,7 +9,7 @@ void testApp::setup(){
     ofSetCircleResolution(60);
     ofEnableAlphaBlending();
     
-    currentLevel = 0;
+    currentLevel = 5;
     numLevels = 11;
     
     background = (200,200,200);
@@ -22,7 +22,7 @@ void testApp::setup(){
      4-5-6
      7-8-9
      
-     Note that the passageways between rooms may not match up to each other in all configurations so it may be necessary to revise the code for moving between rooms when changing their numbering (see the player.update function). */
+     Note that the passageways between rooms may not match up to each other in all configurations so it may be necessary to revise the code for moving between rooms when changing their numbering (see the update function below). */
     assembly.setup(7);
     blocked.setup(1);
     conveyor.setup(9);
@@ -40,6 +40,22 @@ void testApp::setup(){
 void testApp::update(){
     
     player.update(background);
+    
+    /* We check if the player moves offscreen and if so cue a level change where appropriate, using the numbering system described above. Including closed paths, the map looks like this:
+     
+     1  2--3
+     |  |  |
+     4--5--6
+     |  |  |
+     7  8--9
+     
+     */
+    
+    if (player.screenUP && currentLevel > 3) currentLevel -= 3;
+    if (player.screenDOWN && currentLevel < 7) currentLevel += 3;
+    if (player.screenLEFT && currentLevel != 1 && currentLevel != 2 && currentLevel != 4 && currentLevel != 7 && currentLevel != 8) currentLevel--;
+    if (player.screenRIGHT && currentLevel != 1 && currentLevel != 3 && currentLevel != 6 && currentLevel != 7 && currentLevel != 9) currentLevel++;
+    
     collider = player.cPlayer;
     assembly.update(currentLevel);
     blocked.update(currentLevel);

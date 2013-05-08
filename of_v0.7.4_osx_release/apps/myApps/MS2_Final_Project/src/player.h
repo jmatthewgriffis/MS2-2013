@@ -34,10 +34,7 @@ public:
     int xVel;
     int yVel;
     bool ghost; // Move through solid objects.
-    bool moveUP;
-    bool moveDOWN;
-    bool moveLEFT;
-    bool moveRIGHT;
+    bool moveUP, moveDOWN, moveLEFT, moveRIGHT, screenUP, screenDOWN, screenLEFT, screenRIGHT;
     bool youSpinMeRightRound; // Rotate about the hexagon.
     int spinMeFaster; // Control the speed of constricted rotation.
     bool suddenFreedom; // Move freely.

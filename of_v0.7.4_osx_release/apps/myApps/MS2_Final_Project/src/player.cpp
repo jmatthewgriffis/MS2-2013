@@ -27,11 +27,7 @@ void player::setup(){
     rotY = yPos;
     xVel = 5;
     yVel = 5;
-    ghost = false;
-    moveUP = false;
-    moveDOWN = false;
-    moveLEFT = false;
-    moveRIGHT = false;
+    ghost = moveUP = moveDOWN = moveLEFT = moveRIGHT = screenUP = screenDOWN = screenLEFT = screenRIGHT = false;
     youSpinMeRightRound = true;
     spinMeFaster = 10;
     suddenFreedom = false;
@@ -47,10 +43,7 @@ void player::setup(){
     cLEFT = 0;
     cRIGHT = 0;
     closeEnough = 5;
-    cUPdiff = false;
-    cDOWNdiff = false;
-    cLEFTdiff = false;
-    cRIGHTdiff = false;
+    cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = false;
     cVelR = 1;
     cVelRdelay = 0;
     cVelG = 1;
@@ -196,6 +189,11 @@ void player::update(ofColor _background){
         
     }
     
+    // Set the screen change booleans to false (unless there's movement off the screen, as we're about to describe):
+    screenUP = false;
+    screenDOWN = false;
+    screenLEFT = false;
+    screenRIGHT = false;
     // If the player moves offscreen:
     if (xPos < -wide/2 || xPos > ofGetWidth()+wide/2 || yPos < -tall/2 || yPos > ofGetHeight()+tall/2) {
         // First, prevent a pixel check since the player is offscreen:
@@ -203,11 +201,23 @@ void player::update(ofColor _background){
         cDOWN = (0,0,0);
         cLEFT = (0,0,0);
         cRIGHT = (0,0,0);
-        // Then shift the player's position to the other side:
-        if (xPos < -wide/2) xPos = ofGetWidth()-wide/2;
-        if (xPos > ofGetWidth()+wide/2) xPos = wide/2;
-        if (yPos < -tall/2) yPos = ofGetHeight()-tall/2;
-        if (yPos > ofGetHeight()+tall/2) yPos = tall/2;
+        // Then shift the player's position to the other side, and cue a screen change if applicable:
+        if (xPos < -wide/2) {
+            xPos = ofGetWidth()-wide/2;
+            screenLEFT = true;
+        }
+        if (xPos > ofGetWidth()+wide/2) {
+            xPos = wide/2;
+            screenRIGHT = true;
+        }
+        if (yPos < -tall/2) {
+            yPos = ofGetHeight()-tall/2;
+            screenUP = true;
+        }
+        if (yPos > ofGetHeight()+tall/2) {
+            yPos = tall/2;
+            screenDOWN = true;
+        }
     }
     
     
