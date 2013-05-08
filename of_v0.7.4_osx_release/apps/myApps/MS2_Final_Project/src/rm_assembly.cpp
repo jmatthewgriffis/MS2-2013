@@ -35,14 +35,201 @@ void rm_assembly::draw(ofColor _collider){
     if (currentLevel == thisLevel) {
         
         // Placeholder: draw the current level number onscreen:
-        ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
+        //ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
         
         collider = _collider;
         
         ofSetColor(collider);
         
-        // Draw goes here.
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(186,475);
+        ofBezierVertex(217,478,250,485,281,489);
+        ofBezierVertex(274,481,262,474,253,470);
+        ofBezierVertex(257,481,264,490,270,499);
+        ofBezierVertex(267,501,263,505,259,506);
+        ofEndShape();
         
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(188,237);
+        ofBezierVertex(221,239,255,236,288,239);
+        ofBezierVertex(283,233,276,230,272,223);
+        ofBezierVertex(273,234,280,242,287,250);
+        ofBezierVertex(283,252,278,254,274,255);
+        ofEndShape();
+        
+        ofSetColor(collider);
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(357,334);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(461,515);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(671,515);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(775,334);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(671,153);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(461,153);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(246,205);
+        ofVertex(227,194);
+        ofVertex(331,13);
+        ofVertex(350,24);
+        ofVertex(246,205);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(409,585);
+        ofVertex(304,403);
+        ofVertex(323,392);
+        ofVertex(428,574);
+        ofVertex(409,585);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(704,526);
+        ofVertex(494,526);
+        ofVertex(494,504);
+        ofVertex(704,504);
+        ofVertex(704,526);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(848,628);
+        ofVertex(829,617);
+        ofVertex(934,436);
+        ofVertex(953,447);
+        ofVertex(848,628);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(854,357);
+        ofVertex(749,176);
+        ofVertex(768,165);
+        ofVertex(873,346);
+        ofVertex(854,357);
+        ofEndShape();
+        
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(628,103);
+        ofVertex(419,103);
+        ofVertex(419,81);
+        ofVertex(628,81);
+        ofVertex(628,103);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(548,121);
+        ofBezierVertex(548,139,549,157,548,174);
+        ofBezierVertex(538,174,531,162,524,154);
+        ofBezierVertex(533,165,552,177,563,163);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(756,280);
+        ofBezierVertex(737,282,722,287,704,291);
+        ofBezierVertex(706,283,709,275,712,267);
+        ofBezierVertex(712,276,703,290,714,294);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(882,499);
+        ofBezierVertex(864,499,840,485,825,475);
+        ofBezierVertex(824,479,824,484,826,488);
+        ofBezierVertex(829,469,834,467,854,462);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(600,494);
+        ofBezierVertex(600,480,600,464,595,452);
+        ofBezierVertex(583,457,574,466,562,471);
+        ofBezierVertex(579,449,594,433,620,448);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(381,468);
+        ofBezierVertex(399,468,421,450,436,440);
+        ofBezierVertex(427,434,414,435,404,434);
+        ofBezierVertex(430,436,429,443,429,466);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(1);
+        ofSetColor(66,108,255);
+        ofBeginShape();
+        ofVertex(304,126);
+        ofBezierVertex(322,133,340,140,358,147);
+        ofBezierVertex(367,150,376,150,381,157);
+        ofBezierVertex(372,159,362,159,352,159);
+        ofBezierVertex(362,160,384,164,392,157);
+        ofBezierVertex(389,150,384,145,378,139);
+        ofEndShape();
+        
+        ofFill();
         ofSetColor(255);
     }
     
