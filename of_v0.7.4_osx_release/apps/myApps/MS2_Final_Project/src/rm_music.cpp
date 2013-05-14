@@ -36,7 +36,7 @@ void rm_music::draw(ofColor _collider){
     if (currentLevel == thisLevel) {
         
         // Placeholder: draw the current level number onscreen:
-        ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
+        //ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
         
         collider = _collider;
         
@@ -48,6 +48,92 @@ void rm_music::draw(ofColor _collider){
         
         
         // Draw the room contents:
+        
+        ofPushMatrix();
+        
+        ofTranslate(0, 10);
+        
+        // Bottom of gramophone:
+        ofFill();
+        //ofSetColor(255,255,255);
+        ofBeginShape();
+        ofVertex(449,449);
+        ofVertex(50,449);
+        ofVertex(50,388);
+        ofVertex(449,388);
+        ofVertex(449,449);
+        ofEndShape();
+        
+        // Top of gramophone:
+        ofFill();
+        //ofSetColor(255,255,255);
+        ofBeginShape();
+        ofVertex(634,286);
+        ofBezierVertex(617,299,560,256,507,189);
+        ofBezierVertex(454,122,425,56,442,43);
+        ofBezierVertex(459,29,516,72,569,140);
+        ofBezierVertex(622,207,652,272,634,286);
+        ofEndShape();
+        
+        // Left side:
+        // The line generated from the original image is not sufficient to prevent movement. So we draw a rectangle and rotate it to fill in for the line:
+        //ofNoFill();
+        //ofSetLineWidth(5);
+        //ofSetColor(0,0,0);
+        /*ofBeginShape();
+         ofVertex(442,43);
+         ofVertex(232,354);
+         ofEndShape();*/
+        ofPushMatrix();
+        ofTranslate(232, 354);
+        ofRotate(-56);
+        ofRect(0,0, ofDist(232, 354, 442, 43), 15);
+        ofPopMatrix();
+        
+        // Right side:
+        // The line generated from the original image is not sufficient to prevent movement. So we draw a rectangle and rotate it to fill in for the line:
+        //ofNoFill();
+        //ofSetLineWidth(5);
+        //ofSetColor(0,0,0);
+        /*ofBeginShape();
+         ofVertex(620,288);
+         ofVertex(345,363);
+         ofEndShape();*/
+        ofPushMatrix();
+        ofTranslate(345, 363);
+        ofRotate(-18);
+        ofRect(0,0, ofDist(345, 363, 620, 288), 15);
+        ofPopMatrix();
+        
+        //ofNoFill();
+        ofSetLineWidth(1);
+        //ofSetColor(0,0,0);
+        ofBeginShape();
+        ofVertex(232,354);
+        ofBezierVertex(232,354,213,372,204,376);
+        ofBezierVertex(195,380,158,388,158,388);
+        ofEndShape();
+        
+        //ofNoFill();
+        ofSetLineWidth(1);
+        //ofSetColor(0,0,0);
+        ofBeginShape();
+        ofVertex(345,363);
+        ofBezierVertex(345,363,333,372,346,377);
+        ofBezierVertex(358,381,402,388,402,388);
+        ofEndShape();
+        
+        ofFill();
+        ofSetColor(255,1,0);
+        ofBeginShape();
+        ofVertex(99,423);
+        ofVertex(78,423);
+        ofVertex(78,414);
+        ofVertex(99,414);
+        ofVertex(99,423);
+        ofEndShape();
+        
+        ofPopMatrix();
         
         ofSetColor(255);
     }

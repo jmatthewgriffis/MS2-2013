@@ -11,10 +11,11 @@ void testApp::setup(){
     ofEnableAlphaBlending();
     ofHideCursor();
     
-    mainMusic.loadSound("main.mp3");
-    hexMusic.loadSound("hexagon.mp3");
+    // Load music and enable streaming:
+    mainMusic.loadSound("main.mp3", true);
+    hexMusic.loadSound("hexagon.mp3", true);
     
-    currentLevel = 7;
+    currentLevel = 2;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
