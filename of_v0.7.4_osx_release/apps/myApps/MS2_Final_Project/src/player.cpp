@@ -403,6 +403,25 @@ void player::draw(){
     }
     // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
     else {
+        
+        if (!ghost) {
+            ofPushMatrix();
+            float otherX = ofMap(xPos, 0, ofGetWidth(), ofGetWidth()/2-200, ofGetWidth()/2+200);
+            float otherY = ofMap(yPos, 0, ofGetHeight(), 0, 200);
+            ofColor otherTri = cPlayer;
+            otherTri.a = 75;
+            ofSetColor(otherTri);
+            ofTranslate(otherX, otherY);
+            ofRotate(degrees);
+            ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2); // The player.
+            ofNoFill();
+            ofSetLineWidth(2);
+            ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2); // The soul.
+            ofFill();
+            ofSetColor(cPlayer);
+            ofPopMatrix();
+        }
+        
         ofTranslate(xPos, yPos);
         ofRotate(degrees);
         ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2); // The player.
@@ -410,6 +429,11 @@ void player::draw(){
         ofSetLineWidth(2);
         ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2); // The soul.
         ofFill();
+        
+        //        ofPushMatrix();
+        //        ofTranslate(-xPos, -yPos);
+        
+        //ofPopMatrix();
     }
     ofPopMatrix();
     ofSetColor(255);
