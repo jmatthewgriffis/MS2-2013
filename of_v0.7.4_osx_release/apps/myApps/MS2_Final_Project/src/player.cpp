@@ -200,6 +200,12 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
         
     }
     
+    // Can't move any direction? Warp to the center of the screen:
+    if (!cUPdiff && !cDOWNdiff && !cLEFTdiff && !cRIGHTdiff) {
+        xPos = ofGetWidth()/2;
+        yPos = ofGetHeight()/2;
+    }
+    
     // Set the screen change booleans to false (unless there's movement off the screen, as we're about to describe):
     screenUP = false;
     screenDOWN = false;
