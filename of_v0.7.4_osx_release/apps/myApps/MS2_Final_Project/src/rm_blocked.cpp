@@ -13,8 +13,9 @@
 void rm_blocked::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
-    thickWall = _thickWall*3;
-    gap = thickWall/3*20;
+    thickWall = _thickWall;
+    uberWall = thickWall*3;
+    uberGap = uberWall/3*20;
     
 }
 
@@ -43,9 +44,17 @@ void rm_blocked::draw(ofColor _collider){
         
         ofSetColor(collider);
         
-        ofRect(0, 0, ofGetWidth()/2-gap/2, thickWall); // Top-left
-        ofRect(ofGetWidth()/2+gap/2, 0, ofGetWidth()-(ofGetWidth()/2+gap/2), thickWall); // Top-right
-        ofRect(ofGetWidth()/2-(gap/1.5), thickWall, ofGetWidth()/2, thickWall); // Blockade
+        // Draw the boundary walls:
+        ofRect(0, 0, thickWall, ofGetHeight()); // Left
+        ofRect(ofGetWidth()-thickWall, 0, thickWall, ofGetHeight()); // Right
+        ofRect(ofGetWidth()/2, ofGetHeight()-thickWall, ofGetWidth()/2, thickWall); // Bottom
+        
+        
+        // Draw the room contents:
+        
+        ofRect(0, 0, ofGetWidth()/2-uberGap/2, uberWall); // Top-left
+        ofRect(ofGetWidth()/2+uberGap/2, 0, ofGetWidth()-(ofGetWidth()/2+uberGap/2), uberWall); // Top-right
+        ofRect(ofGetWidth()/2-(uberGap/1.5), uberWall, ofGetWidth()/2, uberWall); // Blockade
         
         ofSetColor(255);
     }

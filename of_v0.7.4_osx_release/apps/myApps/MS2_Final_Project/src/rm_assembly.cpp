@@ -10,9 +10,11 @@
 #include "rm_assembly.h"
 
 //--------------------------------------------------------------
-void rm_assembly::setup(int _thisLevel){
+void rm_assembly::setup(int _thisLevel, int _thickWall, int _gap){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
+    gap = _gap;
     
 }
 
@@ -41,6 +43,15 @@ void rm_assembly::draw(ofColor _collider){
         
         ofSetColor(collider);
         
+        // Draw the boundary walls:
+        ofRect(0, 0, ofGetWidth()/4, thickWall); // Top-left
+        ofRect(ofGetWidth()/4+gap, 0, ofGetWidth()-(ofGetWidth()/4+gap), thickWall); // Top-right
+        ofRect(0, 0, thickWall, ofGetHeight()); // Left
+        ofRect(ofGetWidth()-thickWall, 0, thickWall, ofGetHeight()); // Right
+        ofRect(0, ofGetHeight()-thickWall, ofGetWidth(), thickWall); // Bottom
+        
+        
+        // Draw the room contents:
         ofNoFill();
         ofSetLineWidth(1);
         ofSetColor(66,108,255);

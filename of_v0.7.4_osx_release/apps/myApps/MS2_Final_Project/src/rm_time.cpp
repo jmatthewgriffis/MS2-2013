@@ -10,9 +10,10 @@
 #include "rm_time.h"
 
 //--------------------------------------------------------------
-void rm_time::setup(int _thisLevel){
+void rm_time::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -40,6 +41,13 @@ void rm_time::draw(ofColor _collider){
         collider = _collider;
         
         ofSetColor(collider);
+        
+        // Draw the boundary walls:
+        ofRect(0, 0, ofGetWidth(), thickWall); // Top
+        ofRect(ofGetWidth()-thickWall, 0, thickWall, ofGetHeight()); // Right
+        
+        
+        // Draw the room contents:
         
         ofNoFill();
         ofSetLineWidth(4);

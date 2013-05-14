@@ -10,9 +10,10 @@
 #include "rm_generator.h"
 
 //--------------------------------------------------------------
-void rm_generator::setup(int _thisLevel){
+void rm_generator::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -40,6 +41,12 @@ void rm_generator::draw(ofColor _collider){
         collider = _collider;
         
         ofSetColor(collider);
+        
+        // Draw the boundary walls:
+        ofRect(ofGetWidth()-thickWall, 0, thickWall, ofGetHeight()); // Right
+        
+        
+        // Draw the room contents:
         
         ofFill();
         //ofSetColor(84,254,0);

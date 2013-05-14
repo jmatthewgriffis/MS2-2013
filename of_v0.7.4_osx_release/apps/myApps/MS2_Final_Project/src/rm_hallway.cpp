@@ -10,11 +10,11 @@
 #include "rm_hallway.h"
 
 //--------------------------------------------------------------
-void rm_hallway::setup(int _thisLevel, int _thickWall){
+void rm_hallway::setup(int _thisLevel, int _thickWall, int _gap){
     
     thisLevel = _thisLevel;
     thickWall = _thickWall;
-    gap = thickWall;
+    gap = _gap;
     
 }
 

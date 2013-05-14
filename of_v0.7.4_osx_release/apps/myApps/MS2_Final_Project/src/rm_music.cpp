@@ -10,9 +10,10 @@
 #include "rm_music.h"
 
 //--------------------------------------------------------------
-void rm_music::setup(int _thisLevel){
+void rm_music::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -41,7 +42,12 @@ void rm_music::draw(ofColor _collider){
         
         ofSetColor(collider);
         
-        // Draw goes here.
+        // Draw the boundary walls:
+        ofRect(0, 0, ofGetWidth(), thickWall); // Top
+        ofRect(0, 0, thickWall, ofGetHeight()); // Left
+        
+        
+        // Draw the room contents:
         
         ofSetColor(255);
     }

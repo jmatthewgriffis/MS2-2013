@@ -13,11 +13,11 @@ class rm_conveyor { // This room has conveyor belts and stockpiled triangles.
     
 public:
     
-    void setup(int _thisLevel);
+    void setup(int _thisLevel, int _thickWall);
     void update(int _currentLevel);
     void draw(ofColor _collider);
     
-    int thisLevel, currentLevel;
+    int thisLevel, thickWall, currentLevel;
     ofColor collider;
     
 };

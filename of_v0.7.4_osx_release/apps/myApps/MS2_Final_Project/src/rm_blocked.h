@@ -17,7 +17,7 @@ public:
     void update(int _currentLevel);
     void draw(ofColor _collider);
     
-    int thisLevel, thickWall, currentLevel, gap;
+    int thisLevel, thickWall, uberWall, currentLevel, uberGap;
     ofColor collider;
     
 };

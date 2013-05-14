@@ -3,18 +3,23 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
+    // Housekeeping:
     OF_RECTMODE_CENTER;
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     ofSetCircleResolution(60);
     ofEnableAlphaBlending();
     
+    mainMusic.loadSound("main.mp3");
+    hexMusic.loadSound("hexagon.mp3");
+    
     currentLevel = 5;
     numLevels = 11;
     thickWall = 22;
+    gap = thickWall;
     
     //background = (200,200,200);
-    background = 0,0,0;
+    background = 0;
     player.setup();
     collider = player.cPlayer;
     
@@ -25,21 +30,23 @@ void testApp::setup(){
      7-8-9
      
      Note that the passageways between rooms may not match up to each other in all configurations so it may be necessary to revise the code for moving between rooms when changing their numbering (see the update function below). */
-    assembly.setup(7);
+    assembly.setup(7, thickWall, gap);
     blocked.setup(1, thickWall);
-    conveyor.setup(9);
-    discarded.setup(8); //need to do
-    generator.setup(6);
-    hallway.setup(4, thickWall);
-    maze.setup(5);
-    music.setup(2); //need to do
-    time.setup(3);
-    win.setup(10); //need to do
+    conveyor.setup(9, thickWall);
+    discarded.setup(8, thickWall); //need to do
+    generator.setup(6, thickWall);
+    hallway.setup(4, thickWall, gap);
+    maze.setup(5, thickWall);
+    music.setup(2, thickWall); //need to do
+    time.setup(3, thickWall);
+    win.setup(10, thickWall); //need to do
     
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+    
+    if (!mainMusic.getIsPlaying()) mainMusic.play();
     
     player.update(background);
     
@@ -126,6 +133,8 @@ void testApp::keyPressed(int key){
             
             // Restart the game:
         case 'r':
+            mainMusic.stop();
+            hexMusic.stop();
             setup();
             break;
             

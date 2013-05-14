@@ -13,11 +13,11 @@ class rm_generator { // This room contains a wall generator and stockpile.
     
 public:
     
-    void setup(int _thisLevel);
+    void setup(int _thisLevel, int _thickWall);
     void update(int _currentLevel);
     void draw(ofColor _collider);
     
-    int thisLevel, currentLevel;
+    int thisLevel, thickWall, currentLevel;
     ofColor collider;
     
 };

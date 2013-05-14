@@ -10,9 +10,10 @@
 #include "rm_maze.h"
 
 //--------------------------------------------------------------
-void rm_maze::setup(int _thisLevel){
+void rm_maze::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -37,6 +38,9 @@ void rm_maze::draw(ofColor _collider){
         collider = _collider;
         
         ofSetColor(collider);
+        
+        ofRect(0, 0, thickWall, thickWall);
+        ofRect(0, ofGetHeight()-thickWall, thickWall, thickWall);
         
         // start maze:
         

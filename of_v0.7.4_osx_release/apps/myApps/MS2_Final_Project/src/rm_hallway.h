@@ -13,7 +13,7 @@ class rm_hallway { // This room is an empty hallway with a gap in one wall.
     
 public:
     
-    void setup(int _thisLevel, int _thickWall);
+    void setup(int _thisLevel, int _thickWall, int _gap);
     void update(int _currentLevel);
     void draw(ofColor _collider);
     

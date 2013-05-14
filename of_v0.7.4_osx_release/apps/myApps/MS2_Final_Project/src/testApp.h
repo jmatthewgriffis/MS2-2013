@@ -31,11 +31,14 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    ofSoundPlayer mainMusic, hexMusic;
+    
     ofColor background;
     ofColor collider; // Prevents player movement.
     int currentLevel; // Use this to control the game screen.
     int numLevels; // How many game screens?
     int thickWall; // Thickness of border walls.
+    int gap; // Width of gap in certain walls.
     
     // Call some classes:
     player player;

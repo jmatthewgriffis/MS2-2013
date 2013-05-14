@@ -10,9 +10,10 @@
 #include "rm_discarded.h"
 
 //--------------------------------------------------------------
-void rm_discarded::setup(int _thisLevel){
+void rm_discarded::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -41,7 +42,12 @@ void rm_discarded::draw(ofColor _collider){
         
         ofSetColor(collider);
         
-        // Draw goes here.
+        // Draw the boundary walls:
+        ofRect(0, 0, thickWall, ofGetHeight()); // Left
+        ofRect(0, ofGetHeight()-thickWall, ofGetWidth(), thickWall); // Bottom
+        
+        
+        // Draw the room contents:
         
         ofSetColor(255);
     }

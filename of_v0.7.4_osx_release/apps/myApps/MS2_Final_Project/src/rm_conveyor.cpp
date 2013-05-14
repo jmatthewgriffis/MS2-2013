@@ -10,9 +10,10 @@
 #include "rm_conveyor.h"
 
 //--------------------------------------------------------------
-void rm_conveyor::setup(int _thisLevel){
+void rm_conveyor::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 
@@ -40,6 +41,13 @@ void rm_conveyor::draw(ofColor _collider){
         collider = _collider;
         
         ofSetColor(collider);
+        
+        // Draw the boundary walls:
+        ofRect(ofGetWidth()-thickWall, 0, thickWall, ofGetHeight()); // Right
+        ofRect(0, ofGetHeight()-thickWall, ofGetWidth(), thickWall); // Bottom
+        
+        
+        // Draw the room contents:
         
         ofFill();
         //ofSetColor(246,164,46);

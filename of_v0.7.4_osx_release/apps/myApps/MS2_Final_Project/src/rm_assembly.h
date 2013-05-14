@@ -13,11 +13,11 @@ class rm_assembly { // This room assembles and disassembles itself.
     
 public:
     
-    void setup(int _thisLevel);
+    void setup(int _thisLevel, int _thickWall, int _gap);
     void update(int _currentLevel);
     void draw(ofColor _collider);
     
-    int thisLevel, currentLevel;
+    int thisLevel, thickWall, gap, currentLevel;
     ofColor collider;
     
 };

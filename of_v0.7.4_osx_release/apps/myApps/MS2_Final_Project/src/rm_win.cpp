@@ -10,9 +10,10 @@
 #include "rm_win.h"
 
 //--------------------------------------------------------------
-void rm_win::setup(int _thisLevel){
+void rm_win::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
+    thickWall = _thickWall;
     
 }
 

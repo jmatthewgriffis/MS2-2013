@@ -1,3 +1,9 @@
+# Don't waste space and time backing up media files
+*.zip
+*.MOV
+*m4a
+*mp3
+
 # Some general ignore patterns
 build/
 obj/
