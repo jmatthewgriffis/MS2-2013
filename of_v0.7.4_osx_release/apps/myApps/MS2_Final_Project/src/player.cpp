@@ -66,7 +66,9 @@ void player::setup(){
 }
 
 //--------------------------------------------------------------
-void player::update(ofColor _background){
+void player::update(ofColor _background, bool _inColor){
+    cout<<inColor<<endl;
+    inColor = _inColor;
     
     // Start color change behavior.
     
@@ -75,34 +77,40 @@ void player::update(ofColor _background){
     
     background = _background;
     
-    // If the player color gets too close to the background color (which would prevent movement), change the player color:
-    if ((fabs(cPlayer.r-background.r) < closeEnough) && (fabs(cPlayer.g-background.g) < closeEnough) && (fabs(cPlayer.b-background.b) < closeEnough)) {
-        cPlayer.r += cVelR;
-        cPlayer.g += cVelG;
-        cPlayer.b += cVelB;
+    if (inColor) {
+        
+        // If the player color gets too close to the background color (which would prevent movement), change the player color:
+        if ((fabs(cPlayer.r-background.r) < closeEnough) && (fabs(cPlayer.g-background.g) < closeEnough) && (fabs(cPlayer.b-background.b) < closeEnough)) {
+            cPlayer.r += cVelR;
+            cPlayer.g += cVelG;
+            cPlayer.b += cVelB;
+        }
+        
+        // Use a delay to control when the color changes:
+        if (cVelRdelay > 0) cVelRdelay--;
+        if (cVelGdelay > 0) cVelGdelay--;
+        if (cVelBdelay > 0) cVelBdelay--;
+        
+        // Change the RGB color values. If one maxes or mins out, reverse the direction of change after a randomly-determined interval:
+        if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 1) cPlayer.r += cVelR;
+        else {
+            cVelRdelay = int(ofRandom(randLimit));
+            if (cVelRdelay == 0) cVelR *= -1;
+        }
+        if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 1) cPlayer.g += cVelG;
+        else {
+            cVelGdelay = int(ofRandom(randLimit));
+            if (cVelGdelay == 0) cVelG *= -1;
+        }
+        if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 1) cPlayer.b += cVelB;
+        else {
+            cVelBdelay = int(ofRandom(randLimit));
+            if (cVelBdelay == 0) cVelB *= -1;
+        }
+        
     }
     
-    // Use a delay to control when the color changes:
-    if (cVelRdelay > 0) cVelRdelay--;
-    if (cVelGdelay > 0) cVelGdelay--;
-    if (cVelBdelay > 0) cVelBdelay--;
-    
-    // Change the RGB color values. If one maxes or mins out, reverse the direction of change after a randomly-determined interval:
-    if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 1) cPlayer.r += cVelR;
-    else {
-        cVelRdelay = int(ofRandom(randLimit));
-        if (cVelRdelay == 0) cVelR *= -1;
-    }
-    if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 1) cPlayer.g += cVelG;
-    else {
-        cVelGdelay = int(ofRandom(randLimit));
-        if (cVelGdelay == 0) cVelG *= -1;
-    }
-    if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 1) cPlayer.b += cVelB;
-    else {
-        cVelBdelay = int(ofRandom(randLimit));
-        if (cVelBdelay == 0) cVelB *= -1;
-    }
+    else cPlayer = 255;
     
     // Print the RGB values of the player color:
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;

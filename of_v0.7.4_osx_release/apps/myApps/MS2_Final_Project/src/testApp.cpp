@@ -17,8 +17,9 @@ void testApp::setup(){
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
+    inColor = false;
     
-    //background = (200,200,200);
+    //background = 200;
     background = 0;
     player.setup();
     collider = player.cPlayer;
@@ -48,7 +49,7 @@ void testApp::update(){
     
     if (!mainMusic.getIsPlaying()) mainMusic.play();
     
-    player.update(background);
+    player.update(background, inColor);
     
     /* We check if the player moves offscreen and if so cue a level change where appropriate, using the numbering system described above. Including closed paths, the map looks like this:
      
@@ -152,6 +153,11 @@ void testApp::keyPressed(int key){
             // Debug. Comment this out later.
         case '=':
             if (currentLevel < numLevels-1) currentLevel++;
+            break;
+            
+            // Debug. Comment this out later:
+        case 'm':
+            inColor = !inColor;
             break;
     }
     

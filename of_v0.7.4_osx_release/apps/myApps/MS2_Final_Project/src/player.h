@@ -14,7 +14,7 @@ class player {
 public:
     
     void setup();
-    void update(ofColor _background);
+    void update(ofColor _background, bool _inColor);
     void draw();
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
@@ -51,6 +51,7 @@ public:
     bool cDOWNdiff; // Player color and cDOWN are close enough.
     bool cLEFTdiff; // Player color and cLEFT are close enough.
     bool cRIGHTdiff; // Player color and cRIGHT are close enough.
+    bool inColor; // Color vs. black and white.
     int cVelR; // Speed of red color change.
     int cVelRdelay; // Delay when the color changes.
     int cVelG; // Speed of green color change.
