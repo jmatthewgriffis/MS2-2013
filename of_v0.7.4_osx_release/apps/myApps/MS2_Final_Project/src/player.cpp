@@ -66,9 +66,11 @@ void player::setup(){
 }
 
 //--------------------------------------------------------------
-void player::update(ofColor _background, bool _inColor){
-    cout<<inColor<<endl;
+void player::update(ofColor _background, bool _inColor, int _currentLevel){
+    
+    //cout<<inColor<<endl; // Debug - check the color change boolean status.
     inColor = _inColor;
+    currentLevel = _currentLevel;
     
     // Start color change behavior.
     
@@ -401,10 +403,11 @@ void player::draw(){
         ofTriangle(-wideSoul/2, shiftY+tallSoul/2+tall/2, wideSoul/2, shiftY+tallSoul/2+tall/2, 0, shiftY-tallSoul/2+tall/2); // The soul.
         ofFill();
     }
-    // If movement is unrestricted, we translate to the center of the triangle and then rotate it about its center as needed:
+    // If movement is unrestricted...
     else {
         
-        if (!ghost) {
+        // First we check if it's the blockade room and if the player is not a ghost, and if so we draw another, ghost triangle that mirrors the player within the blockaded space:
+        if (currentLevel == 1 && !ghost) {
             ofPushMatrix();
             float otherX = ofMap(xPos, 0, ofGetWidth(), ofGetWidth()/2-200, ofGetWidth()/2+200);
             float otherY = ofMap(yPos, 0, ofGetHeight(), 0, 200);
@@ -422,6 +425,7 @@ void player::draw(){
             ofPopMatrix();
         }
         
+        // Either way, we then translate to the center of the triangle and then rotate it about its center as needed:
         ofTranslate(xPos, yPos);
         ofRotate(degrees);
         ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2); // The player.

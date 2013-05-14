@@ -49,7 +49,7 @@ void testApp::update(){
     
     //if (!mainMusic.getIsPlaying()) mainMusic.play();
     
-    player.update(background, inColor);
+    player.update(background, inColor, currentLevel);
     
     /* We check if the player moves offscreen and if so cue a level change where appropriate, using the numbering system described above. Including closed paths, the map looks like this:
      
