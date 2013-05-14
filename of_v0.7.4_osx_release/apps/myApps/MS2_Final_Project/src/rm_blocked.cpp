@@ -15,7 +15,7 @@ void rm_blocked::setup(int _thisLevel, int _thickWall){
     thisLevel = _thisLevel;
     thickWall = _thickWall;
     uberWall = thickWall*3;
-    uberGap = uberWall/3*20;
+    uberGap = thickWall*19;
     
 }
 
@@ -54,7 +54,14 @@ void rm_blocked::draw(ofColor _collider){
         
         ofRect(0, 0, ofGetWidth()/2-uberGap/2, uberWall); // Top-left
         ofRect(ofGetWidth()/2+uberGap/2, 0, ofGetWidth()-(ofGetWidth()/2+uberGap/2), uberWall); // Top-right
-        ofRect(ofGetWidth()/2-(uberGap/1.5), uberWall, ofGetWidth()/2, uberWall); // Blockade
+        
+        // Blockade:
+        ofRect(ofGetWidth()/2-(uberGap/1.5), uberWall, ofGetWidth()/2/4, uberWall); // Top-left
+        ofRect(ofGetWidth()/2+(uberGap/1.5)-ofGetWidth()/2/4, uberWall, ofGetWidth()/2/4, uberWall); // Top-right
+        ofRect(ofGetWidth()/2-(uberGap/1.5)+ofGetWidth()/2/4/2, uberWall*2, ofGetWidth()/2/4, uberWall); // Middle-left
+        ofRect(ofGetWidth()/2+(uberGap/1.5)-ofGetWidth()/2/4*1.5, uberWall*2, ofGetWidth()/2/4, uberWall); // Middle-right
+        ofRect(ofGetWidth()/2-(uberGap/1.5)+ofGetWidth()/2/4, uberWall*3, ofGetWidth()/2/4, uberWall); // Bottom-left
+        ofRect(ofGetWidth()/2+(uberGap/1.5)-ofGetWidth()/2/4*1.5-ofGetWidth()/16, uberWall*3, ofGetWidth()/2/4, uberWall); // Bottom-right
         
         ofSetColor(255);
     }

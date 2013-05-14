@@ -13,7 +13,7 @@ void testApp::setup(){
     mainMusic.loadSound("main.mp3");
     hexMusic.loadSound("hexagon.mp3");
     
-    currentLevel = 5;
+    currentLevel = 1;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -47,7 +47,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    if (!mainMusic.getIsPlaying()) mainMusic.play();
+    //if (!mainMusic.getIsPlaying()) mainMusic.play();
     
     player.update(background, inColor);
     
