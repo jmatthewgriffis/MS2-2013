@@ -13,13 +13,14 @@ class player {
     
 public:
     
-    void setup();
+    void setup(int _thickWall);
     void update(ofColor _background, bool _inColor, int _currentLevel);
     void draw();
     
     ofImage screenGrab; // We'll use this object to store color data from the screen.
     
     int currentLevel;
+    int thickWall;
     int shiftX; // Shift the xPos by this much.
     int shiftY; // Shift the yPos by this much, and get up to no good.
     int wide;

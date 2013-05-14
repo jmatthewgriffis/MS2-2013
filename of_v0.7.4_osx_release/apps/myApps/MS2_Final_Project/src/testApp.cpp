@@ -9,11 +9,12 @@ void testApp::setup(){
     ofSetFrameRate(30);
     ofSetCircleResolution(60);
     ofEnableAlphaBlending();
+    ofHideCursor();
     
     mainMusic.loadSound("main.mp3");
     hexMusic.loadSound("hexagon.mp3");
     
-    currentLevel = 1;
+    currentLevel = 5;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -21,7 +22,7 @@ void testApp::setup(){
     
     //background = 200;
     background = 0;
-    player.setup();
+    player.setup(thickWall);
     collider = player.cPlayer;
     
     /* We number each room on setup. Change this to revise room placement. The numbers are placed like this:

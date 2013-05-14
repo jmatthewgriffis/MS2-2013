@@ -65,5 +65,4 @@ void rm_blocked::draw(ofColor _collider){
         
         ofSetColor(255);
     }
-    
 }
