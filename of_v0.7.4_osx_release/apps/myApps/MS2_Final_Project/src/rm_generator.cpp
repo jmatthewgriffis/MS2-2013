@@ -14,17 +14,24 @@ void rm_generator::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
     thickWall = _thickWall;
+    degrees = 0;
+    pressedButton = false;
     
 }
 
 //--------------------------------------------------------------
-void rm_generator::update(int _currentLevel){
+void rm_generator::update(int _currentLevel, float _x, float _y, bool _action){
     
     currentLevel = _currentLevel;
+    xPosP = _x;
+    yPosP = _y;
+    action = _action;
     
     if (currentLevel == thisLevel) {
         
-        // Update goes here.
+        if (xPosP >= 200 && xPosP <= 260 && yPosP >= 430 && yPosP <= 445 && action)  degrees = -20;
+        
+        else degrees = 0;
         
     }
     
@@ -48,6 +55,7 @@ void rm_generator::draw(ofColor _collider){
         
         // Draw the room contents:
         
+        // Wall rack:
         ofFill();
         //ofSetColor(84,254,0);
         ofBeginShape();
@@ -58,6 +66,7 @@ void rm_generator::draw(ofColor _collider){
         ofVertex(807,591);
         ofEndShape();
         
+        // Hex on wall:
         ofFill();
         //ofSetColor(84,254,0);
         ofBeginShape();
@@ -131,6 +140,22 @@ void rm_generator::draw(ofColor _collider){
         ofVertex(862,519);
         ofEndShape();
         
+        
+        // THE GENERATED HEXAGON:
+        ofPushMatrix();
+        ofRotate(degrees);
+        ofColor buttonStatus;
+        if (degrees != 0) {
+            ofTranslate(-150, 160);
+            buttonStatus.r = 0;
+            buttonStatus.g = 0;
+            buttonStatus.b = 255;
+        }
+        else {
+            buttonStatus.r = 255;
+            buttonStatus.g = 1;
+            buttonStatus.b = 0;
+        }
         ofFill();
         //ofSetColor(84,254,0);
         ofBeginShape();
@@ -148,7 +173,9 @@ void rm_generator::draw(ofColor _collider){
         ofVertex(594,337);
         ofVertex(520,466);
         ofEndShape();
+        ofPopMatrix();
         
+        // Generator body:
         ofFill();
         //ofSetColor(84,254,0);
         ofBeginShape();
@@ -158,6 +185,7 @@ void rm_generator::draw(ofColor _collider){
         ofVertex(377,308);
         ofVertex(377,420);
         ofEndShape();
+        
         
         ofFill();
         //ofSetColor(84,254,0);
@@ -169,9 +197,10 @@ void rm_generator::draw(ofColor _collider){
         ofVertex(360,332);
         ofEndShape();
         
+        
         // This one is the red button:
         ofFill();
-        ofSetColor(253,37,0);
+        ofSetColor(buttonStatus);
         ofBeginShape();
         ofVertex(242,403);
         ofVertex(221,403);

@@ -17,7 +17,7 @@ void testApp::setup(){
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
     
-    currentLevel = 5;
+    currentLevel = 6;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -94,7 +94,7 @@ void testApp::update(){
     blocked.update(currentLevel);
     conveyor.update(currentLevel);
     discarded.update(currentLevel);
-    generator.update(currentLevel);
+    generator.update(currentLevel, player.xPos, player.yPos, player.action);
     hallway.update(currentLevel);
     maze.update(currentLevel);
     music.update(currentLevel, player.xPos, player.yPos, player.action);
