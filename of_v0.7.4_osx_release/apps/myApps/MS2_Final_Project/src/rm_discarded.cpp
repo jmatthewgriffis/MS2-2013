@@ -36,7 +36,7 @@ void rm_discarded::draw(ofColor _collider){
     if (currentLevel == thisLevel) {
         
         // Placeholder: draw the current level number onscreen:
-        ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
+        //ofDrawBitmapString(ofToString(thisLevel), ofGetWidth()/2, ofGetHeight()/2);
         
         collider = _collider;
         

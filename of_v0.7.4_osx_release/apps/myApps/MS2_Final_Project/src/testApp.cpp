@@ -16,8 +16,10 @@ void testApp::setup(){
     mainMusic.setVolume(1.0f);
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
+    wonderful.loadSound("wonderful.mp3");
+    wonderful.setVolume(1.0f);
     
-    currentLevel = 9;
+    currentLevel = 5;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -42,9 +44,9 @@ void testApp::setup(){
     generator.setup(6, thickWall);
     hallway.setup(4, thickWall, gap);
     maze.setup(5, thickWall);
-    music.setup(2, thickWall); //need to do
+    music.setup(2, thickWall);
     time.setup(3, thickWall);
-    win.setup(10, thickWall); //need to do
+    win.setup(10, thickWall);
     
 }
 
@@ -54,12 +56,24 @@ void testApp::update(){
     // Control the background music:
     if (!mainMusic.getIsPlaying()) mainMusic.play();
     if (music.pressedButton) {
-        mainMusic.setVolume(0.0);
+        mainMusic.setVolume(0.0f);
         if (!hexMusic.getIsPlaying()) hexMusic.play();
     }
     else {
         if (hexMusic.getIsPlaying()) hexMusic.stop();
         mainMusic.setVolume(1);
+    }
+    if (currentLevel == 10) { // On win screen, trigger "wonderful":
+        background = 255;
+        mainMusic.setVolume(0.0f);
+        if (player.cPlayer.a == 0) if (!wonderful.getIsPlaying()) wonderful.play();
+        // Restart the game:
+        if (wonderful.getPosition() >= 0.95f) {
+            wonderful.stop();
+            mainMusic.stop();
+            hexMusic.stop();
+            setup();
+        }
     }
     
     // Make the background change in relation to the player:
@@ -75,10 +89,14 @@ void testApp::update(){
     player.update(background, inColor, currentLevel);
     
     // Set up the win condition. If the player does all the interactions, cue "ghost" mode:
-    if (assembly.ghostPoint && generator.ghostPoint && music.ghostPoint) player.ghost = true;
+    if (assembly.ghostPoint && conveyor.ghostPoint && generator.ghostPoint && music.ghostPoint && currentLevel != 10) player.ghost = true;
+    else if (currentLevel == 10) player.ghost = false;
+    
     
     /* We check if the player moves offscreen and if so cue a level change where appropriate, using the numbering system described above. Including closed paths, the map looks like this:
      
+     [10]
+     |
      1  2--3
      |  |  |
      4--5--6
@@ -87,10 +105,13 @@ void testApp::update(){
      
      */
     
-    if (player.screenUP && currentLevel > 3) currentLevel -= 3;
-    if (player.screenDOWN && currentLevel < 7) currentLevel += 3;
-    if (player.screenLEFT && currentLevel != 1 && currentLevel != 2 && currentLevel != 4 && currentLevel != 7 && currentLevel != 8) currentLevel--;
-    if (player.screenRIGHT && currentLevel != 1 && currentLevel != 3 && currentLevel != 6 && currentLevel != 7 && currentLevel != 9) currentLevel++;
+    if (currentLevel != 10) {
+        if (player.screenUP && currentLevel == 1) currentLevel = 10;
+        else if (player.screenUP && currentLevel > 3) currentLevel -= 3;
+        if (player.screenDOWN && currentLevel < 7) currentLevel += 3;
+        if (player.screenLEFT && currentLevel != 1 && currentLevel != 2 && currentLevel != 4 && currentLevel != 7 && currentLevel != 8) currentLevel--;
+        if (player.screenRIGHT && currentLevel != 1 && currentLevel != 3 && currentLevel != 6 && currentLevel != 7 && currentLevel != 9) currentLevel++;
+    }
     
     collider = player.cPlayer;
     assembly.update(currentLevel, player.xPos, player.yPos);
@@ -166,6 +187,7 @@ void testApp::keyPressed(int key){
         case 'r':
             mainMusic.stop();
             hexMusic.stop();
+            wonderful.stop();
             setup();
             break;
             

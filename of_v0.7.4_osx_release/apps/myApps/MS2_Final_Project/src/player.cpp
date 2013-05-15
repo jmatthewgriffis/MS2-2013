@@ -36,6 +36,7 @@ void player::setup(int _thickWall){
     cPlayer.r = 255;
     cPlayer.g = 255;
     cPlayer.b = 255;
+    cPlayer.a = 255;
     cGhost = cPlayer;
     instructions = cPlayer;
     instructions.a = 0; // Instructions are invisible at first.
@@ -75,8 +76,8 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     
     // Start color change behavior.
     
-    
-    
+    // Fade out completely on win screen:
+    if (currentLevel == 10 && cPlayer.a > 0) cPlayer.a--;
     
     background = _background;
     
