@@ -13,13 +13,15 @@ void testApp::setup(){
     
     // Load music and enable streaming:
     mainMusic.loadSound("main.mp3", true);
+    mainMusic.setVolume(1.0f);
     hexMusic.loadSound("hexagon.mp3", true);
+    hexMusic.setVolume(0.03f);
     
-    currentLevel = 2;
+    currentLevel = 5;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
-    inColor = false;
+    inColor = true;
     
     //background = 200;
     background = 0;
@@ -49,7 +51,26 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    //if (!mainMusic.getIsPlaying()) mainMusic.play();
+    // Control the background music:
+    if (!mainMusic.getIsPlaying()) mainMusic.play();
+    if (music.pressedButton) {
+        mainMusic.setVolume(0.0);
+        if (!hexMusic.getIsPlaying()) hexMusic.play();
+    }
+    else {
+        if (hexMusic.getIsPlaying()) hexMusic.stop();
+        mainMusic.setVolume(1);
+    }
+    
+    // Make the background change in relation to the player:
+    //player.cPlayer.setSaturation(255);
+    //player.cPlayer.setBrightness(255);
+    /*int blah = player.cPlayer.getHue();
+     int blahblah = (blah+255/3) % 255;
+     background.setHsb(blahblah, 180, 220);*/
+    //player.cPlayer.setHsb(blah, 255, 255);
+    
+    //cout<<blah<<" "<<blahblah<<endl;
     
     player.update(background, inColor, currentLevel);
     
@@ -76,7 +97,7 @@ void testApp::update(){
     generator.update(currentLevel);
     hallway.update(currentLevel);
     maze.update(currentLevel);
-    music.update(currentLevel);
+    music.update(currentLevel, player.xPos, player.yPos, player.action);
     time.update(currentLevel);
     win.update(currentLevel);
     
@@ -132,6 +153,10 @@ void testApp::keyPressed(int key){
         case 'D':
         case OF_KEY_RIGHT:
             player.moveRIGHT = true;
+            break;
+            
+        case ' ':
+            player.action = true;
             break;
             
             // Restart the game:
@@ -197,6 +222,10 @@ void testApp::keyReleased(int key){
         case 'g':
         case 'G':
             player.ghost = false;
+            break;
+            
+        case ' ':
+            player.action = false;
             break;
     }
     

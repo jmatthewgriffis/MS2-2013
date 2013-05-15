@@ -14,11 +14,13 @@ class rm_music { // This room contains a music player.
 public:
     
     void setup(int _thisLevel, int _thickWall);
-    void update(int _currentLevel);
+    void update(int _currentLevel, float _x, float _y, bool _action);
     void draw(ofColor _collider);
     
     int thisLevel, thickWall, currentLevel;
+    float xPosP, yPosP;
     ofColor collider;
+    bool pressedButton, action;
     
 };
 

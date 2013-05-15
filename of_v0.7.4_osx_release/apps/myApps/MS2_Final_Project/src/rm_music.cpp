@@ -14,20 +14,25 @@ void rm_music::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
     thickWall = _thickWall;
+    pressedButton = false;
     
 }
 
 //--------------------------------------------------------------
-void rm_music::update(int _currentLevel){
+void rm_music::update(int _currentLevel, float _x, float _y, bool _action){
     
     currentLevel = _currentLevel;
+    action = _action;
+    xPosP = _x;
+    yPosP = _y;
     
     if (currentLevel == thisLevel) {
         
-        // Update goes here.
-        
+        // Toggle the switch if close enough and pressing the action button:
+        if (xPosP >= 50 && xPosP <= 125 && yPosP >= 460 && yPosP <= 480 && action) pressedButton = true;
     }
-    
+    else pressedButton = false;
+
 }
 
 //--------------------------------------------------------------
@@ -123,8 +128,19 @@ void rm_music::draw(ofColor _collider){
         ofBezierVertex(358,381,402,388,402,388);
         ofEndShape();
         
+        ofColor buttonStatus;
+        if (pressedButton) {
+            buttonStatus.r = 0;
+            buttonStatus.g = 0;
+            buttonStatus.b = 255;
+        }
+        else {
+            buttonStatus.r = 255;
+            buttonStatus.g = 1;
+            buttonStatus.b = 0;
+        }
         ofFill();
-        ofSetColor(255,1,0);
+        ofSetColor(buttonStatus);
         ofBeginShape();
         ofVertex(99,423);
         ofVertex(78,423);

@@ -28,7 +28,7 @@ void player::setup(int _thickWall){
     rotY = yPos;
     xVel = 5;
     yVel = 5;
-    ghost = moveUP = moveDOWN = moveLEFT = moveRIGHT = screenUP = screenDOWN = screenLEFT = screenRIGHT = false;
+    ghost = moveUP = moveDOWN = moveLEFT = moveRIGHT = screenUP = screenDOWN = screenLEFT = screenRIGHT = action = false;
     youSpinMeRightRound = true;
     spinMeFaster = 10;
     suddenFreedom = false;
@@ -95,20 +95,23 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
         if (cVelBdelay > 0) cVelBdelay--;
         
         // Change the RGB color values. If one maxes or mins out, reverse the direction of change after a randomly-determined interval:
-        if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 1) cPlayer.r += cVelR;
-        else {
-            cVelRdelay = int(ofRandom(randLimit));
-            if (cVelRdelay == 0) cVelR *= -1;
-        }
-        if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 1) cPlayer.g += cVelG;
-        else {
-            cVelGdelay = int(ofRandom(randLimit));
-            if (cVelGdelay == 0) cVelG *= -1;
-        }
-        if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 1) cPlayer.b += cVelB;
-        else {
-            cVelBdelay = int(ofRandom(randLimit));
-            if (cVelBdelay == 0) cVelB *= -1;
+        if (ofGetFrameNum()%1==0) { // Every one frames, change:
+            // (Set the minimum to 50 to prevent the color from getting too close to black and meshing with the background.)
+            if (cPlayer.r + cVelR < 255 && cPlayer.r + cVelR > 50) cPlayer.r += cVelR;
+            else {
+                cVelRdelay = int(ofRandom(randLimit));
+                if (cVelRdelay == 0) cVelR *= -1;
+            }
+            if (cPlayer.g + cVelG < 255 && cPlayer.g + cVelG > 50) cPlayer.g += cVelG;
+            else {
+                cVelGdelay = int(ofRandom(randLimit));
+                if (cVelGdelay == 0) cVelG *= -1;
+            }
+            if (cPlayer.b + cVelB < 255 && cPlayer.b + cVelB > 50) cPlayer.b += cVelB;
+            else {
+                cVelBdelay = int(ofRandom(randLimit));
+                if (cVelBdelay == 0) cVelB *= -1;
+            }
         }
         
     }
@@ -119,7 +122,7 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     //cout<<int(cPlayer.r)<<", "<<int(cPlayer.g)<<", "<<int(cPlayer.b)<<endl;
     
     cGhost = cPlayer;
-    cGhost.a = 75; // When the player goes into "ghost" mode, become transparent.
+    cGhost.a = 125; // When the player goes into "ghost" mode, become transparent.
     
     // Color the instructions according to the player but make them fade in and out as appropriate:
     instructions.r = cPlayer.r;
@@ -200,10 +203,12 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
         
     }
     
-    // Can't move any direction? Warp to the center of the screen:
+    // Can't move any direction? Shift pos away:
     if (!cUPdiff && !cDOWNdiff && !cLEFTdiff && !cRIGHTdiff) {
-        xPos = ofGetWidth()/2;
-        yPos = ofGetHeight()/2;
+        //xPos = ofGetWidth()/2;
+        xPos-=xVel;
+        //yPos = ofGetHeight()/2;
+        yPos+=yVel;
     }
     
     // Set the screen change booleans to false (unless there's movement off the screen, as we're about to describe):
@@ -420,7 +425,7 @@ void player::draw(){
             // Blockade stretches down to uberWall(= thickWall*3)*4.
             float otherY = ofMap(yPos, thickWall*12, ofGetHeight(), thickWall*9, -100);
             ofColor otherTri = cPlayer;
-            otherTri.a = 75;
+            otherTri.a = 125;
             ofSetColor(otherTri);
             ofTranslate(otherX, otherY);
             ofRotate(-degrees);
@@ -443,11 +448,6 @@ void player::draw(){
         ofSetLineWidth(2);
         ofTriangle(-wideSoul/2, tallSoul/2, wideSoul/2, tallSoul/2, 0, -tallSoul/2); // The soul.
         ofFill();
-        
-        //        ofPushMatrix();
-        //        ofTranslate(-xPos, -yPos);
-        
-        //ofPopMatrix();
     }
     ofPopMatrix();
     ofSetColor(255);
