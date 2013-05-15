@@ -17,7 +17,7 @@ void testApp::setup(){
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
     
-    currentLevel = 5;
+    currentLevel = 7;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;

@@ -16,6 +16,9 @@ void rm_assembly::setup(int _thisLevel, int _thickWall, int _gap){
     thickWall = _thickWall;
     gap = _gap;
     
+    xPos = yPos = 0;
+    xVel = yVel = 2;
+    
 }
 
 //--------------------------------------------------------------
@@ -25,7 +28,11 @@ void rm_assembly::update(int _currentLevel){
     
     if (currentLevel == thisLevel) {
         
-        // Update goes here.
+        xPos += xVel;
+        yPos += yVel;
+        
+        if (xPos >= 100 || xPos <= 0) xVel *= -1;
+        if (yPos >= 100 || yPos <= 0) yVel *= -1;
         
     }
     
@@ -52,6 +59,8 @@ void rm_assembly::draw(ofColor _collider){
         
         
         // Draw the room contents:
+        
+        /*
         ofNoFill();
         ofSetLineWidth(1);
         ofSetColor(66,108,255);
@@ -239,6 +248,120 @@ void rm_assembly::draw(ofColor _collider){
         ofBezierVertex(362,160,384,164,392,157);
         ofBezierVertex(389,150,384,145,378,139);
         ofEndShape();
+        
+        */
+        
+        /*ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(358,348);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(458,522);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(658,522);
+        ofEndShape();
+        
+        ofNoFill();
+        ofSetLineWidth(22);
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(758,348);
+        ofEndShape();*/
+        
+        // Top:
+        ofPushMatrix();
+        ofTranslate(0, -yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(658,186);
+        ofVertex(458,186);
+        ofVertex(458,164);
+        ofVertex(658,164);
+        ofVertex(658,186);
+        ofEndShape();
+        ofPopMatrix();
+        
+        // Top-left:
+        ofPushMatrix();
+        ofTranslate(-xPos, -yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(370,355);
+        ofVertex(350,345);
+        ofVertex(445,169);
+        ofVertex(465,179);
+        ofVertex(370,355);
+        ofEndShape();
+        ofPopMatrix();
+        
+        // Bottom-left:
+        ofPushMatrix();
+        ofTranslate(-xPos, yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(448,533);
+        ofVertex(348,360);
+        ofVertex(367,349);
+        ofVertex(467,522);
+        ofVertex(448,533);
+        ofEndShape();
+        ofPopMatrix();
+        
+        // Bottom:
+        ofPushMatrix();
+        ofTranslate(0, yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(661,533);
+        ofVertex(461,533);
+        ofVertex(461,511);
+        ofVertex(661,511);
+        ofVertex(661,533);
+        ofEndShape();
+        ofPopMatrix();
+        
+        // Bottom-right:
+        ofPushMatrix();
+        ofTranslate(xPos, yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(671,527);
+        ofVertex(652,516);
+        ofVertex(752,343);
+        ofVertex(771,354);
+        ofVertex(671,527);
+        ofEndShape();
+        ofPopMatrix();
+        
+        // Top-right:
+        ofPushMatrix();
+        ofTranslate(xPos, -yPos);
+        ofFill();
+        //ofSetColor(247,165,47);
+        ofBeginShape();
+        ofVertex(752,354);
+        ofVertex(652,181);
+        ofVertex(671,170);
+        ofVertex(771,343);
+        ofVertex(752,354);
+        ofEndShape();
+        ofPopMatrix();
         
         ofFill();
         ofSetColor(255);

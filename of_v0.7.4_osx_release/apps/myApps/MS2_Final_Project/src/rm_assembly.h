@@ -19,6 +19,8 @@ public:
     
     int thisLevel, thickWall, gap, currentLevel;
     ofColor collider;
+    float xPos, yPos;
+    int xVel, yVel;
     
 };
 
