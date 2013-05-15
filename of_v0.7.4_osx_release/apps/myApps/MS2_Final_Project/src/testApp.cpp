@@ -17,7 +17,7 @@ void testApp::setup(){
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
     
-    currentLevel = 7;
+    currentLevel = 5;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -90,7 +90,7 @@ void testApp::update(){
     if (player.screenRIGHT && currentLevel != 1 && currentLevel != 3 && currentLevel != 6 && currentLevel != 7 && currentLevel != 9) currentLevel++;
     
     collider = player.cPlayer;
-    assembly.update(currentLevel);
+    assembly.update(currentLevel, player.xPos, player.yPos);
     blocked.update(currentLevel);
     conveyor.update(currentLevel);
     discarded.update(currentLevel);

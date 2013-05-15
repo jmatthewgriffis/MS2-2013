@@ -14,13 +14,14 @@ class rm_assembly { // This room assembles and disassembles itself.
 public:
     
     void setup(int _thisLevel, int _thickWall, int _gap);
-    void update(int _currentLevel);
+    void update(int _currentLevel, float _x, float _y);
     void draw(ofColor _collider);
     
     int thisLevel, thickWall, gap, currentLevel;
     ofColor collider;
-    float xPos, yPos;
+    float xPos, yPos, xPosP, yPosP;
     int xVel, yVel;
+    bool moveHex;
     
 };
 

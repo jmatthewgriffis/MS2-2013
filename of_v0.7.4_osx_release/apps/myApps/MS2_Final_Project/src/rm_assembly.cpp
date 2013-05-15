@@ -16,24 +16,34 @@ void rm_assembly::setup(int _thisLevel, int _thickWall, int _gap){
     thickWall = _thickWall;
     gap = _gap;
     
-    xPos = yPos = 0;
-    xVel = yVel = 2;
+    xPos = yPos = 100;
+    xVel = yVel = -2;
+    
+    moveHex = false;
     
 }
 
 //--------------------------------------------------------------
-void rm_assembly::update(int _currentLevel){
+void rm_assembly::update(int _currentLevel, float _x, float _y){
     
     currentLevel = _currentLevel;
+    xPosP = _x;
+    yPosP = _y;
     
     if (currentLevel == thisLevel) {
         
-        xPos += xVel;
-        yPos += yVel;
+        if (xPosP >= ofGetWidth()/2-100 && xPosP <= ofGetWidth()/2+100 && yPosP >= ofGetHeight()/2-100 && yPosP <= ofGetHeight()/2+100) moveHex = true;
+        else moveHex = false;
         
-        if (xPos >= 100 || xPos <= 0) xVel *= -1;
-        if (yPos >= 100 || yPos <= 0) yVel *= -1;
-        
+        if (moveHex) {
+            
+            xPos += xVel;
+            yPos += yVel;
+            
+            if (xPos >= 100 || xPos <= 0) xVel *= -1;
+            if (yPos >= 100 || yPos <= 0) yVel *= -1;
+            
+        }
     }
     
 }
@@ -60,132 +70,9 @@ void rm_assembly::draw(ofColor _collider){
         
         // Draw the room contents:
         
-        /*
-        ofNoFill();
-        ofSetLineWidth(1);
-        ofSetColor(66,108,255);
-        ofBeginShape();
-        ofVertex(186,475);
-        ofBezierVertex(217,478,250,485,281,489);
-        ofBezierVertex(274,481,262,474,253,470);
-        ofBezierVertex(257,481,264,490,270,499);
-        ofBezierVertex(267,501,263,505,259,506);
-        ofEndShape();
         
-        ofNoFill();
-        ofSetLineWidth(1);
-        ofSetColor(66,108,255);
-        ofBeginShape();
-        ofVertex(188,237);
-        ofBezierVertex(221,239,255,236,288,239);
-        ofBezierVertex(283,233,276,230,272,223);
-        ofBezierVertex(273,234,280,242,287,250);
-        ofBezierVertex(283,252,278,254,274,255);
-        ofEndShape();
         
-        ofSetColor(collider);
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(357,334);
-        ofEndShape();
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(461,515);
-        ofEndShape();
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(671,515);
-        ofEndShape();
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(775,334);
-        ofEndShape();
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(671,153);
-        ofEndShape();
-        
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(461,153);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(246,205);
-        ofVertex(227,194);
-        ofVertex(331,13);
-        ofVertex(350,24);
-        ofVertex(246,205);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(409,585);
-        ofVertex(304,403);
-        ofVertex(323,392);
-        ofVertex(428,574);
-        ofVertex(409,585);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(704,526);
-        ofVertex(494,526);
-        ofVertex(494,504);
-        ofVertex(704,504);
-        ofVertex(704,526);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(848,628);
-        ofVertex(829,617);
-        ofVertex(934,436);
-        ofVertex(953,447);
-        ofVertex(848,628);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(854,357);
-        ofVertex(749,176);
-        ofVertex(768,165);
-        ofVertex(873,346);
-        ofVertex(854,357);
-        ofEndShape();
-        
-        ofFill();
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(628,103);
-        ofVertex(419,103);
-        ofVertex(419,81);
-        ofVertex(628,81);
-        ofVertex(628,103);
-        ofEndShape();
+        // THE ARROWS:
         
         ofNoFill();
         ofSetLineWidth(1);
@@ -249,35 +136,14 @@ void rm_assembly::draw(ofColor _collider){
         ofBezierVertex(389,150,384,145,378,139);
         ofEndShape();
         
-        */
         
-        /*ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(358,348);
-        ofEndShape();
         
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(458,522);
-        ofEndShape();
+        // THE HEXAGON:
         
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(658,522);
-        ofEndShape();
+        ofSetColor(collider);
         
-        ofNoFill();
-        ofSetLineWidth(22);
-        //ofSetColor(247,165,47);
-        ofBeginShape();
-        ofVertex(758,348);
-        ofEndShape();*/
+        ofPushMatrix();
+        ofTranslate(0, -25);
         
         // Top:
         ofPushMatrix();
@@ -361,6 +227,8 @@ void rm_assembly::draw(ofColor _collider){
         ofVertex(771,343);
         ofVertex(752,354);
         ofEndShape();
+        ofPopMatrix();
+        
         ofPopMatrix();
         
         ofFill();
