@@ -17,7 +17,7 @@ void testApp::setup(){
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
     
-    currentLevel = 6;
+    currentLevel = 9;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -73,6 +73,9 @@ void testApp::update(){
     //cout<<blah<<" "<<blahblah<<endl;
     
     player.update(background, inColor, currentLevel);
+    
+    // Set up the win condition. If the player does all the interactions, cue "ghost" mode:
+    if (assembly.ghostPoint && generator.ghostPoint && music.ghostPoint) player.ghost = true;
     
     /* We check if the player moves offscreen and if so cue a level change where appropriate, using the numbering system described above. Including closed paths, the map looks like this:
      

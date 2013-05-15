@@ -15,7 +15,7 @@ void rm_generator::setup(int _thisLevel, int _thickWall){
     thisLevel = _thisLevel;
     thickWall = _thickWall;
     degrees = 0;
-    pressedButton = false;
+    pressedButton = ghostPoint = false;
     
 }
 
@@ -29,7 +29,10 @@ void rm_generator::update(int _currentLevel, float _x, float _y, bool _action){
     
     if (currentLevel == thisLevel) {
         
-        if (xPosP >= 200 && xPosP <= 260 && yPosP >= 430 && yPosP <= 445 && action)  degrees = -20;
+        if (xPosP >= 200 && xPosP <= 260 && yPosP >= 430 && yPosP <= 445 && action) {
+            degrees = -20;
+            ghostPoint = true;
+        }
         
         else degrees = 0;
         

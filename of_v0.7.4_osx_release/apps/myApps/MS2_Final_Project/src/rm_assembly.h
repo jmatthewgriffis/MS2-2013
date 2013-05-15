@@ -21,7 +21,7 @@ public:
     ofColor collider;
     float xPos, yPos, xPosP, yPosP;
     int xVel, yVel;
-    bool moveHex;
+    bool moveHex, ghostPoint;
     
 };
 

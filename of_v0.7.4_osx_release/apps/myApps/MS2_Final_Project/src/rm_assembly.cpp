@@ -19,7 +19,7 @@ void rm_assembly::setup(int _thisLevel, int _thickWall, int _gap){
     xPos = yPos = 100;
     xVel = yVel = -2;
     
-    moveHex = false;
+    moveHex = ghostPoint = false;
     
 }
 
@@ -32,7 +32,10 @@ void rm_assembly::update(int _currentLevel, float _x, float _y){
     
     if (currentLevel == thisLevel) {
         
-        if (xPosP >= ofGetWidth()/2-100 && xPosP <= ofGetWidth()/2+100 && yPosP >= ofGetHeight()/2-100 && yPosP <= ofGetHeight()/2+100) moveHex = true;
+        if (xPosP >= ofGetWidth()/2-100 && xPosP <= ofGetWidth()/2+100 && yPosP >= ofGetHeight()/2-100 && yPosP <= ofGetHeight()/2+100) {
+            moveHex = true;
+            ghostPoint = true;
+        }
         else moveHex = false;
         
         if (moveHex) {

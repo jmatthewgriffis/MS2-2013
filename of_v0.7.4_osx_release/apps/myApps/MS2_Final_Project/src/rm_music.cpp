@@ -14,7 +14,7 @@ void rm_music::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
     thickWall = _thickWall;
-    pressedButton = false;
+    pressedButton = ghostPoint = false;
     
 }
 
@@ -29,7 +29,10 @@ void rm_music::update(int _currentLevel, float _x, float _y, bool _action){
     if (currentLevel == thisLevel) {
         
         // Toggle the switch if close enough and pressing the action button:
-        if (xPosP >= 50 && xPosP <= 125 && yPosP >= 460 && yPosP <= 480 && action) pressedButton = true;
+        if (xPosP >= 50 && xPosP <= 125 && yPosP >= 460 && yPosP <= 480 && action) {
+            pressedButton = true;
+            ghostPoint = true;
+        }
     }
     else pressedButton = false;
 

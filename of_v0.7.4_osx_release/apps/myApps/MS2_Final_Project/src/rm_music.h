@@ -20,7 +20,7 @@ public:
     int thisLevel, thickWall, currentLevel;
     float xPosP, yPosP;
     ofColor collider;
-    bool pressedButton, action;
+    bool pressedButton, action, ghostPoint;
     
 };
 
