@@ -32,7 +32,7 @@ void rm_assembly::update(int _currentLevel, float _x, float _y){
     
     if (currentLevel == thisLevel) {
         
-        if (xPosP >= ofGetWidth()/2-100 && xPosP <= ofGetWidth()/2+100 && yPosP >= ofGetHeight()/2-100 && yPosP <= ofGetHeight()/2+100) {
+        if (ofDist(xPosP, yPosP, ofGetWidth()/2, ofGetHeight()/2) < 200) {
             moveHex = true;
             ghostPoint = true;
         }

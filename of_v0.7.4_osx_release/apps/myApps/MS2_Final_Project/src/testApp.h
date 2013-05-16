@@ -40,7 +40,7 @@ public:
     int thickWall; // Thickness of border walls.
     int gap; // Width of gap in certain walls.
     float circleRad; // Control the size of the void on the first screen.
-    float pause;
+    float pause, pause2;
     bool inColor; // Switch between color and black-and-white modes.
     
     // Call some classes:

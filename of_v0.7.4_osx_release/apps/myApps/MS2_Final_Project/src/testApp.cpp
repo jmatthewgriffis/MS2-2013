@@ -17,7 +17,7 @@ void testApp::setup(){
     hexMusic.loadSound("hexagon.mp3", true);
     hexMusic.setVolume(0.03f);
     wonderful.loadSound("wonderful.mp3");
-    wonderful.setVolume(1.0f);
+    wonderful.setVolume(0.1f);
     
     currentLevel = -1;
     numLevels = 11;
@@ -25,7 +25,8 @@ void testApp::setup(){
     gap = thickWall;
     circleRad = 0;
     pause = 1;
-    inColor = true;
+    pause2 = 2;
+    inColor = false;
     
     //background = 200;
     background = 255;
@@ -57,7 +58,7 @@ void testApp::update(){
     
     if (currentLevel >=0 && currentLevel != 10) background = 0;
     if (currentLevel == -1) background = 255; // Comment this out later?
-    if (currentLevel < 0) circleRad++;
+    if (currentLevel < 0 && pause2 <= 0) circleRad++;
     else circleRad = 0;
     
     // Switch to the next level upon being paralyzed by a different color:
@@ -67,11 +68,15 @@ void testApp::update(){
         player.scale = 20;
         currentLevel++;
     }
+    
+    if (currentLevel < 0) if (pause2 > 0) pause2 -= 0.02; // Add a little delay.
+        
     // Switch to the next level upon reaching the correct size:
     if (currentLevel == 0 && player.scale == 0) {
         if (pause > 0) pause -= 0.02; // Add a little delay.
         else {
             currentLevel = 5;
+            inColor = true;
             player.xPos = ofGetWidth()/2-(player.wide/2)+player.shiftX;
             player.yPos = ofGetHeight()/2+player.shiftY;
             player.scale = 1;
@@ -165,10 +170,10 @@ void testApp::draw(){
     
     ofBackground(background); // Refresh the background each frame.
     
-    if (currentLevel == -1) {
+    if (currentLevel == -1 && pause2 <= 0) {
         ofSetColor(0);
         ofCircle(ofGetWidth()/2, ofGetHeight()/2, circleRad);
-        ofSetColor(255);
+        //ofSetColor(255);
     }
     
     assembly.draw(collider);
