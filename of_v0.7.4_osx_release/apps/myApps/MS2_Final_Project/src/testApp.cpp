@@ -18,6 +18,9 @@ void testApp::setup(){
     hexMusic.setVolume(0.03f);
     wonderful.loadSound("wonderful.mp3");
     wonderful.setVolume(0.1f);
+    gameOver.loadSound("game_over.mp3");
+    gameOver.setVolume(0.1f);
+    gameOver.play();
     
     // IMPORTANT!
     currentLevel = -1;
@@ -89,6 +92,7 @@ void testApp::update(){
     }
     
     // Control the background music:
+    if (gameOver.getPosition() > 0.95) gameOver.stop();
     if (!mainMusic.getIsPlaying() && currentLevel > 0) mainMusic.play();
     if (music.pressedButton) {
         mainMusic.setVolume(0.0f);
@@ -113,6 +117,7 @@ void testApp::update(){
             wonderful.stop();
             mainMusic.stop();
             hexMusic.stop();
+            gameOver.stop();
             setup();
         }
     }
@@ -235,6 +240,7 @@ void testApp::keyPressed(int key){
             mainMusic.stop();
             hexMusic.stop();
             wonderful.stop();
+            gameOver.stop();
             setup();
             break;
             

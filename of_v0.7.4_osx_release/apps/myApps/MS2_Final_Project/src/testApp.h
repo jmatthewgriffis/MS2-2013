@@ -31,7 +31,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofSoundPlayer mainMusic, hexMusic, wonderful;
+    ofSoundPlayer mainMusic, hexMusic, wonderful, gameOver;
     
     ofColor background;
     ofColor collider; // Prevents player movement.
