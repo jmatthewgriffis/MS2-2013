@@ -19,14 +19,16 @@ void testApp::setup(){
     wonderful.loadSound("wonderful.mp3");
     wonderful.setVolume(1.0f);
     
-    currentLevel = 5;
+    currentLevel = -1;
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
+    circleRad = 0;
+    pause = 1;
     inColor = true;
     
     //background = 200;
-    background = 0;
+    background = 255;
     player.setup(thickWall);
     collider = player.cPlayer;
     
@@ -53,8 +55,33 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
+    if (currentLevel >=0 && currentLevel != 10) background = 0;
+    if (currentLevel == -1) background = 255; // Comment this out later?
+    if (currentLevel < 0) circleRad++;
+    else circleRad = 0;
+    
+    // Switch to the next level upon being paralyzed by a different color:
+    if (currentLevel < 0 && ofDist(ofGetWidth()/2, ofGetHeight()/2, player.xPos, player.yPos) < circleRad) {
+        player.xPos = ofGetWidth()/2;
+        player.yPos = ofGetHeight()/2;
+        player.scale = 20;
+        currentLevel++;
+    }
+    // Switch to the next level upon reaching the correct size:
+    if (currentLevel == 0 && player.scale == 0) {
+        if (pause > 0) pause -= 0.02; // Add a little delay.
+        else {
+            currentLevel = 5;
+            player.xPos = ofGetWidth()/2-(player.wide/2)+player.shiftX;
+            player.yPos = ofGetHeight()/2+player.shiftY;
+            player.scale = 1;
+            player.degrees = 0;
+            player.youSpinMeRightRound = true;
+        }
+    }
+    
     // Control the background music:
-    if (!mainMusic.getIsPlaying()) mainMusic.play();
+    if (!mainMusic.getIsPlaying() && currentLevel > 0) mainMusic.play();
     if (music.pressedButton) {
         mainMusic.setVolume(0.0f);
         if (!hexMusic.getIsPlaying()) hexMusic.play();
@@ -63,6 +90,12 @@ void testApp::update(){
         if (hexMusic.getIsPlaying()) hexMusic.stop();
         mainMusic.setVolume(1);
     }
+    
+    if (hexMusic.getIsPlaying() && hexMusic.getPosition() >= 0.95f) {
+        hexMusic.stop();
+        mainMusic.setVolume(1);
+    }
+    
     if (currentLevel == 10) { // On win screen, trigger "wonderful":
         background = 255;
         mainMusic.setVolume(0.0f);
@@ -105,7 +138,7 @@ void testApp::update(){
      
      */
     
-    if (currentLevel != 10) {
+    if (currentLevel > 0 && currentLevel != 10) {
         if (player.screenUP && currentLevel == 1) currentLevel = 10;
         else if (player.screenUP && currentLevel > 3) currentLevel -= 3;
         if (player.screenDOWN && currentLevel < 7) currentLevel += 3;
@@ -131,6 +164,12 @@ void testApp::update(){
 void testApp::draw(){
     
     ofBackground(background); // Refresh the background each frame.
+    
+    if (currentLevel == -1) {
+        ofSetColor(0);
+        ofCircle(ofGetWidth()/2, ofGetHeight()/2, circleRad);
+        ofSetColor(255);
+    }
     
     assembly.draw(collider);
     blocked.draw(collider);
@@ -199,7 +238,7 @@ void testApp::keyPressed(int key){
             
             // Debug. Comment this out later.
         case '-':
-            if (currentLevel > 0) currentLevel--;
+            if (currentLevel > -1) currentLevel--;
             break;
             
             // Debug. Comment this out later.

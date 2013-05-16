@@ -33,6 +33,7 @@ public:
     float xPos;
     float yPos;
     float rotX, rotY; // Store the intial rotation information in coordinates.
+    float scale; // Change the size of the triangle.
     int xVel;
     int yVel;
     bool ghost; // Move through solid objects.

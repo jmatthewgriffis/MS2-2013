@@ -26,10 +26,11 @@ void player::setup(int _thickWall){
     yPos = ofGetHeight()/2+shiftY;
     rotX = xPos;
     rotY = yPos;
+    scale = 1;
     xVel = 5;
     yVel = 5;
     ghost = moveUP = moveDOWN = moveLEFT = moveRIGHT = screenUP = screenDOWN = screenLEFT = screenRIGHT = action = false;
-    youSpinMeRightRound = true;
+    youSpinMeRightRound = false;
     spinMeFaster = 10;
     suddenFreedom = false;
     background = 0;
@@ -73,6 +74,9 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     //cout<<inColor<<endl; // Debug - check the color change boolean status.
     inColor = _inColor;
     currentLevel = _currentLevel;
+    
+    
+    
     
     // Start color change behavior.
     
@@ -175,71 +179,76 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     else cRIGHTdiff = true;
     
     
-    // Now we proceed to the movement itself. At first, the player is trapped, able only to rotate about the center. We need to check if escape has been achieved:
-    if (suddenFreedom == true) {
-        // We set the player's position equal to the position reached when he or she broke free of the hexagon:
-        xPos = ofGetWidth()/2+shiftX-rotX;
-        yPos = ofGetHeight()/2+rotY;
-        // Then we turn off these booleans so they don't affect the position or movement any further:
-        youSpinMeRightRound = false;
-        suddenFreedom = false;
-    }
-    
-    // When trapped, the player can only rotate about the hexagon in the center of the screen:
-    if (youSpinMeRightRound) {
-        if (moveLEFT) degrees -= spinMeFaster;
-        if (moveRIGHT) degrees += spinMeFaster;
-        if (degrees > 360) degrees = 0;
-        if (degrees < 0) degrees = 360;
-    }
-    // Escaping the center enables free motion:
-    else {
-        // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player. But first, check if a ghost, and if so allow movement regardless:
-        if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
+    if (currentLevel != 0) {
         
-        if (moveUP == true && cUPdiff) yPos += -yVel;
-        if (moveDOWN == true && cDOWNdiff) yPos += yVel;
-        if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
-        if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+        // Now we proceed to the movement itself. At first, the player is trapped, able only to rotate about the center. We need to check if escape has been achieved:
+        if (suddenFreedom == true) {
+            // We set the player's position equal to the position reached when he or she broke free of the hexagon:
+            xPos = ofGetWidth()/2+shiftX-rotX;
+            yPos = ofGetHeight()/2+rotY;
+            // Then we turn off these booleans so they don't affect the position or movement any further:
+            youSpinMeRightRound = false;
+            suddenFreedom = false;
+        }
         
-    }
-    
-    // Can't move any direction? Shift pos away:
-    if (!cUPdiff && !cDOWNdiff && !cLEFTdiff && !cRIGHTdiff) {
-        //xPos = ofGetWidth()/2;
-        xPos-=xVel;
-        //yPos = ofGetHeight()/2;
-        yPos+=yVel;
-    }
-    
-    // Set the screen change booleans to false (unless there's movement off the screen, as we're about to describe):
-    screenUP = false;
-    screenDOWN = false;
-    screenLEFT = false;
-    screenRIGHT = false;
-    // If the player moves offscreen:
-    if (xPos < -wide/2 || xPos > ofGetWidth()+wide/2 || yPos < -tall/2 || yPos > ofGetHeight()+tall/2) {
-        // First, prevent a pixel check since the player is offscreen:
-        cUP = (0,0,0);
-        cDOWN = (0,0,0);
-        cLEFT = (0,0,0);
-        cRIGHT = (0,0,0);
-        // Then shift the player's position to the other side, and cue a screen change if applicable:
-        if (xPos < -wide/2) {
-            xPos = ofGetWidth()-wide/2;
-            screenLEFT = true;
+        // When trapped, the player can only rotate about the hexagon in the center of the screen:
+        if (youSpinMeRightRound) {
+            if (moveLEFT) degrees -= spinMeFaster;
+            if (moveRIGHT) degrees += spinMeFaster;
+            if (degrees > 360) degrees = 0;
+            if (degrees < 0) degrees = 360;
         }
-        if (xPos > ofGetWidth()+wide/2) {
-            xPos = wide/2;
-            screenRIGHT = true;
+        // Escaping the center enables free motion:
+        else {
+            // Allow player movement if the key is pressed and the pixel in the direction of movement is a different color than the player. But first, check if a ghost, and if so allow movement regardless:
+            if (ghost) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
+            // Allow movemet regardless on the starting screen(s) to make sure off-screen movement is allowed:
+            if (currentLevel < 0) cUPdiff = cDOWNdiff = cLEFTdiff = cRIGHTdiff = true;
+            
+            if (moveUP == true && cUPdiff) yPos += -yVel;
+            if (moveDOWN == true && cDOWNdiff) yPos += yVel;
+            if (moveLEFT == true && cLEFTdiff) xPos += -xVel;
+            if (moveRIGHT == true && cRIGHTdiff) xPos += xVel;
+            
         }
-        if (yPos < -tall/2) {
-            yPos = ofGetHeight()-tall/2;
-            screenUP = true;
+        
+        // Can't move any direction? Shift pos away:
+        if (!cUPdiff && !cDOWNdiff && !cLEFTdiff && !cRIGHTdiff && currentLevel > 0) {
+            //xPos = ofGetWidth()/2;
+            xPos-=xVel;
+            //yPos = ofGetHeight()/2;
+            yPos+=yVel;
         }
-        if (yPos > ofGetHeight()+tall/2) {
-            yPos = tall/2;
-            screenDOWN = true;
+        
+        // Set the screen change booleans to false (unless there's movement off the screen, as we're about to describe):
+        screenUP = false;
+        screenDOWN = false;
+        screenLEFT = false;
+        screenRIGHT = false;
+        // If the player moves offscreen:
+        if (xPos < -wide/2 || xPos > ofGetWidth()+wide/2 || yPos < -tall/2 || yPos > ofGetHeight()+tall/2) {
+            // First, prevent a pixel check since the player is offscreen:
+            cUP = (0,0,0);
+            cDOWN = (0,0,0);
+            cLEFT = (0,0,0);
+            cRIGHT = (0,0,0);
+            // Then shift the player's position to the other side, and cue a screen change if applicable:
+            if (xPos < -wide/2) {
+                xPos = ofGetWidth()-wide/2;
+                screenLEFT = true;
+            }
+            if (xPos > ofGetWidth()+wide/2) {
+                xPos = wide/2;
+                screenRIGHT = true;
+            }
+            if (yPos < -tall/2) {
+                yPos = ofGetHeight()-tall/2;
+                screenUP = true;
+            }
+            if (yPos > ofGetHeight()+tall/2) {
+                yPos = tall/2;
+                screenDOWN = true;
+            }
         }
     }
     
@@ -253,38 +262,49 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     
     
     
-    // Let's make the triangle rotate about its center in the direction of movement. First, we check if movement is restricted:
-    if (!youSpinMeRightRound) { // Free movement is allowed?
-        // But what if the player presses no controls? Let's do a nice idling animation. If no directions are pressed, wait a bit, then rotate:
-        if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
-            if (rotateWait > 0) rotateWait--; // Deplete the timer...
-            else degrees += degreesVel; // ...then start rotating.
-        }
-        
-        else { // Something pressed?
-            rotateWait = rotateWaitMax; // Reset the timer.
+    // Let's make the triangle rotate about its center in the direction of movement. First we set an automated rotation for the falling screen:
+    
+    if(currentLevel == 0) {
+        degrees += degreesVel;
+        if (scale > 0) scale -= 0.05; // Also we scale the triangle on this screen.
+        if (fabs(scale) < 0.05) scale = 0;
+    }
+    
+    //Then, we check if movement is restricted:
+    
+    if (currentLevel != 0) {
+        if (!youSpinMeRightRound) { // Free movement is allowed?
+            // But what if the player presses no controls? Let's do a nice idling animation. If no directions are pressed, wait a bit, then rotate:
+            if (!moveUP && !moveDOWN && !moveLEFT && !moveRIGHT) { // Nothing pressed?
+                if (rotateWait > 0) rotateWait--; // Deplete the timer...
+                else degrees += degreesVel; // ...then start rotating.
+            }
             
-            // Change the degree of rotation appropriate to the movement:
-            if (moveUP == true) {
-                if (moveLEFT == true) degrees = 315;
-                else if (moveRIGHT == true) degrees = 45;
-                else degrees = 0;
+            else { // Something pressed?
+                rotateWait = rotateWaitMax; // Reset the timer.
+                
+                // Change the degree of rotation appropriate to the movement:
+                if (moveUP == true) {
+                    if (moveLEFT == true) degrees = 315;
+                    else if (moveRIGHT == true) degrees = 45;
+                    else degrees = 0;
+                }
+                else if (moveDOWN == true) {
+                    if (moveLEFT == true) degrees = 225;
+                    else if (moveRIGHT == true) degrees = 135;
+                    else degrees = 180;
+                }
+                else if (moveLEFT == true) degrees = 270;
+                else if (moveRIGHT == true) degrees = 90;
             }
-            else if (moveDOWN == true) {
-                if (moveLEFT == true) degrees = 225;
-                else if (moveRIGHT == true) degrees = 135;
-                else degrees = 180;
-            }
-            else if (moveLEFT == true) degrees = 270;
-            else if (moveRIGHT == true) degrees = 90;
-        }
-        
-        // Vary the direction of rotation with some randomness:
-        if (degrees < 0 || degrees > 360) {
-            if (ofRandom(1) < 0.5f) degreesVel *= -1;
-            else {
-                if (degrees < 0) degrees = 360;
-                else if (degrees > 360) degrees = 0;
+            
+            // Vary the direction of rotation with some randomness:
+            if (degrees < 0 || degrees > 360) {
+                if (ofRandom(1) < 0.5f) degreesVel *= -1;
+                else {
+                    if (degrees < 0) degrees = 360;
+                    else if (degrees > 360) degrees = 0;
+                }
             }
         }
     }
@@ -443,6 +463,7 @@ void player::draw(){
         
         // Either way, we then translate to the center of the triangle and then rotate it about its center as needed:
         ofTranslate(xPos, yPos);
+        ofScale(scale,scale);
         ofRotate(degrees);
         ofTriangle(-wide/2, tall/2, wide/2, tall/2, 0, -tall/2); // The player.
         ofNoFill();
