@@ -476,10 +476,11 @@ void player::draw(){
             ofColor otherTri = cPlayer;
             otherTri.a = 255;
             ofSetColor(otherTri);
+            ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
             for (int i = 0; i < 7; i++) {
-                ofTranslate(100, ofGetHeight()-tallSoul);
                 ofRotate(10*i);
                 //if (otherY + tallSoul/2 <= thickWall*9) { // This is necessary to prevent the size-changing soul from appearing through the wall. Unfortunately it also prevents the triangle from appearing right at the bottom of the range. But this could make narrative sense.
+                ofFill();
                 ofTriangle(-wide/2 + 100*i, -tall/2, wide/2 + 100*i, -tall/2, 0 + 100*i, tall/2); // The player.
                 ofNoFill();
                 ofSetLineWidth(2);

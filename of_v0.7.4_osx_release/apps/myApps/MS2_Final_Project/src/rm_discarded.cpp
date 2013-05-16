@@ -14,6 +14,7 @@ void rm_discarded::setup(int _thisLevel, int _thickWall){
     
     thisLevel = _thisLevel;
     thickWall = _thickWall;
+    ghostPoint = false;
     
 }
 
@@ -24,7 +25,7 @@ void rm_discarded::update(int _currentLevel){
     
     if (currentLevel == thisLevel) {
         
-        // Update goes here.
+        ghostPoint = true;
         
     }
     

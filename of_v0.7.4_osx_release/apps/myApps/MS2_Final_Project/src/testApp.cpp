@@ -19,7 +19,10 @@ void testApp::setup(){
     wonderful.loadSound("wonderful.mp3");
     wonderful.setVolume(0.1f);
     
+    // IMPORTANT!
     currentLevel = -1;
+    // IMPORTANT!
+    
     numLevels = 11;
     thickWall = 22;
     gap = thickWall;
@@ -127,7 +130,7 @@ void testApp::update(){
     player.update(background, inColor, currentLevel);
     
     // Set up the win condition. If the player does all the interactions, cue "ghost" mode:
-    if (assembly.ghostPoint && conveyor.ghostPoint && generator.ghostPoint && music.ghostPoint && currentLevel != 10) player.ghost = true;
+    if (assembly.ghostPoint && conveyor.ghostPoint && discarded.ghostPoint && generator.ghostPoint && music.ghostPoint && currentLevel != 10) player.ghost = true;
     else if (currentLevel == 10) player.ghost = false;
     
     

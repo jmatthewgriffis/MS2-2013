@@ -19,6 +19,7 @@ public:
     
     int thisLevel, thickWall, currentLevel;
     ofColor collider;
+    bool ghostPoint;
     
 };
 
