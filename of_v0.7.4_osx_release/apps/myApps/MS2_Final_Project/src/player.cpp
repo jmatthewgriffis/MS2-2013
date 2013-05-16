@@ -467,6 +467,30 @@ void player::draw(){
             ofPopMatrix();
         }
         
+        // If it's the discarded room, we draw some triangles around the place:
+        else if (currentLevel == 8) {
+            ofPushMatrix();
+            //float otherX = ofMap(xPos, 0, ofGetWidth(), ofGetWidth()/2-200, ofGetWidth()/2+200);
+            // Blockade stretches down to uberWall(= thickWall*3)*4.
+            //float otherY = ofMap(yPos, thickWall*12, ofGetHeight(), thickWall*9, -100);
+            ofColor otherTri = cPlayer;
+            otherTri.a = 255;
+            ofSetColor(otherTri);
+            for (int i = 0; i < 7; i++) {
+                ofTranslate(100, ofGetHeight()-tallSoul);
+                ofRotate(10*i);
+                //if (otherY + tallSoul/2 <= thickWall*9) { // This is necessary to prevent the size-changing soul from appearing through the wall. Unfortunately it also prevents the triangle from appearing right at the bottom of the range. But this could make narrative sense.
+                ofTriangle(-wide/2 + 100*i, -tall/2, wide/2 + 100*i, -tall/2, 0 + 100*i, tall/2); // The player.
+                ofNoFill();
+                ofSetLineWidth(2);
+                ofTriangle(-wideSoul/2 + 100*i, -tallSoul/2, wideSoul/2 + 100*i, -tallSoul/2, 0 + 100*i, tallSoul/2); // The soul.
+            }
+            ofPopMatrix();
+            ofFill();
+            if (ghost == true) ofSetColor(cGhost);
+            else ofSetColor(cPlayer);
+        }
+        
         // Either way, we then translate to the center of the triangle and then rotate it about its center as needed:
         ofTranslate(xPos, yPos);
         ofScale(scale,scale);
