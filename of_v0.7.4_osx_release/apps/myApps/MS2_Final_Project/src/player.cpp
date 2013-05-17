@@ -272,8 +272,8 @@ void player::update(ofColor _background, bool _inColor, int _currentLevel){
     
     if(currentLevel == 0) {
         degrees += degreesVel;
-        if (scale > 0) scale -= 0.05; // Also we scale the triangle on this screen.
-        if (fabs(scale) < 0.05) scale = 0;
+        if (scale > 0) scale -= 0.1; // Also we scale the triangle on this screen.
+        if (fabs(scale) < 0.2) scale = 0;
     }
     
     //Then, we check if movement is restricted:

@@ -11,6 +11,9 @@ void testApp::setup(){
     ofEnableAlphaBlending();
     ofHideCursor();
     
+    font.loadFont("helvetica.otf", 24);
+    fontSmall.loadFont("helvetica.otf", 18);
+    
     // Load music and enable streaming:
     mainMusic.loadSound("main.mp3", true);
     mainMusic.setVolume(1.0f);
@@ -20,10 +23,10 @@ void testApp::setup(){
     wonderful.setVolume(0.1f);
     gameOver.loadSound("game_over.mp3");
     gameOver.setVolume(0.1f);
-    gameOver.play();
+    //gameOver.play();
     
     // IMPORTANT!
-    currentLevel = -1;
+    currentLevel = 5;
     // IMPORTANT!
     
     numLevels = 11;
@@ -195,6 +198,11 @@ void testApp::draw(){
     time.draw(collider);
     win.draw(collider);
     player.draw();
+    
+    if (currentLevel == 5) {
+        font.drawString("What Lies Beyond", ofGetWidth()/2 - 200, ofGetHeight()/2+150);
+        fontSmall.drawString("a meditation by J. Matthew Griffis", ofGetWidth()/2-103, ofGetHeight()/2+210);
+    }
     
     // Housekeeping:
     ofSetColor(255);

@@ -32,6 +32,7 @@ public:
     void gotMessage(ofMessage msg);
     
     ofSoundPlayer mainMusic, hexMusic, wonderful, gameOver;
+    ofTrueTypeFont font, fontSmall;
     
     ofColor background;
     ofColor collider; // Prevents player movement.
