@@ -10,6 +10,7 @@ void testApp::setup(){
     ofSetCircleResolution(60);
     ofEnableAlphaBlending();
     ofHideCursor();
+    //ofSetDataPathRoot("data/"); // This is necessary to make a standalone app.
     
     font.loadFont("helvetica.otf", 24);
     fontSmall.loadFont("helvetica.otf", 18);
@@ -286,7 +287,7 @@ void testApp::keyPressed(int key){
             break;
             
             // Debug. Comment this out later.
-        /*case 'g':
+        case 'g':
         case 'G':
             player.ghost = true;
             break;
@@ -304,7 +305,7 @@ void testApp::keyPressed(int key){
             // Debug. Comment this out later:
         case 'm':
             inColor = !inColor;
-            break;*/
+            break;
     }
     
 }
@@ -338,10 +339,10 @@ void testApp::keyReleased(int key){
             player.moveRIGHT = false;
             break;
             
-        /*case 'g':
+        case 'g':
         case 'G':
             player.ghost = false;
-            break;*/
+            break;
             
         case ' ':
             player.action = false;
