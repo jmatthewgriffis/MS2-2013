@@ -13,6 +13,10 @@ void testApp::setup(){
     
     font.loadFont("helvetica.otf", 24);
     fontSmall.loadFont("helvetica.otf", 18);
+    cFont = cFont2 = 255;
+    cFont.a = cFont2.a = 0;
+    fontTimer = font2Timer = 0;
+    title = true;
     
     // Load music and enable streaming:
     mainMusic.loadSound("main.mp3", true);
@@ -23,10 +27,10 @@ void testApp::setup(){
     wonderful.setVolume(0.1f);
     gameOver.loadSound("game_over.mp3");
     gameOver.setVolume(0.1f);
-    //gameOver.play();
+    gameOver.play();
     
     // IMPORTANT!
-    currentLevel = 5;
+    currentLevel = -1;
     // IMPORTANT!
     
     numLevels = 11;
@@ -64,6 +68,32 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
+    
+    if (currentLevel == 5 && title) {
+        // font fades in and out:
+        if (fontTimer < 60 && fontTimer >= 0 && cFont.a == 0) fontTimer++;
+        else if (fontTimer >= 60 && cFont.a < 255) {
+            cFont.a++;
+            fontTimer = 180;
+        }
+        else if (fontTimer > 0 && cFont.a >= 255) fontTimer--;
+        else if (fontTimer <= 0 && cFont.a > 0) {
+            cFont.a--;
+            fontTimer = -1;
+        }
+        // fontSmall fades in and out, with different timing than font:
+        if (font2Timer < 180 && font2Timer >= 0 && cFont2.a == 0) font2Timer++;
+        else if (font2Timer >= 180 && cFont2.a < 255) {
+            cFont2.a++;
+            font2Timer = 240;
+        }
+        else if (font2Timer > 0 && cFont2.a >= 255) font2Timer--;
+        else if (font2Timer <= 0 && cFont2.a > 0) {
+            cFont2.a--;
+            font2Timer = -1;
+        }
+        if (player.screenUP || player.screenDOWN || player.screenLEFT || player.screenRIGHT) title = false;
+    }
     
     if (currentLevel >=0 && currentLevel != 10) background = 0;
     if (currentLevel == -1) background = 255; // Comment this out later?
@@ -199,9 +229,12 @@ void testApp::draw(){
     win.draw(collider);
     player.draw();
     
-    if (currentLevel == 5) {
+    if (currentLevel == 5 && title) {
+        ofSetColor(cFont);
         font.drawString("What Lies Beyond", ofGetWidth()/2 - 200, ofGetHeight()/2+150);
+        ofSetColor(cFont2);
         fontSmall.drawString("a meditation by J. Matthew Griffis", ofGetWidth()/2-103, ofGetHeight()/2+210);
+        ofSetColor(255);
     }
     
     // Housekeeping:
@@ -253,7 +286,7 @@ void testApp::keyPressed(int key){
             break;
             
             // Debug. Comment this out later.
-        case 'g':
+        /*case 'g':
         case 'G':
             player.ghost = true;
             break;
@@ -271,7 +304,7 @@ void testApp::keyPressed(int key){
             // Debug. Comment this out later:
         case 'm':
             inColor = !inColor;
-            break;
+            break;*/
     }
     
 }
@@ -305,10 +338,10 @@ void testApp::keyReleased(int key){
             player.moveRIGHT = false;
             break;
             
-        case 'g':
+        /*case 'g':
         case 'G':
             player.ghost = false;
-            break;
+            break;*/
             
         case ' ':
             player.action = false;
